@@ -24,8 +24,7 @@ public record SignupRequest(@NotBlank String username, @NotBlank String email,
     }
 
     public Signup toSignup() {
-        return new Signup(username, email, password, confirmPassword);
+        return new Signup(username, email, password);
     }
-
 
 }

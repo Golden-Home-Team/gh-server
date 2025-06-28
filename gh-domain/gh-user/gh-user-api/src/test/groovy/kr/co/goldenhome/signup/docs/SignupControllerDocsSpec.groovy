@@ -61,14 +61,16 @@ class SignupControllerDocsSpec extends Specification {
                 .andDo(document("user-signup",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
-                        requestFields(fieldWithPath("username").type(JsonFieldType.STRING)
+                        requestFields(
+                                fieldWithPath("username").type(JsonFieldType.STRING)
                                 .description("이름"),
                                 fieldWithPath("email").type(JsonFieldType.STRING)
                                         .description("이메일"),
                                 fieldWithPath("password").type(JsonFieldType.STRING)
                                         .description("비밀번호 (영문 + 숫자 8자 이상)"),
                                 fieldWithPath("confirmPassword").type(JsonFieldType.STRING)
-                                        .description("비밀번호확인")),
+                                        .description("비밀번호확인")
+                        ),
                         responseFields(fieldWithPath("verificationCode").type(JsonFieldType.STRING)
                                 .description("인증코드"))))
 

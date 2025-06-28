@@ -18,9 +18,9 @@ class SignupManagerSpec extends Specification {
         signupManager = new SignupManager(userRepository, passwordProcessor)
     }
 
-    def "createUser - 비밀번호를 인코딩하고 UserRepository.save() 를 호출한다"() {
+    def "createUser - 비밀번호를 인코딩하고 UserRepository 를 호출한다"() {
         given:
-        def givenSignup = new Signup("구코딩", "gucoding@1234", "1234", "1234")
+        def givenSignup = new Signup("구코딩", "gucoding@1234", "1234")
 
         when:
         signupManager.createUser(givenSignup)
@@ -39,7 +39,7 @@ class SignupManagerSpec extends Specification {
         }
     }
 
-    def "active - UserRepository.findById() 를 호출한다"() {
+    def "active - UserRepository 를 호출한다"() {
         given:
         def givenUserId = 1L
 

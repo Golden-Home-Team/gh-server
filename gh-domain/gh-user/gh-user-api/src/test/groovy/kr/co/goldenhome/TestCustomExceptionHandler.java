@@ -1,4 +1,4 @@
-package kr.co.goldenhome.signup;
+package kr.co.goldenhome;
 
 import exception.CustomException;
 import groovy.util.logging.Slf4j;

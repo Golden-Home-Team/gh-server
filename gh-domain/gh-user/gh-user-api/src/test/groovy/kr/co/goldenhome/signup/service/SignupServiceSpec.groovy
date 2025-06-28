@@ -20,9 +20,9 @@ class SignupServiceSpec extends Specification {
         signupService = new SignupService(signupManager, emailVerificationManager)
     }
 
-    def "signup - SignupManager.createUser() 를 호출한다"() {
+    def "signup - SignupManager 를 호출한다"() {
         given:
-        def givenSignup = new Signup("구코딩", "gucoding@1234", "1234", "1234")
+        def givenSignup = new Signup("구코딩", "gucoding@1234", "1234")
         def expectedUser = User.create("구코딩", "gucoding@1234", "????", UserRole.USER)
 
         when:
@@ -34,13 +34,12 @@ class SignupServiceSpec extends Specification {
                 assert signup.username() == givenSignup.username()
                 assert signup.email() == givenSignup.email()
                 assert signup.password() == givenSignup.password()
-                assert signup.confirmPassword() == givenSignup.confirmPassword()
                 expectedUser
         }
 
     }
 
-    def "sendEmailForVerification - EmailVerificationManager.create(), EmailVerificationManager.sendEmail() 을 호출한다"() {
+    def "sendEmailForVerification - EmailVerificationManager.create(), sendEmail() 을 호출한다"() {
         given:
         def givenUser = User.builder().id(1L).email("gucoding@1234").build()
         def expectedEmailVerification = EmailVerification.create(1L, "gucoding@1234", EmailVerificationType.SIGN_UP)
@@ -57,7 +56,7 @@ class SignupServiceSpec extends Specification {
 
     }
 
-    def "verify - EmailVerificationManager.verify(), SignupManager.active() 를 호출한다"() {
+    def "verify - EmailVerificationManager, SignupManager 를 호출한다"() {
         given:
         def givenCode = "givenCode"
         def givenUserId = 1L

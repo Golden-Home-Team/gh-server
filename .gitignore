@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 application.yml
 application-test.yml
+compose.yml
 
 ### NetBeans ###
 /nbproject/private/

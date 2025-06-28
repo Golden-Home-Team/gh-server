@@ -17,7 +17,7 @@ class EmailVerificationManagerSpec extends Specification {
         emailVerificationManager = new EmailVerificationManager(emailVerificationRepository, mailSender)
     }
 
-    def "create - EmailVerificationRepository.save() 를 호출한다"() {
+    def "create - EmailVerificationRepository 를 호출한다" () {
 
         given:
         def givenUserId = 1L
@@ -38,7 +38,7 @@ class EmailVerificationManagerSpec extends Specification {
 
     }
 
-    def "sendEmail - MailSender.send() 를 호출하고 회원가입 상황이면 그에 맞는 제목의 Email 이 생성된다"() {
+    def "sendEmail - MailSender 를 호출하고 회원가입 상황이면 그에 맞는 제목의 Email 이 생성된다" () {
         given:
         def givenEmailVerification = EmailVerification.builder()
                 .emailAddress("gucoding@naver.com")

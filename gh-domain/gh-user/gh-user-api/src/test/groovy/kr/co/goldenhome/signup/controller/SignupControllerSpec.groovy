@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
@@ -59,7 +58,6 @@ class SignupControllerSpec extends Specification {
     }
 
     @Unroll
-    // 각각의 테스트 케이스를 개별 테스트처럼 보고해줍니다.
     def "회원가입 실패 - #description"() {
         given:
         def requestJson = objectMapper.writeValueAsString(request)

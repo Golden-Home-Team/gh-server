@@ -63,7 +63,8 @@ allprojects {
 
         attributes \
         'user-signup-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup', // [변경 9]: 스니펫 경로
-        'user-verify-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify' //
+        'user-verify-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify',
+        'user-login-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login'
 
         sources {
             include '**/index.adoc' // [변경 10]: index.adoc만 처리

@@ -15,7 +15,7 @@ public class PasswordProcessorImpl implements PasswordProcessor {
     }
 
     @Override
-    public Boolean matches(String rawPassword, String encodedPassword) {
+    public boolean matches(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

@@ -2,4 +2,8 @@ jar.enabled = true
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation(project(":gh-domain:gh-user:gh-user-core"))
+    implementation(project(":gh-common"))
+
 }

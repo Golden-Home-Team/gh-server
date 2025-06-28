@@ -1,7 +1,10 @@
 rootProject.name = 'golden-home'
 
-include 'gh-application'
-include 'gh-batch'
+include 'gh-application-container'
 include 'gh-common'
+include 'gh-batch'
 include 'gh-domain'
+include 'gh-domain:gh-user'
+include 'gh-domain:gh-user:gh-user-api'
+include 'gh-domain:gh-user:gh-user-core'
 include 'gh-external-social'

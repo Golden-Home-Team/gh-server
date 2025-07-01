@@ -58,12 +58,12 @@ allprojects {
     }
 
     tasks.named('asciidoctor') {
-        sourceDir file('docs/asciidoc') // [변경 7]: index.adoc이 있는 경로
+        sourceDir file('src/docs/asciidoc') // [변경 7]: index.adoc이 있는 경로
         outputDir layout.buildDirectory.dir('docs') // [변경 8]: HTML 출력 경로
 
         attributes \
-        'user-signup-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup', // [변경 9]: 스니펫 경로
-        'user-verify-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify',
+        'user-signup-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup',
+        'user-check-duplicated-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated',
         'user-login-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login'
 
         sources {

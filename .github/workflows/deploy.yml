@@ -54,16 +54,19 @@ jobs:
 
       - name: SSH 로 EC2에 접속 및 Docker Compose 배포 # 수정
         uses: appleboy/ssh-action@v1.0.3
+        # `with`는 `uses`와 같은 레벨에서 시작해야 합니다.
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
-
+        # `env`는 `uses`와 같은 레벨에서 시작해야 합니다.
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 
+
           script: |
+
             mkdir -p /home/ubuntu/your-app
             cd /home/ubuntu/your-app
             
@@ -72,14 +75,13 @@ jobs:
             EOF
             
             sed -i "s|\${ECR_REGISTRY}|$ECR_REGISTRY|g" docker-compose.yml
-            
-            cat docker-compose.yml # sed 적용 후 docker-compose.yml 파일 내용 다시 출력
-
-            # 4. Docker Compose 명령 실행 전 상태 확인
+  
+            cat docker-compose.yml
+  
             echo "--- Checking Docker status before Compose ---"
             docker ps -a # 모든 Docker 컨테이너 상태 확인
             docker images # Docker 이미지 목록 확인
-
+  
             # 5. Docker Compose 실행
             echo "--- Running docker-compose down ---"
             docker-compose down || true
@@ -88,10 +90,10 @@ jobs:
             echo "--- Running docker-compose up -d ---"
             docker-compose up -d
             echo "--- Docker Compose commands executed ---"
-
+  
             # 6. Docker Compose 실행 후 상태 확인
             echo "--- Checking Docker status after Compose ---"
             docker ps -a # 모든 Docker 컨테이너 상태 다시 확인
             docker-compose ps # Docker Compose 서비스 상태 확인
-
+  
             echo "--- Deployment script finished on EC2 ---"

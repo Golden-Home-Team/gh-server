@@ -1,8 +1,8 @@
 ifndef::snippets[]
-:user-signup-snippets: ../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
-:user-verify-snippets: ../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify
-:user-login-snippets: ../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
-
+:user-signup-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
+:user-verify-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify
+:user-login-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
+:user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -16,6 +16,16 @@ endif::[]
 [[User-API]]
 == User API
 
+== 중복된 유저 확인
+=== HTTP Request
+include::{user-check-duplicated}/http-request.adoc[]
+include::{user-check-duplicated}/query-parameters.adoc[]
+
+
+=== HTTP Response
+include::{user-check-duplicated}/http-response.adoc[]
+include::{user-check-duplicated}/response-fields.adoc[]
+
 == 회원가입
 === HTTP Request
 include::{user-signup-snippets}/http-request.adoc[]
@@ -26,14 +36,6 @@ include::{user-signup-snippets}/http-response.adoc[]
 include::{user-signup-snippets}/response-fields.adoc[]
 
 
-== 회원가입 이메일 인증
-=== HTTP Request
-include::{user-verify-snippets}/http-request.adoc[]
-include::{user-verify-snippets}/query-parameters.adoc[]
-
-=== HTTP Response
-include::{user-verify-snippets}/http-response.adoc[]
-include::{user-verify-snippets}/response-fields.adoc[]
 
 == 로그인
 === HTTP Request

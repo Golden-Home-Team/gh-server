@@ -2,8 +2,7 @@ package kr.co.goldenhome.signup.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 
-import kr.co.goldenhome.entity.User
-import kr.co.goldenhome.enums.UserRole
+
 import kr.co.goldenhome.signup.dto.SignupRequest
 import kr.co.goldenhome.signup.service.SignupService
 import org.spockframework.spring.SpringBean
@@ -23,6 +22,8 @@ import spock.lang.Specification
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import static org.springframework.restdocs.payload.PayloadDocumentation.*
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -38,6 +39,29 @@ class SignupControllerDocsSpec extends Specification {
 
     @SpringBean
     SignupService signupService = Mock()
+
+    def "기존 사용자 존재여부 확인"() {
+        given:
+        def request = "gucoding1234"
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/users/signup/loginId/duplicated")
+                .queryParam("loginId", request))
+                .andDo(document("user-check-duplicated",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        queryParameters(
+                                parameterWithName("loginId").description("로그인 아이디"),
+                        ),
+                        responseFields(fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부"))))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value("true")
+        }
+    }
 
     def "회원가입 성공"() {
         given:

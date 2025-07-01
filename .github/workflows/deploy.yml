@@ -52,16 +52,27 @@ jobs:
       - name: ECR 에 Docker 이미지 Push
         run: docker push ${{ steps.login-ecr.outputs.registry }}/goldenhome-server:latest
 
-      - name: SSH 로 EC2에 접속하기
+      - name: SSH 로 EC2에 접속 및 Docker Compose 배포 # 수정
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
+
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+
           script: |
-            docker stop gh-server || true
-            docker rm gh-server || true
-            docker image prune -a -f
-            docker pull ${{ steps.login-ecr.outputs.registry }}/goldenhome-server:latest
-            docker run -d --name gh-server -p 8080:8080 ${{ steps.login-ecr.outputs.registry }}/goldenhome-server:latest
+            mkdir -p /home/ubuntu/your-app
+            cd /home/ubuntu/your-app
+            
+            cat <<EOF > docker-compose.yml
+            ${{ secrets.DOCKER_COMPOSE_YML }}
+            EOF
+            
+            sed -i "s|\${ECR_REGISTRY}|$ECR_REGISTRY|g" docker-compose.yml
+            
+            docker-compose down || true 
+            docker-compose pull
+            docker-compose up -d

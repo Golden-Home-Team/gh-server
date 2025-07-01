@@ -15,10 +15,10 @@ public class UserAuthenticationManager {
     private final UserRepository userRepository;
     private final PasswordProcessor passwordProcessor;
 
-    public User authenticate(String email, String password) {
-        User user = userRepository.findByEmail(email).orElse(null);
+    public User authenticate(String loginId, String password) {
+        User user = userRepository.findByLoginId(loginId).orElse(null);
         if (user == null || !passwordProcessor.matches(password, user.getPassword())) {
-            throw new CustomException(ErrorCode.AUTHENTICATION_FAILED, "AuthenticationManager.authenticate");
+            throw new CustomException(ErrorCode.LOGIN_FAILED, "AuthenticationManager.authenticate");
         }
         return user;
     }

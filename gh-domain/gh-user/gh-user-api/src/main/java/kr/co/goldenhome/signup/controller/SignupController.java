@@ -1,11 +1,8 @@
 package kr.co.goldenhome.signup.controller;
 
 import dto.CommonResponse;
-import jakarta.validation.Valid;
-import kr.co.goldenhome.entity.EmailVerification;
-import kr.co.goldenhome.entity.User;
+
 import kr.co.goldenhome.signup.dto.SignupRequest;
-import kr.co.goldenhome.signup.dto.SignupResponse;
 import kr.co.goldenhome.signup.service.SignupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +14,15 @@ public class SignupController {
 
     private final SignupService signUpService;
 
-    @PostMapping
-    public SignupResponse signup(@Valid @RequestBody SignupRequest signupRequest) {
-        signupRequest.validate();
-        User user = signUpService.signup(signupRequest.toSignup());
-        EmailVerification emailVerification = signUpService.sendEmailForVerification(user);
-        return new SignupResponse(emailVerification.getVerificationCode());
+    @GetMapping("/loginId/duplicated")
+    public CommonResponse userExists(@RequestParam("loginId") String loginId) {
+        signUpService.isLoginIdDuplicated(loginId);
+        return CommonResponse.ok();
     }
 
-    @GetMapping("/verify")
-    public CommonResponse verify(@RequestParam("code") String code) {
-        signUpService.verify(code);
+    @PostMapping
+    public CommonResponse signup(@RequestBody SignupRequest request) {
+        signUpService.signup(request);
         return CommonResponse.ok();
     }
 

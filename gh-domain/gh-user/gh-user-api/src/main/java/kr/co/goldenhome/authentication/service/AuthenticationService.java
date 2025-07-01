@@ -16,7 +16,7 @@ public class AuthenticationService {
     private final AuthenticationTokenManager authenticationTokenManager;
 
     public LoginResponse login(LoginRequest loginRequest) {
-        User user = userAuthenticationManager.authenticate(loginRequest.email(), loginRequest.password());
+        User user = userAuthenticationManager.authenticate(loginRequest.loginId(), loginRequest.password());
         return authenticationTokenManager.create(user.getId());
     }
 }

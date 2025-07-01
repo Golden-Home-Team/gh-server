@@ -48,7 +48,7 @@ class AuthenticationControllerDocsSpec extends Specification {
     def "로그인 성공"() {
 
         given:
-        def request = new LoginRequest("gucoding@naver.com", "1234")
+        def request = new LoginRequest("gucoding", "1234")
         def expectedLoginResponse = new LoginResponse("accessToken", "refreshToken")
 
         1 * authenticationService.login(_ as LoginRequest) >> expectedLoginResponse
@@ -61,8 +61,8 @@ class AuthenticationControllerDocsSpec extends Specification {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING)
-                                        .description("이메일"),
+                                fieldWithPath("loginId").type(JsonFieldType.STRING)
+                                        .description("아이디"),
                                 fieldWithPath("password").type(JsonFieldType.STRING)
                                         .description("비밀번호")
                         ),

@@ -32,7 +32,7 @@ class AuthenticationControllerSpec extends Specification {
     def "로그인 성공"() {
 
         given:
-        def request = new LoginRequest("gucoding@naver.com", "1234")
+        def request = new LoginRequest("gucoding1234", "1234")
         def expectedLoginResponse = new LoginResponse("accessToken", "refreshToken")
 
         1 * authenticationService.login(_ as LoginRequest) >> expectedLoginResponse

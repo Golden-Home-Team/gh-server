@@ -33,6 +33,11 @@ public class AuthenticationTokenManager {
         return new LoginResponse(accessToken, refreshToken);
     }
 
+    public Long getUserId(String accessToken) {
+        Claims claims = getClaims(accessToken);
+        return claims.get("userId", Long.class);
+    }
+
     private String generateAccessToken(Long userId) {
         Claims claims = Jwts.claims().
                 subject("accessToken")
@@ -63,5 +68,13 @@ public class AuthenticationTokenManager {
                 .compact();
         refreshTokenRepository.save(userId, refreshToken, Duration.ofMillis(REFRESH_TOKEN_VALID_TIME));
         return refreshToken;
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

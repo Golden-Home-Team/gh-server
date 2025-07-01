@@ -1,14 +1,13 @@
 package kr.co.goldenhome.authentication.controller;
 
+import auth.UserPrincipal;
+import dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
 import kr.co.goldenhome.authentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +20,6 @@ public class AuthenticationController {
     public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         return authenticationService.login(loginRequest);
     }
+
 
 }

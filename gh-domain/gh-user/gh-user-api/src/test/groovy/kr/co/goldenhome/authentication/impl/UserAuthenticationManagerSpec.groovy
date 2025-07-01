@@ -18,19 +18,19 @@ class UserAuthenticationManagerSpec extends Specification {
         userAuthenticationManager = new UserAuthenticationManager(userRepository, passwordProcessor)
     }
 
-    def "authenticate - UserRepository.findByEmail, PasswordProcessor.matches 를 호출한다" () {
+    def "authenticate - UserRepository.findByLoginId, PasswordProcessor.matches 를 호출한다" () {
         given:
-        def givenEmail = "gucoding@naver.com"
+        def givenLoginId = "gucoding1234"
         def givenPassword = "1234"
         def expectedUser = User.builder().password("1234").build()
 
         when:
-        userAuthenticationManager.authenticate(givenEmail, givenPassword)
+        userAuthenticationManager.authenticate(givenLoginId, givenPassword)
 
         then:
-        1 * userRepository.findByEmail(givenEmail) >> {
-            String email ->
-                email == givenEmail
+        1 * userRepository.findByLoginId(givenLoginId) >> {
+            String loginId ->
+                loginId == givenLoginId
                 Optional.of(expectedUser)
         }
 
@@ -46,8 +46,8 @@ class UserAuthenticationManagerSpec extends Specification {
     @Unroll
     def "authenticate - #description"() {
         given:
-        1 * userRepository.findByEmail(*_) >> findByEmailResult
-        (findByEmailResult.isPresent() ? 1 : 0) * passwordProcessor.matches(*_) >> matchesResult
+        1 * userRepository.findByLoginId(*_) >> findByLoginIdResult
+        (findByLoginIdResult.isPresent() ? 1 : 0) * passwordProcessor.matches(*_) >> matchesResult
 
         when:
         userAuthenticationManager.authenticate("gucoding@navercom", "1233")
@@ -57,9 +57,9 @@ class UserAuthenticationManagerSpec extends Specification {
         exception.getErrorCode() == expectedErrorCode
 
         where:
-        description       | findByEmailResult            | matchesResult | expectedErrorCode
-        "존재하지 않는 사용자" | Optional.empty()             | false         | ErrorCode.AUTHENTICATION_FAILED
-        "비밀번호 불일치"     |  Optional.of(User.builder().build()) | false         | ErrorCode.AUTHENTICATION_FAILED
+        description       | findByLoginIdResult            | matchesResult | expectedErrorCode
+        "존재하지 않는 사용자" | Optional.empty()             | false         | ErrorCode.LOGIN_FAILED
+        "비밀번호 불일치"     |  Optional.of(User.builder().build()) | false         | ErrorCode.LOGIN_FAILED
     }
 
 

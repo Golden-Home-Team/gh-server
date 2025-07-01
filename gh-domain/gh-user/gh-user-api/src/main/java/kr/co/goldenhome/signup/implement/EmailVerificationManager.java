@@ -26,7 +26,7 @@ public class EmailVerificationManager {
     }
 
     public Long verify(String code) {
-        EmailVerification emailVerification = emailVerificationRepository.findByVerificationCode(code).orElseThrow(() -> new CustomException(ErrorCode.NO_RESOURCE, "EmailVerificationManager.verify"));
+        EmailVerification emailVerification = emailVerificationRepository.findByVerificationCode(code).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "EmailVerificationManager.verify"));
         emailVerification.verify();
         return emailVerification.getUserId();
     }

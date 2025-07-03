@@ -1,5 +1,7 @@
 package kr.co.goldenhome.authentication.impl;
 
+import exception.CustomException;
+import exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -36,6 +38,14 @@ public class AuthenticationTokenManager {
     public Long getUserId(String accessToken) {
         Claims claims = getClaims(accessToken);
         return claims.get("userId", Long.class);
+    }
+
+    public LoginResponse refresh(String refreshToken) {
+        Claims claims = validRefreshToken(refreshToken);
+        Long userId = claims.get("userId", Long.class);
+        String accessToken = generateAccessToken(userId);
+        if (isNearExpiration(claims.getExpiration())) return new LoginResponse(accessToken, generateRefreshToken(userId));
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     private String generateAccessToken(Long userId) {
@@ -76,5 +86,21 @@ public class AuthenticationTokenManager {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    private Claims validRefreshToken(String refreshToken) {
+        Claims claims = getClaims(refreshToken);
+        if (!claims.getSubject().equals("refreshToken")) throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.validRefreshToken");
+        Long userId = claims.get("userId", Long.class);
+        String storedToken = refreshTokenRepository.getByUserId(userId);
+        if (!refreshToken.equals(storedToken)) throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.validRefreshToken");
+        return claims;
+    }
+
+    private boolean isNearExpiration(Date expiration) {
+        Date now = new Date();
+        long differenceInMillis = expiration.getTime() - now.getTime();
+        long differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
+        return differenceInDays <= 7;
     }
 }

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
+import kr.co.goldenhome.authentication.dto.RefreshRequest;
 import kr.co.goldenhome.authentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        return authenticationService.login(loginRequest);
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+        return authenticationService.login(request);
     }
 
     @GetMapping("/social/login/initiate")
@@ -36,6 +37,11 @@ public class AuthenticationController {
                                              @RequestParam(value = "error_description", required = false) String errorDescription) {
         if (errorCode != null) throw new ExternalApiException(errorCode, errorDescription);
         return authenticationService.getUserInfo(SocialPlatform.valueOf(providerType), authorizationCode);
+    }
+
+    @PostMapping("/refresh")
+    public LoginResponse tokenRefresh(@Valid @RequestBody RefreshRequest request) {
+        return authenticationService.refresh(request.refreshToken());
     }
 
 }

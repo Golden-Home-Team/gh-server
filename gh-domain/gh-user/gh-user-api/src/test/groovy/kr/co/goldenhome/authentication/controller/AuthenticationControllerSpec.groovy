@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.authentication.dto.LoginRequest
 import kr.co.goldenhome.authentication.dto.LoginResponse
+import kr.co.goldenhome.authentication.dto.RefreshRequest
 import kr.co.goldenhome.authentication.service.AuthenticationService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -105,6 +106,25 @@ class AuthenticationControllerSpec extends Specification {
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isBadRequest()
+        }
+    }
+
+    def "액세스 토큰 갱신 성공"() {
+        given:
+        def request = new RefreshRequest("refreshToken")
+        def expectedLoginResponse = new LoginResponse("accessToken", "newRefreshToken")
+        1 * authenticationService.refresh(*_) >> expectedLoginResponse
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.accessToken').value(expectedLoginResponse.accessToken())
+            MockMvcResultMatchers.jsonPath('$.refreshToken').value(expectedLoginResponse.refreshToken())
         }
     }
 }

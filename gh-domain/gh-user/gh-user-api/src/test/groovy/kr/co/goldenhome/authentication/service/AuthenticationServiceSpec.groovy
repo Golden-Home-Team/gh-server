@@ -64,7 +64,7 @@ class AuthenticationServiceSpec extends Specification {
         }
     }
 
-    def "getUserInfo - UserAuthenticationManager,  AuthenticationTokenManager 를 호출한다"() {
+    def "getUserInfo - UserAuthenticationManager, AuthenticationTokenManager 를 호출한다"() {
         given:
         def givenSocialPlatform = SocialPlatform.KAKAO
         def givenAuthorizationCode = "12qw34"
@@ -82,5 +82,21 @@ class AuthenticationServiceSpec extends Specification {
 
         and:
         1 * authenticationTokenManager.create(*_)
+    }
+
+    def "refresh - AuthenticationTokenManager 를 호출한다"() {
+        given:
+        def givenRefreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoVG9rZW4iLCJ1c2VySWQiOjEsImlhdCI6MTc1MTQwMDIxNCwiZXhwIjoxNzUzOTkyMjE0fQ.Lwvnff-TCdCY4OsQYJwPmB2daADbvJu9uexQiojj0RE"
+        def expectedResponse = new LoginResponse("accessToken", "refreshToken")
+
+        when:
+        authenticationService.refresh(givenRefreshToken)
+
+        then:
+        1 * authenticationTokenManager.refresh(*_) >> {
+            String refreshToken ->
+                refreshToken == givenRefreshToken
+                expectedResponse
+        }
     }
 }

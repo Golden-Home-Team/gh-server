@@ -45,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         Long userId = authenticationTokenManager.getUserId(accessToken);
-        System.out.println("userId = " + userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
         UserPrincipal userPrincipal = new UserPrincipal(userId);
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(

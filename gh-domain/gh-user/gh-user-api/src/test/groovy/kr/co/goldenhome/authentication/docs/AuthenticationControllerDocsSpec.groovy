@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.authentication.dto.LoginRequest
 import kr.co.goldenhome.authentication.dto.LoginResponse
+import kr.co.goldenhome.authentication.dto.RefreshRequest
 import kr.co.goldenhome.authentication.service.AuthenticationService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -140,6 +141,40 @@ class AuthenticationControllerDocsSpec extends Specification {
                                 fieldWithPath("refreshToken").type(JsonFieldType.STRING)
                                         .description("리프레시 토큰")
                         )))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.accessToken').value(expectedLoginResponse.accessToken())
+            MockMvcResultMatchers.jsonPath('$.refreshToken').value(expectedLoginResponse.refreshToken())
+        }
+    }
+
+    def "액세스 토큰 갱신 성공"() {
+        given:
+        def request = new RefreshRequest("refreshToken")
+        def expectedLoginResponse = new LoginResponse("accessToken", "newRefreshToken")
+        1 * authenticationService.refresh(*_) >> expectedLoginResponse
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(document("token-refresh",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING)
+                                        .description("리프레시 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken").type(JsonFieldType.STRING)
+                                        .description("엑세스 토큰"),
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING)
+                                        .description("리프레시 토큰 : 유효기간이 1주일 이하면 새로운 토큰이 전달됩니다.")
+                        )
+                )
+                )
 
         then:
         response.andExpect {

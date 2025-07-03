@@ -1,5 +1,6 @@
 package kr.co.goldenhome.authentication.service;
 
+import jakarta.validation.constraints.NotBlank;
 import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
@@ -29,5 +30,9 @@ public class AuthenticationService {
     public LoginResponse getUserInfo(SocialPlatform socialPlatform, String authorizationCode) {
         User user = userAuthenticationManager.getUserInfo(socialPlatform, authorizationCode);
         return authenticationTokenManager.create(user.getId());
+    }
+
+    public LoginResponse refresh(String refreshToken) {
+        return authenticationTokenManager.refresh(refreshToken);
     }
 }

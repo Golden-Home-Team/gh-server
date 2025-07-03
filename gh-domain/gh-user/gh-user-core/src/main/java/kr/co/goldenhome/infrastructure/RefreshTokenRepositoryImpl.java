@@ -15,11 +15,11 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     @Override
     public void save(Long key, String token, Duration expirationDuration) {
-        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX+ key, token, expirationDuration);
+        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX + key, token, expirationDuration);
     }
 
     @Override
-    public String getByUserId(String userId) {
-        return "";
+    public String getByUserId(Long userId) {
+        return redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + userId);
     }
 }

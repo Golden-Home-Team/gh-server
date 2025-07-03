@@ -1,8 +1,9 @@
 ifndef::snippets[]
 :user-signup-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
-:user-verify-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-verify
 :user-login-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
 :user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
+:social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
+:social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -36,7 +37,6 @@ include::{user-signup-snippets}/http-response.adoc[]
 include::{user-signup-snippets}/response-fields.adoc[]
 
 
-
 == 로그인
 === HTTP Request
 include::{user-login-snippets}/http-request.adoc[]
@@ -45,3 +45,20 @@ include::{user-login-snippets}/request-fields.adoc[]
 === HTTP Response
 include::{user-login-snippets}/http-response.adoc[]
 include::{user-login-snippets}/response-fields.adoc[]
+
+== 소셜 로그인
+=== HTTP Request
+include::{social-login}/http-request.adoc[]
+include::{social-login}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{social-login}/http-response.adoc[]
+
+== 소셜 로그인 콜백
+=== HTTP Request
+include::{social-login-callback}/http-request.adoc[]
+include::{social-login-callback}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{social-login-callback}/http-response.adoc[]
+include::{social-login-callback}/response-fields.adoc[]

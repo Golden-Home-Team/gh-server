@@ -61,6 +61,20 @@ public class User {
                 .phoneNumber(phoneNumber)
                 .userRole(userRole)
                 .userStatus(UserStatus.ACTIVE)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static User socialLogin(ProviderType providerType, String providerId, String username) {
+        return User.builder()
+                .providerType(providerType)
+                .providerId(providerId)
+                .username(username)
+                .userStatus(UserStatus.ACTIVE)
+                .userRole(UserRole.USER)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

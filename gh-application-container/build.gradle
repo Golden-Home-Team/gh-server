@@ -1,15 +1,36 @@
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
+
 plugins {
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
+//bootJar {
+//    enabled =true
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // 중복 항목을 무시, 없으면 jar파일 실행이 안됨
+//    dependsOn tasks.named('asciidoctor') // asciidoctor 작업 포함
+//    from(tasks.named('asciidoctor').get().outputDir) {
+//        into 'static/docs'
+//    }
+//}
+
 bootJar {
-    enabled =true
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // 중복 항목을 무시, 없으면 jar파일 실행이 안됨
-    dependsOn tasks.named('asciidoctor') // asciidoctor 작업 포함
-    from(tasks.named('asciidoctor').get().outputDir) {
-        into 'static/docs'
+    enabled = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // 루트 프로젝트의 asciidoctor 태스크를 참조합니다.
+    // project(':')는 현재 서브 프로젝트에서 루트 프로젝트를 나타냅니다.
+    def rootAsciidoctorTask = project(':').tasks.named('asciidoctor', AsciidoctorTask)
+
+    // bootJar가 루트 프로젝트의 asciidoctor 태스크가 완료된 후에 실행되도록 의존성을 추가합니다.
+    dependsOn rootAsciidoctorTask
+
+    // 루트 프로젝트의 asciidoctor 출력 디렉토리에서 파일을 복사합니다.
+    from(rootAsciidoctorTask.get().outputDir) {
+        into 'static/docs' // Spring Boot 애플리케이션의 static/docs 경로로 복사
     }
+
+
 }
 
 dependencies {
@@ -20,5 +41,6 @@ dependencies {
     implementation(project(":gh-domain:gh-user:gh-user-core"))
     implementation(project(":gh-domain:gh-user:gh-user-api"))
     implementation(project(":gh-common"))
+    implementation(project(":gh-external-social"))
 }
 

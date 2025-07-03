@@ -38,7 +38,4 @@ public class AuthenticationController {
         return authenticationService.getUserInfo(SocialPlatform.valueOf(providerType), authorizationCode);
     }
 
-
-
-
 }

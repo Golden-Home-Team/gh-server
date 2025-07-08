@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
 import kr.co.goldenhome.infrastructure.RefreshTokenRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class AuthenticationTokenManager {
 
@@ -81,11 +83,17 @@ public class AuthenticationTokenManager {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.getClaims");
+        }
+
     }
 
     private Claims validRefreshToken(String refreshToken) {

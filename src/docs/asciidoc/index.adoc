@@ -4,6 +4,7 @@ ifndef::snippets[]
 :user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
 :social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
 :social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
+:token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -62,3 +63,12 @@ include::{social-login-callback}/query-parameters.adoc[]
 === HTTP Response
 include::{social-login-callback}/http-response.adoc[]
 include::{social-login-callback}/response-fields.adoc[]
+
+== 토큰 갱신
+=== HTTP Request
+include::{token-refresh}/http-request.adoc[]
+include::{token-refresh}/request-fields.adoc[]
+
+=== HTTP Response
+include::{token-refresh}/http-response.adoc[]
+include::{token-refresh}/response-fields.adoc[]

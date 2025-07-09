@@ -1,13 +1,18 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Table(name = "retirement_homes")
+@Table(name = "siver_towns")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RetirementHome { // 양로원
+public class SiverTown {
 
     @Id
     private Long id;
@@ -27,7 +32,7 @@ public class RetirementHome { // 양로원
     private String operatingBody;
 
     @Builder
-    private RetirementHome(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
+    private SiverTown(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
         this.id = id;
         this.districtName = districtName;
         this.name = name;
@@ -45,9 +50,8 @@ public class RetirementHome { // 양로원
         this.operatingBody = operatingBody;
     }
 
-    public static RetirementHome from(Facility facility) {
-
-        return RetirementHome.builder()
+    public static SiverTown from(Facility facility) {
+        return SiverTown.builder()
                 .id(facility.getId())
                 .districtName(facility.getDistrictName())
                 .name(facility.getName())
@@ -65,6 +69,4 @@ public class RetirementHome { // 양로원
 //                .operatingBody(facility.getOperatingBody())
                 .build();
     }
-
-
 }

@@ -1,4 +1,4 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.dto;
 
 
 import jakarta.persistence.*;

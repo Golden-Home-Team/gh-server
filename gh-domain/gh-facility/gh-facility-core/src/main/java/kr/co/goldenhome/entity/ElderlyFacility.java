@@ -30,7 +30,7 @@ public class ElderlyFacility {
     private String phoneNumber;
     private String establishmentDate;
     private String operatingBody;
-    private String facilityType;
+    private String facilityType; // 양로원, 요양원, 단기보호, 방문간호, 방문요양, 방문목욕, 주야간보호
 
     @Builder
     private ElderlyFacility(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody, String facilityType) {

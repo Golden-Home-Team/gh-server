@@ -27,7 +27,7 @@ class ElderlyFacilityControllerTest extends Specification {
     @SpringBean
     ElderlyFacilityService elderlyFacilityService = Mock()
 
-    def "시설 상세조회 성공"() {
+    def "시설 상세조회"() {
         given:
         def givenFacilityId = 1L
         def expectedResponse = new ElderlyFacilityResponse(givenFacilityId, "광진구", "더클래식500", "김수현", 760, 545, 216, 329, 71, 32, 39, "광진구 능동로 90", "02-2218-5692", "양로원")
@@ -54,6 +54,44 @@ class ElderlyFacilityControllerTest extends Specification {
             MockMvcResultMatchers.jsonPath('$.phoneNumber').value(expectedResponse.phoneNumber())
             MockMvcResultMatchers.jsonPath('$.facilityType').value(expectedResponse.facilityType())
         }
+
+    }
+
+    def "시설 목록조회"() {
+        given:
+        def givenFacilityType = "양로원"
+        def givenLastId = 1L
+        def givenPageSize = 20L
+        def expectedResponse = List.of(new ElderlyFacilityResponse(2L, "광진구", "더클래식500", "김수현", 760, 545, 216, 329, 71, 32, 39, "광진구 능동로 90", "02-2218-5692", "양로원"))
+        1 * elderlyFacilityService.readAll(givenFacilityType, givenLastId, givenPageSize) >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/facility/v1/readAll")
+                .param("facilityType", givenFacilityType)
+                .param("lastId", givenLastId.toString())
+                .param("pageSize", givenPageSize.toString())
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$[0].id').value(expectedResponse.get(0).id())
+            MockMvcResultMatchers.jsonPath('$[0].districtName').value(expectedResponse.get(0).districtName())
+            MockMvcResultMatchers.jsonPath('$[0].name').value(expectedResponse.get(0).districtName())
+            MockMvcResultMatchers.jsonPath('$[0].director').value(expectedResponse.get(0).director())
+            MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
+            MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
+            MockMvcResultMatchers.jsonPath('$[0].currentMale').value(expectedResponse.get(0).currentMale())
+            MockMvcResultMatchers.jsonPath('$[0].currentFemale').value(expectedResponse.get(0).currentFemale())
+            MockMvcResultMatchers.jsonPath('$[0].staffTotal').value(expectedResponse.get(0).staffTotal())
+            MockMvcResultMatchers.jsonPath('$[0].staffMale').value(expectedResponse.get(0).staffMale())
+            MockMvcResultMatchers.jsonPath('$[0].staffFemale').value(expectedResponse.get(0).staffFemale())
+            MockMvcResultMatchers.jsonPath('$[0].address').value(expectedResponse.get(0).address())
+            MockMvcResultMatchers.jsonPath('$[0].phoneNumber').value(expectedResponse.get(0).phoneNumber())
+            MockMvcResultMatchers.jsonPath('$[0].facilityType').value(expectedResponse.get(0).facilityType())
+        }
+
 
     }
 }

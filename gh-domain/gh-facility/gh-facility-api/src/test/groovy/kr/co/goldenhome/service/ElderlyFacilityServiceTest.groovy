@@ -29,4 +29,23 @@ class ElderlyFacilityServiceTest extends Specification {
                 Optional.of(expectedElderlyFacility)
         }
     }
+
+    def "readAll - ElderlyFacilityRepository 를 호출한다"() {
+        given:
+        def givenFacilityType = "양로원"
+        def givenLastId = 2L
+        def givenPageSize = 20L
+
+        when:
+        elderlyFacilityService.readAll(givenFacilityType, givenLastId, givenPageSize)
+
+        then:
+        1 * elderlyFacilityRepository.findAllInfiniteScroll(*_) >> {
+            String facilityType, Long lastId, Long pageSize ->
+                facilityType == givenFacilityType
+                lastId == givenLastId
+                pageSize == givenPageSize
+                List.of(ElderlyFacility.builder().build())
+        }
+    }
 }

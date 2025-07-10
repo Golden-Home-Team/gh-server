@@ -21,6 +21,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*
 import static org.springframework.restdocs.payload.PayloadDocumentation.*
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -53,7 +54,7 @@ class ElderlyFacilityControllerDocsSpec extends Specification {
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                    .description("시설 아이디"),
+                                        .description("시설 아이디"),
                                 fieldWithPath("districtName").type(JsonFieldType.STRING)
                                         .description("시/군/구"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
@@ -82,7 +83,7 @@ class ElderlyFacilityControllerDocsSpec extends Specification {
                                         .description("시설 종류")
 
                         )
-                    )
+                )
                 )
 
         then:
@@ -106,4 +107,81 @@ class ElderlyFacilityControllerDocsSpec extends Specification {
 
     }
 
+    def "시설 목록조회"() {
+        given:
+        def givenFacilityType = "양로원"
+        def givenLastId = 1L
+        def givenPageSize = 20L
+        def expectedResponse = List.of(new ElderlyFacilityResponse(2L, "광진구", "더클래식500", "김수현", 760, 545, 216, 329, 71, 32, 39, "광진구 능동로 90", "02-2218-5692", "양로원"))
+        1 * elderlyFacilityService.readAll(givenFacilityType, givenLastId, givenPageSize) >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/facility/v1/readAll")
+                        .param("facilityType", givenFacilityType)
+                        .param("lastId", givenLastId.toString())
+                        .param("pageSize", givenPageSize.toString())
+        ).andDo(document("facility-readAll",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                queryParameters(
+                        parameterWithName("facilityType").description("시설종류 e.g. 양로원, 요양원, 단기보호, 방문간호, 방문요양, 방문목욕, 주야간보호"),
+                        parameterWithName("lastId").description("이전 요청 시 마지막으로 조회한 시설 아이디"),
+                        parameterWithName("pageSize").description("페이지 크기")
+                ),
+                responseFields(
+                        fieldWithPath("[]").type(JsonFieldType.ARRAY)
+                                .description("시설 목록"),
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER)
+                                .description("시설 아이디"),
+                        fieldWithPath("[].districtName").type(JsonFieldType.STRING)
+                                .description("시/군/구"),
+                        fieldWithPath("[].name").type(JsonFieldType.STRING)
+                                .description("시설명"),
+                        fieldWithPath("[].director").type(JsonFieldType.STRING)
+                                .description("관리자명"),
+                        fieldWithPath("[].capacity").type(JsonFieldType.NUMBER)
+                                .description("정원"),
+                        fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
+                                .description("현원 - 계"),
+                        fieldWithPath("[].currentMale").type(JsonFieldType.NUMBER)
+                                .description("현원 - 남"),
+                        fieldWithPath("[].currentFemale").type(JsonFieldType.NUMBER)
+                                .description("현원 - 여"),
+                        fieldWithPath("[].staffTotal").type(JsonFieldType.NUMBER)
+                                .description("종사자수 - 계"),
+                        fieldWithPath("[].staffMale").type(JsonFieldType.NUMBER)
+                                .description("종사자수 - 남"),
+                        fieldWithPath("[].staffFemale").type(JsonFieldType.NUMBER)
+                                .description("종사자수 - 여"),
+                        fieldWithPath("[].address").type(JsonFieldType.STRING)
+                                .description("소재지"),
+                        fieldWithPath("[].phoneNumber").type(JsonFieldType.STRING)
+                                .description("전화번호"),
+                        fieldWithPath("[].facilityType").type(JsonFieldType.STRING)
+                                .description("시설 종류")
+
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$[0].id').value(expectedResponse.get(0).id())
+            MockMvcResultMatchers.jsonPath('$[0].districtName').value(expectedResponse.get(0).districtName())
+            MockMvcResultMatchers.jsonPath('$[0].name').value(expectedResponse.get(0).districtName())
+            MockMvcResultMatchers.jsonPath('$[0].director').value(expectedResponse.get(0).director())
+            MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
+            MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
+            MockMvcResultMatchers.jsonPath('$[0].currentMale').value(expectedResponse.get(0).currentMale())
+            MockMvcResultMatchers.jsonPath('$[0].currentFemale').value(expectedResponse.get(0).currentFemale())
+            MockMvcResultMatchers.jsonPath('$[0].staffTotal').value(expectedResponse.get(0).staffTotal())
+            MockMvcResultMatchers.jsonPath('$[0].staffMale').value(expectedResponse.get(0).staffMale())
+            MockMvcResultMatchers.jsonPath('$[0].staffFemale').value(expectedResponse.get(0).staffFemale())
+            MockMvcResultMatchers.jsonPath('$[0].address').value(expectedResponse.get(0).address())
+            MockMvcResultMatchers.jsonPath('$[0].phoneNumber').value(expectedResponse.get(0).phoneNumber())
+            MockMvcResultMatchers.jsonPath('$[0].facilityType').value(expectedResponse.get(0).facilityType())
+        }
+
+    }
 }

@@ -5,7 +5,8 @@ ifndef::snippets[]
 :social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
 :social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
-:facility: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
+:facility-read: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
+:facility-readAll: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-readAll
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -79,9 +80,18 @@ include::{token-refresh}/response-fields.adoc[]
 
 == 시설 상세조회
 === HTTP Request
-include::{facility}/http-request.adoc[]
-include::{facility}/path-parameters.adoc[]
+include::{facility-read}/http-request.adoc[]
+include::{facility-read}/path-parameters.adoc[]
 
 === HTTP Response
-include::{facility}/http-response.adoc[]
-include::{facility}/response-fields.adoc[]
+include::{facility-read}/http-response.adoc[]
+include::{facility-read}/response-fields.adoc[]
+
+== 시설 목록조회
+=== HTTP Request
+include::{facility-readAll}/http-request.adoc[]
+include::{facility-readAll}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{facility-readAll}/http-response.adoc[]
+include::{facility-readAll}/response-fields.adoc[]

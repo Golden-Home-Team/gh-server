@@ -5,6 +5,7 @@ import kr.co.goldenhome.entity.ElderlyFacility
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import spock.lang.Specification
 
 @ActiveProfiles("test")
@@ -17,6 +18,7 @@ class ElderlyFacilityRepositoryTest extends Specification {
     @Autowired
     EntityManager entityManager
 
+    @Sql(scripts = "classpath:sql/clear_facilities.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     def "FindAllInfiniteScroll without lastId"() {
         given:
         def givenFacilityType = "양로원"
@@ -34,6 +36,7 @@ class ElderlyFacilityRepositoryTest extends Specification {
         response.size() == 10
     }
 
+    @Sql(scripts = "classpath:sql/clear_facilities.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     def "FindAllInfiniteScroll with lastId"() {
         given:
         def givenFacilityType = "양로원"

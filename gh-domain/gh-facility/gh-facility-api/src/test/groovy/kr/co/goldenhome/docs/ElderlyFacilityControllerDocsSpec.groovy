@@ -1,0 +1,109 @@
+package kr.co.goldenhome.docs
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.dto.ElderlyFacilityResponse
+import kr.co.goldenhome.service.ElderlyFacilityService
+
+import org.spockframework.spring.SpringBean
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.restdocs.payload.JsonFieldType
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import spock.lang.Specification
+
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*
+import static org.springframework.restdocs.payload.PayloadDocumentation.*
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters
+
+@SpringBootTest
+@ActiveProfiles("test")
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs
+class ElderlyFacilityControllerDocsSpec extends Specification {
+
+    @Autowired
+    MockMvc mockMvc
+
+    @Autowired
+    ObjectMapper objectMapper
+
+    @SpringBean
+    ElderlyFacilityService elderlyFacilityService = Mock()
+
+    def "시설 상세조회 성공"() {
+        given:
+        def givenFacilityId = 1L
+        def expectedResponse = new ElderlyFacilityResponse(givenFacilityId, "광진구", "더클래식500", "김수현", 760, 545, 216, 329, 71, 32, 39, "광진구 능동로 90", "02-2218-5692", "양로원")
+        1 * elderlyFacilityService.read(givenFacilityId) >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/facility/{facilityId}", givenFacilityId))
+                .andDo(document("facility-read",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("facilityId").description("시설 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                    .description("시설 아이디"),
+                                fieldWithPath("districtName").type(JsonFieldType.STRING)
+                                        .description("시/군/구"),
+                                fieldWithPath("name").type(JsonFieldType.STRING)
+                                        .description("시설명"),
+                                fieldWithPath("director").type(JsonFieldType.STRING)
+                                        .description("관리자명"),
+                                fieldWithPath("capacity").type(JsonFieldType.NUMBER)
+                                        .description("정원"),
+                                fieldWithPath("currentTotal").type(JsonFieldType.NUMBER)
+                                        .description("현원 - 계"),
+                                fieldWithPath("currentMale").type(JsonFieldType.NUMBER)
+                                        .description("현원 - 남"),
+                                fieldWithPath("currentFemale").type(JsonFieldType.NUMBER)
+                                        .description("현원 - 여"),
+                                fieldWithPath("staffTotal").type(JsonFieldType.NUMBER)
+                                        .description("종사자수 - 계"),
+                                fieldWithPath("staffMale").type(JsonFieldType.NUMBER)
+                                        .description("종사자수 - 남"),
+                                fieldWithPath("staffFemale").type(JsonFieldType.NUMBER)
+                                        .description("종사자수 - 여"),
+                                fieldWithPath("address").type(JsonFieldType.STRING)
+                                        .description("소재지"),
+                                fieldWithPath("phoneNumber").type(JsonFieldType.STRING)
+                                        .description("전화번호"),
+                                fieldWithPath("facilityType").type(JsonFieldType.STRING)
+                                        .description("시설 종류")
+
+                        )
+                    )
+                )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.id').value(expectedResponse.id())
+            MockMvcResultMatchers.jsonPath('$.districtName').value(expectedResponse.districtName())
+            MockMvcResultMatchers.jsonPath('$.name').value(expectedResponse.name())
+            MockMvcResultMatchers.jsonPath('$.director').value(expectedResponse.director())
+            MockMvcResultMatchers.jsonPath('$.capacity').value(expectedResponse.capacity())
+            MockMvcResultMatchers.jsonPath('$.currentTotal').value(expectedResponse.currentTotal())
+            MockMvcResultMatchers.jsonPath('$.currentMale').value(expectedResponse.currentMale())
+            MockMvcResultMatchers.jsonPath('$.currentFemale').value(expectedResponse.currentFemale())
+            MockMvcResultMatchers.jsonPath('$.staffTotal').value(expectedResponse.staffTotal())
+            MockMvcResultMatchers.jsonPath('$.staffMale').value(expectedResponse.staffMale())
+            MockMvcResultMatchers.jsonPath('$.staffFemale').value(expectedResponse.staffFemale())
+            MockMvcResultMatchers.jsonPath('$.address').value(expectedResponse.address())
+            MockMvcResultMatchers.jsonPath('$.phoneNumber').value(expectedResponse.phoneNumber())
+            MockMvcResultMatchers.jsonPath('$.facilityType').value(expectedResponse.facilityType())
+        }
+
+    }
+
+}

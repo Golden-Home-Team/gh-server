@@ -1,6 +1,7 @@
-package kr.co.goldenhome;
+package kr.co.goldenhome.facility;
 
-import kr.co.goldenhome.entity.*;
+import kr.co.goldenhome.JobCompletionNotificationListener;
+import kr.co.goldenhome.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -31,7 +32,7 @@ import javax.sql.DataSource;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class FacilityJobConfig {
 
@@ -64,7 +65,7 @@ public class FacilityJobConfig {
     @Bean
     public Job facilityJob(
             Step facilityStep,
-            Step retirementHomeStep, // 실버타운은 직접 insert 쿼리 날리자
+            Step retirementHomeStep, // todo 실버타운은 직접 insert 쿼리, 추후에 의료시설, 문화시설 적재
             Step homeCareFacilityStep,
             Step serviceStep,
             Step shortTermCareStep,
@@ -369,7 +370,7 @@ public class FacilityJobConfig {
                 "ignore33",
                 "ignore34",
                 "ignore35",
-                "phoneNumber" // AP
+                "phoneNumber"
         );
         lineMapper.setLineTokenizer(tokenizer);
         lineMapper.setFieldSetMapper(new ServiceFieldSetMapper());

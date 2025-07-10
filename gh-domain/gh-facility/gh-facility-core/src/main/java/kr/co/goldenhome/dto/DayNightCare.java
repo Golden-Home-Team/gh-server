@@ -1,18 +1,16 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Table(name = "siver_towns")
+@Table(name = "day_night_cares")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SiverTown {
+public class DayNightCare {
 
     @Id
     private Long id;
@@ -32,7 +30,7 @@ public class SiverTown {
     private String operatingBody;
 
     @Builder
-    private SiverTown(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
+    private DayNightCare(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
         this.id = id;
         this.districtName = districtName;
         this.name = name;
@@ -50,8 +48,8 @@ public class SiverTown {
         this.operatingBody = operatingBody;
     }
 
-    public static SiverTown from(Facility facility) {
-        return SiverTown.builder()
+    public static DayNightCare from(Service facility) {
+        return DayNightCare.builder()
                 .id(facility.getId())
                 .districtName(facility.getDistrictName())
                 .name(facility.getName())

@@ -1,6 +1,6 @@
-package kr.co.goldenhome;
+package kr.co.goldenhome.facility;
 
-import kr.co.goldenhome.entity.Facility;
+import kr.co.goldenhome.dto.Facility;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.util.StringUtils;

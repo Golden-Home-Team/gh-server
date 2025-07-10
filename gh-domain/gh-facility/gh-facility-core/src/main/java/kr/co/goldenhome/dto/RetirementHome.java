@@ -1,18 +1,14 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Table(name = "day_night_cares")
+@Table(name = "retirement_homes")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DayNightCare {
+public class RetirementHome { // 양로원
 
     @Id
     private Long id;
@@ -32,7 +28,7 @@ public class DayNightCare {
     private String operatingBody;
 
     @Builder
-    private DayNightCare(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
+    private RetirementHome(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody) {
         this.id = id;
         this.districtName = districtName;
         this.name = name;
@@ -50,8 +46,9 @@ public class DayNightCare {
         this.operatingBody = operatingBody;
     }
 
-    public static DayNightCare from(Service facility) {
-        return DayNightCare.builder()
+    public static RetirementHome from(Facility facility) {
+
+        return RetirementHome.builder()
                 .id(facility.getId())
                 .districtName(facility.getDistrictName())
                 .name(facility.getName())
@@ -69,4 +66,6 @@ public class DayNightCare {
 //                .operatingBody(facility.getOperatingBody())
                 .build();
     }
+
+
 }

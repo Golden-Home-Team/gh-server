@@ -1,14 +1,12 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.dto;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "home_care_facilities")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HomeCareFacility { // 요양원
 

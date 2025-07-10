@@ -5,6 +5,7 @@ ifndef::snippets[]
 :social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
 :social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
+:facility: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -72,3 +73,15 @@ include::{token-refresh}/request-fields.adoc[]
 === HTTP Response
 include::{token-refresh}/http-response.adoc[]
 include::{token-refresh}/response-fields.adoc[]
+
+[[Facility-API]]
+== Facility API
+
+== 시설 상세조회
+=== HTTP Request
+include::{facility}/http-request.adoc[]
+include::{facility}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{facility}/http-response.adoc[]
+include::{facility}/response-fields.adoc[]

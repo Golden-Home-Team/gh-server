@@ -2,7 +2,9 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
+    testImplementation 'com.h2database:h2'
     implementation(project(":gh-common"))
 }
 

@@ -41,6 +41,7 @@ dependencies {
 
     implementation(project(":gh-domain:gh-user:gh-user-core"))
     implementation(project(":gh-domain:gh-user:gh-user-api"))
+    implementation(project(":gh-domain:gh-facility:gh-facility-api"))
     implementation(project(":gh-common"))
     implementation(project(":gh-external-social"))
 }

@@ -8,15 +8,30 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.testcontainers.elasticsearch.ElasticsearchContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import spock.lang.Specification
 
+@Testcontainers
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class ElderlyFacilityControllerTest extends Specification {
+
+    @Container
+    static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:7.17.6") // 사용할 Elasticsearch 버전 명시
+            .withExposedPorts(9200);
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.elasticsearch.rest.uris", elasticsearchContainer::getHttpHostAddress);
+    }
 
     @Autowired
     MockMvc mockMvc

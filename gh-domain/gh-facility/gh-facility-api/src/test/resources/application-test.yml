@@ -4,7 +4,11 @@ spring:
     activate:
       on-profile: test
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
+
+
   application:
     name: golden-home-application
   datasource:
@@ -38,8 +42,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-  elasticsearch:
-    uris: http://localhost:9200
+
 
 JWT_SECRET_KEY: "111=kPzQxR9dg0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1abc3uV4wX5yZ6aB7c"
 KAKAO_CLIENT_ID: "abc"

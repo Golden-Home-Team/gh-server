@@ -26,7 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Slf4j
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class ElderlyFacilityJobConfig {
 
@@ -35,6 +35,10 @@ public class ElderlyFacilityJobConfig {
     private final PlatformTransactionManager transactionManager;
     private final JobCompletionNotificationListener jobCompletionNotificationListener;
 
+    /**
+     * 분리된 테이블을 하나의 시설테이블로 통합
+     * todo SiverTown 관련 데이터는 직접 insert query
+     */
     @Bean
     public Job elderlyFacilityJob(
             Step retirementHome,
@@ -106,10 +110,10 @@ public class ElderlyFacilityJobConfig {
                 .dataSource(dataSource)
                 .sql("INSERT INTO elderly_facilities ( " +
                         "    name, district_name, director, capacity, " +
-                        "    current_total, current_male, current_female, staff_total, staff_male, staff_female, address, phone_number, establishment_date, operating_body, facility_type" +
+                        "    current_total, current_male, current_female, staff_total, staff_male, staff_female, address, phone_number, establishment_date, operating_body, facility_type, size" +
                         ") VALUES (" +
                         "    :name, :districtName, :director, :capacity, " +
-                        "    :currentTotal, :currentMale, :currentFemale, :staffTotal, :staffMale, :staffFemale, :address, :phoneNumber, :establishmentDate, :operatingBody, :facilityType" +
+                        "    :currentTotal, :currentMale, :currentFemale, :staffTotal, :staffMale, :staffFemale, :address, :phoneNumber, :establishmentDate, :operatingBody, :facilityType, :size" +
                         ")")
                 .beanMapped()
                 .build();

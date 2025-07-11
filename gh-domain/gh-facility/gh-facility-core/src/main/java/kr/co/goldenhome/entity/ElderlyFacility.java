@@ -2,14 +2,12 @@ package kr.co.goldenhome.entity;
 
 import jakarta.persistence.*;
 import kr.co.goldenhome.dto.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "elderly_facilities")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ElderlyFacility {
 
@@ -31,9 +29,12 @@ public class ElderlyFacility {
     private String establishmentDate;
     private String operatingBody;
     private String facilityType; // 양로원, 요양원, 단기보호, 방문간호, 방문요양, 방문목욕, 주야간보호
+    private String grade;
+    private Integer price;
+    private String size;
 
     @Builder
-    private ElderlyFacility(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody, String facilityType) {
+    private ElderlyFacility(Long id, String districtName, String name, String director, Integer capacity, Integer currentTotal, Integer currentMale, Integer currentFemale, Integer staffTotal, Integer staffMale, Integer staffFemale, String address, String phoneNumber, String establishmentDate, String operatingBody, String facilityType, String grade, Integer price, String size) {
         this.id = id;
         this.districtName = districtName;
         this.name = name;
@@ -50,6 +51,16 @@ public class ElderlyFacility {
         this.establishmentDate = establishmentDate;
         this.operatingBody = operatingBody;
         this.facilityType = facilityType;
+        this.grade = grade;
+        this.price = price;
+        this.size = size;
+    }
+
+    private static String measureSize(Integer capacity) {
+        if (capacity == null) return null;
+        if (capacity >= 200) return "대형";
+        else if (capacity >= 100) return "중형";
+        else return "소형";
     }
 
     public static ElderlyFacility from(RetirementHome facility) {
@@ -69,6 +80,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("양로원")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -89,6 +101,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("요양원")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -109,6 +122,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("단기보호")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -129,6 +143,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문간호")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -149,6 +164,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문요양")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -169,6 +185,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문목욕")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 
@@ -189,6 +206,7 @@ public class ElderlyFacility {
                 .establishmentDate(facility.getEstablishmentDate())
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("주야간보호")
+                .size(measureSize(facility.getCapacity()))
                 .build();
     }
 

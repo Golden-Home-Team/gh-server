@@ -6,6 +6,9 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     testImplementation 'com.h2database:h2'
+    testImplementation 'org.testcontainers:testcontainers:1.19.7' // 최신 버전 확인
+    testImplementation 'org.testcontainers:elasticsearch:1.19.7' // Elasticsearch 모듈 추가
+    testImplementation 'org.testcontainers:junit-jupiter:1.19.7' // JUnit 5 사용 시
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-facility:gh-facility-core"))

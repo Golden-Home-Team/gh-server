@@ -2,15 +2,17 @@ package kr.co.goldenhome.service
 
 import kr.co.goldenhome.entity.ElderlyFacility
 import kr.co.goldenhome.repository.ElderlyFacilityRepository
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import spock.lang.Specification
 
 class ElderlyFacilityServiceTest extends Specification {
 
     ElderlyFacilityService elderlyFacilityService
     ElderlyFacilityRepository elderlyFacilityRepository = Mock()
+    ElasticsearchOperations elasticsearchOperations = Mock()
 
     def setup() {
-        elderlyFacilityService = new ElderlyFacilityService(elderlyFacilityRepository)
+        elderlyFacilityService = new ElderlyFacilityService(elderlyFacilityRepository, elasticsearchOperations)
     }
 
     def "read - ElderlyFacilityRepository 를 호출한다"() {

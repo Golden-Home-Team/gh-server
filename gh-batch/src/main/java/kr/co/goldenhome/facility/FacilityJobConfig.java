@@ -62,10 +62,13 @@ public class FacilityJobConfig {
     private boolean stopProcessingRangeForDayNightCare = false;
 
 
+    /**
+     * CSV 파일이 일정한 형식이 아니어서 각 타입에 따라 일정한 기준 잡아 테이블 분리하는 Job
+     */
     @Bean
     public Job facilityJob(
             Step facilityStep,
-            Step retirementHomeStep, // todo 실버타운은 직접 insert 쿼리, 추후에 의료시설, 문화시설 적재
+            Step retirementHomeStep,
             Step homeCareFacilityStep,
             Step serviceStep,
             Step shortTermCareStep,

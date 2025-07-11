@@ -27,4 +27,19 @@ public class ElderlyFacilityController {
     ) {
         return elderlyFacilityService.readAll(facilityType, lastId, pageSize);
     }
+
+    @GetMapping("/v2/readAll")
+    public List<ElderlyFacilityResponse> search(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "address", required = false) String address,
+            @RequestParam(value = "facilityType", required = false) String facilityType,
+            @RequestParam(value = "grade", required = false) String grade,
+            @RequestParam(value = "minPrice", defaultValue = "0") double minPrice,
+            @RequestParam(value = "maxPrice", defaultValue = "100000000") double maxPrice,
+            @RequestParam(value = "withinYears", defaultValue = "0") int withinYears,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size
+    ) {
+        return elderlyFacilityService.search(query, address, facilityType, grade, minPrice, maxPrice, withinYears, page, size);
+    }
 }

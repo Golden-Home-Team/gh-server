@@ -85,7 +85,7 @@ public class ElderlyFacilityService {
         if (withinYears > 0) {
             double currentYear =  Year.now().getValue();
             Query yearRangeFilter = NumberRangeQuery.of(r -> r
-                    .field("establishmentDate")
+                    .field("establishmentYear")
                     .gte(currentYear - withinYears)
                     .lte(currentYear)
             )._toRangeQuery()._toQuery();

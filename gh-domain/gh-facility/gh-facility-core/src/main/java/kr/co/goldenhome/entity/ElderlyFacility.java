@@ -81,6 +81,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("양로원")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -102,6 +104,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("요양원")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -123,6 +127,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("단기보호")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -144,6 +150,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문간호")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -165,6 +173,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문요양")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -186,6 +196,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("방문목욕")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 
@@ -207,6 +219,8 @@ public class ElderlyFacility {
                 .operatingBody(facility.getOperatingBody())
                 .facilityType("주야간보호")
                 .size(measureSize(facility.getCapacity()))
+                .grade("A")
+                .price(15000)
                 .build();
     }
 

@@ -26,7 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Slf4j
-//@Configuration
+@Configuration
 @RequiredArgsConstructor
 public class ElderlyFacilityJobConfig {
 
@@ -110,10 +110,10 @@ public class ElderlyFacilityJobConfig {
                 .dataSource(dataSource)
                 .sql("INSERT INTO elderly_facilities ( " +
                         "    name, district_name, director, capacity, " +
-                        "    current_total, current_male, current_female, staff_total, staff_male, staff_female, address, phone_number, establishment_date, operating_body, facility_type, size" +
+                        "    current_total, current_male, current_female, staff_total, staff_male, staff_female, address, phone_number, establishment_date, operating_body, facility_type, size, price, grade" +
                         ") VALUES (" +
                         "    :name, :districtName, :director, :capacity, " +
-                        "    :currentTotal, :currentMale, :currentFemale, :staffTotal, :staffMale, :staffFemale, :address, :phoneNumber, :establishmentDate, :operatingBody, :facilityType, :size" +
+                        "    :currentTotal, :currentMale, :currentFemale, :staffTotal, :staffMale, :staffFemale, :address, :phoneNumber, :establishmentDate, :operatingBody, :facilityType, :size, :price, :grade" +
                         ")")
                 .beanMapped()
                 .build();

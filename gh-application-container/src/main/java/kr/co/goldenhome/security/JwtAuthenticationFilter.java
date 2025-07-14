@@ -41,8 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String accessToken = parseToken(request.getHeader("Authorization"));
         if (!StringUtils.hasText(accessToken)) {
-            filterChain.doFilter(request, response);
-            return;
+            throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "JwtAuthenticationFilter.doFilterInternal");
         }
         Long userId = authenticationTokenManager.getUserId(accessToken);
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
@@ -58,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/api/auth", "/api/users/signup"};
+        String[] excludePath = {"/api/auth", "/api/users/signup", "/api/facility"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith) ||
                 path.endsWith(".html");

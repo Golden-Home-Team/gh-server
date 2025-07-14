@@ -1,11 +1,7 @@
 package kr.co.goldenhome.signup.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import exception.ErrorCode
-import kr.co.goldenhome.entity.EmailVerification
-import kr.co.goldenhome.entity.User
-import kr.co.goldenhome.enums.EmailVerificationType
-import kr.co.goldenhome.enums.UserRole
+
 import kr.co.goldenhome.signup.dto.SignupRequest
 import kr.co.goldenhome.signup.service.SignupService
 import org.spockframework.spring.SpringBean
@@ -15,11 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
-import spock.lang.Unroll
 
 @ActiveProfiles("test")
 @SpringBootTest

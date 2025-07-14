@@ -5,7 +5,7 @@ import kr.co.goldenhome.repository.ElderlyFacilityRepository
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import spock.lang.Specification
 
-class ElderlyFacilityServiceTest extends Specification {
+class ElderlyFacilityServiceSpec extends Specification {
 
     ElderlyFacilityService elderlyFacilityService
     ElderlyFacilityRepository elderlyFacilityRepository = Mock()

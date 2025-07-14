@@ -17,7 +17,7 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class ElderlyFacilityControllerTest extends Specification {
+class ElderlyFacilityControllerSpec extends Specification {
 
     @Autowired
     MockMvc mockMvc

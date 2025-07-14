@@ -10,7 +10,7 @@ class SignupServiceSpec extends Specification {
 
     def signupManager = Mock(SignupManager)
 
-    void setup() {
+    def setup() {
         signupService = new SignupService(signupManager)
     }
 

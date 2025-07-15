@@ -9,6 +9,8 @@ dependencies {
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-resume:gh-resume-core"))
+    implementation(project(":gh-api-interface:gh-facility-api-interface"))
 
 }
 
+jar.enabled = true

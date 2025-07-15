@@ -6,6 +6,7 @@ import exception.ExternalApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -65,6 +66,13 @@ public class CustomExceptionHandler {
         log.error("MethodArgumentTypeMismatchException occurred. message={}, className={}",   e.getMessage(), e.getClass().getName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(400, "메서드의 파라미터 타입과 일치하지 않습니다."));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        log.error("HttpMessageNotReadableException occurred. message={}, className={}",   e.getMessage(), e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(400, "잘못된 형식의 json 요청입니다."));
     }
 
     private String createMessage(BindException e) {

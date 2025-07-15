@@ -1,0 +1,8 @@
+dependencies {
+
+    implementation(project(":gh-domain:gh-facility:gh-facility-core"))
+    implementation(project(":gh-api-interface:gh-facility-api-interface"))
+
+}
+
+jar.enabled = true

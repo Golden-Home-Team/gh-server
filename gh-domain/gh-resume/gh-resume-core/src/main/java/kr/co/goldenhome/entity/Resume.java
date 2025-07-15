@@ -26,10 +26,10 @@ public class Resume {
     private String specialNotes;
     private String guardianName;
     private String guardianContactInformation;
-    private String relationShip;
+    private String relationship;
 
     @Builder
-    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationShip) {
+    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -40,10 +40,10 @@ public class Resume {
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
-        this.relationShip = relationShip;
+        this.relationship = relationship;
     }
 
-    public static Resume create(Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationShip) {
+    public static Resume create(Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
         return Resume.builder()
                 .userId(userId)
                 .name(name)
@@ -54,11 +54,11 @@ public class Resume {
                 .specialNotes(specialNotes)
                 .guardianName(guardianName)
                 .guardianContactInformation(guardianContactInformation)
-                .relationShip(relationShip)
+                .relationship(relationship)
                 .build();
     }
 
-    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationShip) {
+    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
@@ -67,6 +67,6 @@ public class Resume {
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
-        this.relationShip = relationShip;
+        this.relationship = relationship;
     }
 }

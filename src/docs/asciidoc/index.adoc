@@ -7,6 +7,13 @@ ifndef::snippets[]
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
 :facility-read: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
 :facility-readAll: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-readAll
+:resume-write: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write
+:resume-read: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read
+:resume-modify: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-modify
+:resume-submission-submit: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-submit
+:resume-submission-read: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-read
+:resume-submission-readAll: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-readAll
+:resume-submission-modify: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -95,3 +102,68 @@ include::{facility-readAll}/query-parameters.adoc[]
 === HTTP Response
 include::{facility-readAll}/http-response.adoc[]
 include::{facility-readAll}/response-fields.adoc[]
+
+[[Resume-API]]
+== Resume API
+
+== 이력서 작성
+=== HTTP Request
+include::{resume-write}/http-request.adoc[]
+include::{resume-write}/request-fields.adoc[]
+
+=== HTTP Response
+include::{resume-write}/http-response.adoc[]
+include::{resume-write}/response-fields.adoc[]
+
+== 이력서 조회
+=== HTTP Request
+include::{resume-read}/http-request.adoc[]
+
+=== HTTP Response
+include::{resume-read}/http-response.adoc[]
+include::{resume-read}/response-fields.adoc[]
+
+== 이력서 수정
+=== HTTP Request
+include::{resume-modify}/http-request.adoc[]
+include::{resume-modify}/request-fields.adoc[]
+
+=== HTTP Response
+include::{resume-modify}/http-response.adoc[]
+include::{resume-modify}/response-fields.adoc[]
+
+== Resume Submission API
+== 이력서 제출
+=== HTTP Request
+include::{resume-submission-submit}/http-request.adoc[]
+include::{resume-submission-submit}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{resume-submission-submit}/http-response.adoc[]
+include::{resume-submission-submit}/response-fields.adoc[]
+
+== 이력서제출 조회
+=== HTTP Request
+include::{resume-submission-read}/http-request.adoc[]
+include::{resume-submission-read}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{resume-submission-read}/http-response.adoc[]
+include::{resume-submission-read}/response-fields.adoc[]
+
+== 이력서제출 목록조회
+=== HTTP Request
+include::{resume-submission-readAll}/http-request.adoc[]
+
+=== HTTP Response
+include::{resume-submission-readAll}/http-response.adoc[]
+include::{resume-submission-readAll}/response-fields.adoc[]
+
+== 이력서제출 수정
+=== HTTP Request
+include::{resume-submission-modify}/http-request.adoc[]
+include::{resume-submission-modify}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{resume-submission-modify}/http-response.adoc[]
+include::{resume-submission-modify}/response-fields.adoc[]

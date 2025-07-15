@@ -29,7 +29,7 @@ public record ResumeResponse(
                 resume.getSpecialNotes(),
                 resume.getGuardianName(),
                 resume.getGuardianContactInformation(),
-                resume.getRelationShip()
+                resume.getRelationship()
         );
     }
 }

@@ -11,3 +11,5 @@ dependencies {
     implementation(project(":gh-domain:gh-facility:gh-facility-core"))
 
 }
+
+jar.enabled = true

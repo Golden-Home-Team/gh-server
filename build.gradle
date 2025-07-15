@@ -61,10 +61,24 @@ allprojects {
         sourceDir file('src/docs/asciidoc') // [변경 7]: index.adoc이 있는 경로
         outputDir layout.buildDirectory.dir('docs') // [변경 8]: HTML 출력 경로
 
-        attributes \
-        'user-signup-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup',
-        'user-check-duplicated-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated',
-        'user-login-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login'
+        attributes   \
+                'user-signup-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup',
+                'user-login-snippets': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login',
+                'user-check-duplicated': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated',
+                'social-login': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login',
+                'social-login-callback': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback',
+                'token-refresh': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh',
+                'facility-read': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read',
+                'facility-readAll': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-readAll',
+                'resume-write':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write',
+                'resume-read':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read',
+                'resume-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-submit',
+                'resume-submission-read': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-read',
+                'resume-submission-readAll': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-readAll',
+                'resume-submission-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify'
+
+
+
 
         sources {
             include '**/index.adoc' // [변경 10]: index.adoc만 처리

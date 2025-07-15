@@ -102,7 +102,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                 .specialNotes("없음")
                 .guardianName("구머니")
                 .guardianContactInformation("01040363457")
-                .relationShip("모")
+                .relationship("모")
                         .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                         .status(AdmissionStatus.PENDING_REVIEW)
                         .build()
@@ -150,7 +150,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                         .description("보호자 이름"),
                                 fieldWithPath("[].guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
-                                fieldWithPath("[].relationShip").type(JsonFieldType.STRING)
+                                fieldWithPath("[].relationship").type(JsonFieldType.STRING)
                                         .description("보호자 관계"),
                                 fieldWithPath("[].submitTime").type(JsonFieldType.STRING)
                                         .description("제출시간"),
@@ -175,7 +175,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
             MockMvcResultMatchers.jsonPath('$[0].specialNotes').value("없음")
             MockMvcResultMatchers.jsonPath('$[0].guardianName').value("구머니")
             MockMvcResultMatchers.jsonPath('$[0].guardianContactInformation').value("01040363457")
-            MockMvcResultMatchers.jsonPath('$[0].relationShip').value("모")
+            MockMvcResultMatchers.jsonPath('$[0].relationship').value("모")
             MockMvcResultMatchers.jsonPath('$[0].submitTime').value("제출시간")
             MockMvcResultMatchers.jsonPath('$[0].status').value("평가상태")
         }
@@ -197,7 +197,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         .specialNotes("없음")
                         .guardianName("구머니")
                         .guardianContactInformation("01040363457")
-                        .relationShip("모")
+                        .relationship("모")
                         .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                         .status(AdmissionStatus.PENDING_REVIEW)
                         .build()
@@ -239,7 +239,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                 .description("보호자 이름"),
                         fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                 .description("보호자 연락처"),
-                        fieldWithPath("relationShip").type(JsonFieldType.STRING)
+                        fieldWithPath("relationship").type(JsonFieldType.STRING)
                                 .description("보호자 관계"),
                         fieldWithPath("submitTime").type(JsonFieldType.STRING)
                                 .description("제출시간"),
@@ -264,7 +264,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
             MockMvcResultMatchers.jsonPath('$.specialNotes').value("없음")
             MockMvcResultMatchers.jsonPath('$.guardianName').value("구머니")
             MockMvcResultMatchers.jsonPath('$.guardianContactInformation').value("01040363457")
-            MockMvcResultMatchers.jsonPath('$.relationShip').value("모")
+            MockMvcResultMatchers.jsonPath('$.relationship').value("모")
             MockMvcResultMatchers.jsonPath('$.submitTime').value("제출시간")
             MockMvcResultMatchers.jsonPath('$.status').value("평가상태")
         }

@@ -18,7 +18,7 @@ public record ResumeSubmissionResponse(
          String specialNotes,
          String guardianName,
          String guardianContactInformation,
-         String relationShip,
+         String relationship,
          LocalDateTime submitTime,
          AdmissionStatus status
 ) {

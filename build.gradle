@@ -72,7 +72,8 @@ allprojects {
                 'facility-readAll': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-readAll',
                 'resume-write':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write',
                 'resume-read':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read',
-                'resume-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-submit',
+                'resume-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-modify',
+                'resume-submission-submit' :'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-submit',
                 'resume-submission-read': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-read',
                 'resume-submission-readAll': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-readAll',
                 'resume-submission-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify'

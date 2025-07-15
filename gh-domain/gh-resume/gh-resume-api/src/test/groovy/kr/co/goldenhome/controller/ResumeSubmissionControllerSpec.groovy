@@ -67,7 +67,7 @@ class ResumeSubmissionControllerSpec extends Specification{
                 .specialNotes("없음")
                 .guardianName("구머니")
                 .guardianContactInformation("01040363457")
-                .relationShip("모")
+                .relationship("모")
                 .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                 .status(AdmissionStatus.PENDING_REVIEW)
                         .build()
@@ -116,7 +116,7 @@ class ResumeSubmissionControllerSpec extends Specification{
                         .specialNotes("없음")
                         .guardianName("구머니")
                         .guardianContactInformation("01040363457")
-                        .relationShip("모")
+                        .relationship("모")
                         .build()
         )
 

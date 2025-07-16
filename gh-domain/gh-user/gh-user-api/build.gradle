@@ -16,5 +16,3 @@ dependencies {
     implementation(project(":gh-external-social"))
 
 }
-
-jar.enabled = true

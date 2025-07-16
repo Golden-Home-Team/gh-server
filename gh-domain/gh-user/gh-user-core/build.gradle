@@ -6,3 +6,5 @@ dependencies {
 
     implementation(project(":gh-common"))
 }
+
+jar.enabled = true

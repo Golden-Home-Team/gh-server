@@ -13,3 +13,4 @@ dependencies {
 
 }
 
+jar.enabled = true

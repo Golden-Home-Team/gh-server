@@ -1,0 +1,53 @@
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  application:
+    name: golden-home-application
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      '[hibernate.format_sql]': true
+      show-sql: true
+      output:
+        ansi:
+          enabled: always
+  mail:
+    host: a
+    username: b
+    password: c
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtps
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+JWT_SECRET_KEY: "111=kPzQxR9dg0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1abc3uV4wX5yZ6aB7c"
+KAKAO_CLIENT_ID: "abc"
+KAKAO_CLIENT_SECRET: "def"
+KAKAO_REDIRECT_URI: "http://localhost:8080/api/auth/social/login/callback?provider_type=KAKAO"
+
+aws:
+  credentials:
+    access-key: a
+    secret-key: b
+  region: ap-northeast-2
+  s3:
+    bucket: goldenhome-bucket

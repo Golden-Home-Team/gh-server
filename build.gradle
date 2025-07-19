@@ -76,7 +76,8 @@ allprojects {
                 'resume-submission-submit' :'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-submit',
                 'resume-submission-read': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-read',
                 'resume-submission-readAll': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-readAll',
-                'resume-submission-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify'
+                'resume-submission-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify',
+                'get-pre-signed-url-for-upload': 'gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload'
 
 
 

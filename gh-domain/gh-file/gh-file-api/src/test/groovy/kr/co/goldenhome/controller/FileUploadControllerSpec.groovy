@@ -31,7 +31,7 @@ class FileUploadControllerSpec extends Specification {
 
     def "pre-signed url 발급"() {
         given:
-        def request = new FileUploadRequest(List.of("파일1"))
+        def request = new FileUploadRequest(List.of("file1.jpg"))
         def expectedResponse = new FileUploadResponse("formatted-file-name-123.jpg", "https://mock-presigned-url.s3.amazonaws.com/formatted-file-name-123.jpg?X-Amz-Signature")
         fileUploadService.createPresignedUrlsForUpload(request) >> List.of(expectedResponse)
 

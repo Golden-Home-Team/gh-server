@@ -45,6 +45,8 @@ dependencies {
     implementation(project(":gh-domain:gh-facility:gh-facility-internal-api"))
     implementation(project(":gh-domain:gh-resume:gh-resume-api"))
     implementation(project(":gh-domain:gh-file:gh-file-api"))
+    implementation(project(":gh-domain:gh-file:gh-file-internal-api"))
+    implementation(project(":gh-domain:gh-review:gh-review-api"))
     implementation(project(":gh-common"))
     implementation(project(":gh-external-social"))
 }

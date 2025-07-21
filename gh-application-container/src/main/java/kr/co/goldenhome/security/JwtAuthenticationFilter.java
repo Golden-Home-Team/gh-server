@@ -7,7 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.goldenhome.authentication.impl.AuthenticationTokenManager;
+import kr.co.goldenhome.authentication.implement.AuthenticationTokenManager;
 import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.enums.UserRole;
 import kr.co.goldenhome.infrastructure.UserRepository;

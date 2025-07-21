@@ -1,9 +1,9 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import kr.co.goldenhome.dto.ResumeModifyRequest
-import kr.co.goldenhome.dto.ResumeResponse
-import kr.co.goldenhome.service.ResumeService
+import kr.co.goldenhome.resume.dto.ResumeModifyRequest
+import kr.co.goldenhome.resume.dto.ResumeResponse
+import kr.co.goldenhome.resume.service.ResumeService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

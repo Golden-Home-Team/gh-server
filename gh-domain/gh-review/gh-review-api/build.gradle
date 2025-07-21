@@ -1,0 +1,17 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.security:spring-security-web'
+
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    testImplementation 'com.h2database:h2'
+
+    implementation(project(":gh-common"))
+    implementation(project(":gh-domain:gh-review:gh-review-core"))
+    implementation(project(":gh-api-interface:gh-file-api-interface"))
+
+
+}
+
+jar.enabled = true

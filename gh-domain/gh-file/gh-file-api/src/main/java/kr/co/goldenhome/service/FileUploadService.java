@@ -2,7 +2,7 @@ package kr.co.goldenhome.service;
 
 import kr.co.goldenhome.dto.FileUploadRequest;
 import kr.co.goldenhome.dto.FileUploadResponse;
-import kr.co.goldenhome.impl.PresignedUrlManager;
+import kr.co.goldenhome.implement.PresignedUrlManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,12 @@
 package kr.co.goldenhome.service
 
-import kr.co.goldenhome.dto.ResumeSubmissionModifyRequest
-import kr.co.goldenhome.dto.ResumeSubmissionResponse
+import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest
+import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse
 import kr.co.goldenhome.entity.ResumeSubmission
-import kr.co.goldenhome.impl.ResumeSubmissionManager
-import kr.co.goldenhome.repository.ResumeSubmissionRepository
+import kr.co.goldenhome.submission.implement.ResumeSubmissionModifier
+import kr.co.goldenhome.submission.implement.ResumeSubmissionReader
+import kr.co.goldenhome.submission.implement.ResumeSubmitter
+import kr.co.goldenhome.submission.service.ResumeSubmissionService
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -12,30 +14,32 @@ import java.time.LocalDate
 class ResumeSubmissionServiceSpec extends Specification {
 
     ResumeSubmissionService resumeSubmissionService
-    def resumeSubmissionManager = Mock(ResumeSubmissionManager)
-    def resumeSubmissionRepository = Mock(ResumeSubmissionRepository)
+    ResumeSubmissionReader resumeSubmissionReader = Mock()
+    ResumeSubmitter resumeSubmitter = Mock()
+    ResumeSubmissionModifier resumeSubmissionModifier = Mock()
+
 
     def setup() {
-        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionManager, resumeSubmissionRepository)
+        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionReader, resumeSubmitter, resumeSubmissionModifier)
     }
 
-    def "create - resumeSubmissionManager 를 호출한다"() {
+    def 'submit - resumeSubmitter 를 호출한다'() {
         given:
         def givenFacilityId = 1L
         def givenUserId = 1L
 
         when:
-        resumeSubmissionService.create(givenFacilityId, givenUserId)
+        resumeSubmissionService.submit(givenFacilityId, givenUserId)
 
         then:
-        1 * resumeSubmissionManager.create(*_) >> {
+        1 * resumeSubmitter.submit(*_) >> {
             Long facilityId, Long userId ->
                 facilityId == givenFacilityId
                 userId == givenUserId
         }
     }
 
-    def "read - resumeSubmissionRepository 를 호출한다"() {
+    def "read - resumeSubmissionReader 를 호출한다"() {
         given:
         def givenResumeSubmissionId = 1L
         def givenUserId = 1L
@@ -45,7 +49,7 @@ class ResumeSubmissionServiceSpec extends Specification {
         resumeSubmissionService.read(givenResumeSubmissionId, givenUserId)
 
         then:
-        1 * resumeSubmissionManager.read(*_) >> {
+        1 * resumeSubmissionReader.read(*_) >> {
             Long resumeSubmissionId, Long userId ->
                 resumeSubmissionId == givenResumeSubmissionId
                 userId == givenUserId
@@ -53,47 +57,26 @@ class ResumeSubmissionServiceSpec extends Specification {
         }
     }
 
-    def "readAll - resumeSubmissionRepository 를 호출한다"() {
+    def "readAll - resumeSubmissionReader 를 호출한다"() {
         given:
         def givenUserId = 1L
         def givenLastId = 1L
         def givenPageSize = 10L
-        def expectedResponse = List.of(ResumeSubmission.builder().build())
 
         when:
         resumeSubmissionService.readAll(givenUserId, givenLastId, givenPageSize)
 
         then:
-        1 * resumeSubmissionRepository.findAllInfiniteScroll(*_) >> {
+        1 * resumeSubmissionReader.readAll(*_) >> {
             Long userId, Long lastId, Long pageSize ->
                 userId == givenUserId
                 lastId == givenLastId
                 pageSize == givenPageSize
-                expectedResponse
+                List.of(ResumeSubmission.builder().build())
         }
     }
 
-    def "readAll - lastId가 null 이라면 다른 파라미터를 가진 resumeSubmissionRepository 를 호출한다"() {
-        given:
-        def givenUserId = 1L
-        def givenLastId = null
-        def givenPageSize = 10L
-        def expectedResponse = List.of(ResumeSubmission.builder().build())
-
-        when:
-        resumeSubmissionService.readAll(givenUserId, givenLastId, givenPageSize)
-
-        then:
-        1 * resumeSubmissionRepository.findAllInfiniteScroll(*_) >> {
-            Long userId, Long pageSize ->
-                userId == givenUserId
-                pageSize == givenPageSize
-                expectedResponse
-        }
-    }
-
-
-    def "modify - resumeSubmissionManager 를 호출한다"() {
+    def "modify - resumeSubmissionModifier 를 호출한다"() {
         given:
         def givenDateOfBirth = LocalDate.of(2000, 7, 2)
         def givenRequest = new ResumeSubmissionModifyRequest(
@@ -114,7 +97,7 @@ class ResumeSubmissionServiceSpec extends Specification {
         resumeSubmissionService.modify(givenRequest, givenResumeSubmissionId, givenUserId)
 
         then:
-        1 * resumeSubmissionManager.modify(*_) >> {
+        1 * resumeSubmissionModifier.modify(*_) >> {
             ResumeSubmissionModifyRequest request, Long resumeSubmissionId, Long userId ->
                 request == givenRequest
                 resumeSubmissionId == givenResumeSubmissionId

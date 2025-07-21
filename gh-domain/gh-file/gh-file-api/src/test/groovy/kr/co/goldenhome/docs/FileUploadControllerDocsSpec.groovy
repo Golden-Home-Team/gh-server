@@ -46,7 +46,7 @@ class FileUploadControllerDocsSpec extends Specification {
 
     def "pre-signed url 발급"() {
         given:
-        def request = new FileUploadRequest(List.of("파일1"))
+        def request = new FileUploadRequest(List.of("file1"))
         def expectedResponse = new FileUploadResponse("formatted-file-name-123.jpg", "https://mock-presigned-url.s3.amazonaws.com/formatted-file-name-123.jpg?X-Amz-Signature")
         fileUploadService.createPresignedUrlsForUpload(request) >> List.of(expectedResponse)
 
@@ -59,11 +59,11 @@ class FileUploadControllerDocsSpec extends Specification {
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("fileNames").type(JsonFieldType.ARRAY)
-                                        .description("업로드할 파일 이름 목록 (확장자 포함)")
+                                        .description("업로드할 파일 이름 목록")
                         ),
                         responseFields(
                                 fieldWithPath("[].formattedFileName").type(JsonFieldType.STRING)
-                                        .description("업로드될 파일의 포맷된 이름 (예: UUID.확장자)"),
+                                        .description("업로드될 파일의 포맷된 이름 (예: UUID-원본이름)"),
                                 fieldWithPath("[].presignedUrl").type(JsonFieldType.STRING)
                                         .description("파일을 업로드할 때 사용할 Presigned URL")
                         )

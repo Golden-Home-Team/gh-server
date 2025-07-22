@@ -10,7 +10,7 @@ import spock.lang.Specification
 
 @ActiveProfiles("test")
 @DataJpaTest
-class ElderlyFacilityRepositoryTest extends Specification {
+class ElderlyFacilityRepositorySpec extends Specification {
 
     @Autowired
     ElderlyFacilityRepository elderlyFacilityRepository

@@ -21,4 +21,10 @@ public class ReviewImageApiImpl implements ReviewImageApi {
         List<ReviewImage> reviewImages = formattedImageNames.stream().map(formattedImageName -> ReviewImage.create(reviewId, formattedImageName, awsBaseUrl + formattedImageName)).toList();
         reviewImageRepository.saveAll(reviewImages);
     }
+
+    @Override
+    public List<ReviewImageApiResponse> getByReviewId(Long reviewId) {
+        return reviewImageRepository.findByReviewId(reviewId)
+                .stream().map(reviewImage ->  new ReviewImageApiResponse(reviewImage.getId(), reviewImage.getFormattedName(), reviewImage.getImageUrl())).toList();
+    }
 }

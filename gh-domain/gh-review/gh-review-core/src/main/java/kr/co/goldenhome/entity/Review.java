@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Table(name = "reviews", indexes = {
-        @Index(name = "idx_reviews_facility_id", columnList = "facility_id")
+        @Index(name = "idx_reviews_facility_score_id", columnList = "facility_id, score DESC, id DESC"),
+        @Index(name = "idx_reviews_facility_id_desc", columnList = "facility_id, id DESC")
 })
 @Entity
 @Getter

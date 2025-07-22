@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-review:gh-review-core"))
     implementation(project(":gh-api-interface:gh-file-api-interface"))
+    implementation(project(":gh-api-interface:gh-user-api-interface"))
 
 
 }

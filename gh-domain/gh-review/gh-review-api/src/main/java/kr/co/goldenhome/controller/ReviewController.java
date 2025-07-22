@@ -27,9 +27,15 @@ public class ReviewController {
         return CommonResponse.ok();
     }
 
-    @GetMapping("/{facilityId}")
-    public List<ReviewResponse> readAll(@PathVariable("facilityId") Long facilityId, @RequestParam(value = "type", defaultValue = "recommend") String type) {
+    @GetMapping("/readAll/{facilityId}")
+    public List<ReviewResponse> readAll(
+            @PathVariable("facilityId") Long facilityId,
+            @RequestParam(value = "sort", defaultValue = "score") String sort,
+            @RequestParam(value = "lastId", required = false) Long lastId,
+            @RequestParam(value = "lastScore", required = false) Integer lastScore,
+            @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize) {
 
+        return reviewService.readAll(facilityId, lastId, lastScore, pageSize, sort);
     }
 
 }

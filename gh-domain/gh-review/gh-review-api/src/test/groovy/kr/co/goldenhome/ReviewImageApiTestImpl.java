@@ -11,4 +11,9 @@ public class ReviewImageApiTestImpl implements ReviewImageApi {
     public void saveAll(Long reviewId, List<String> formattedImageNames) {
 
     }
+
+    @Override
+    public List<ReviewImageApiResponse> getByReviewId(Long reviewId) {
+        return List.of();
+    }
 }

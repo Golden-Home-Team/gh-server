@@ -1,9 +1,14 @@
 package kr.co.goldenhome.service
 
-import kr.co.goldenhome.dto.ResumeCreateRequest
-import kr.co.goldenhome.dto.ResumeModifyRequest
+import kr.co.goldenhome.resume.dto.ResumeCreateRequest
+import kr.co.goldenhome.resume.dto.ResumeModifyRequest
 import kr.co.goldenhome.entity.Resume
 import kr.co.goldenhome.repository.ResumeRepository
+import kr.co.goldenhome.resume.implement.ResumeModifier
+import kr.co.goldenhome.resume.implement.ResumeReader
+import kr.co.goldenhome.resume.implement.ResumeWriter
+import kr.co.goldenhome.resume.service.ResumeService
+import kr.co.goldenhome.submission.implement.ResumeSubmitter
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -11,13 +16,15 @@ import java.time.LocalDate
 class ResumeServiceSpec extends Specification {
 
     ResumeService resumeService
-    def resumeRepository = Mock(ResumeRepository)
+    ResumeWriter resumeWriter = Mock()
+    ResumeReader resumeReader = Mock()
+    ResumeModifier resumeModifier = Mock()
 
     def setup() {
-        resumeService = new ResumeService(resumeRepository)
+        resumeService = new ResumeService(resumeWriter, resumeReader, resumeModifier)
     }
 
-    def "create - resumeRepository 를 호출한다"() {
+    def 'write - resumeWriter 를 호출한다'() {
         given:
         def givenDateOfBirth = LocalDate.of(2000, 7, 2)
         def givenRequest = new ResumeCreateRequest(
@@ -34,18 +41,17 @@ class ResumeServiceSpec extends Specification {
         def givenUserId = 1L
 
         when:
-        resumeService.create(givenRequest, givenUserId)
+        resumeService.write(givenRequest, givenUserId)
 
         then:
-        1 * resumeRepository.save(*_) >> {
-            Resume resume ->
-                resume.userId == givenUserId
-                resume.dateOfBirth == givenDateOfBirth
-                resume
+        1 * resumeWriter.write(*_) >> {
+            ResumeCreateRequest request, Long userId ->
+                userId == givenUserId
+                request.dateOfBirth() == givenDateOfBirth
         }
     }
 
-    def "read - resumeRepository 를 호출한다"() {
+    def "read - resumeReader 를 호출한다"() {
         given:
         def givenUserId = 1L
 
@@ -53,14 +59,15 @@ class ResumeServiceSpec extends Specification {
         resumeService.read(givenUserId)
 
         then:
-        1 * resumeRepository.findByUserId(*_) >> {
+        1 * resumeReader.read(*_) >> {
             Long userId ->
                 userId == givenUserId
                 Optional.of(Resume.builder().build())
+                Resume.builder().build()
         }
     }
 
-    def "modify - resumeRepository 를 호출한다"() {
+    def "modify - resumeModifier 를 호출한다"() {
         given:
         def givenDateOfBirth = LocalDate.of(2000, 7, 2)
         def givenRequest = new ResumeModifyRequest(
@@ -80,8 +87,8 @@ class ResumeServiceSpec extends Specification {
         resumeService.modify(givenRequest, givenUserId)
 
         then:
-        1 * resumeRepository.findByUserId(*_) >> {
-            Long userId ->
+        1 * resumeModifier.modify(*_) >> {
+            ResumeModifyRequest request, Long userId ->
                 userId == givenUserId
                 Optional.of(Resume.builder().build())
         }

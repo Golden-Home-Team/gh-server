@@ -70,6 +70,7 @@ public class User {
         return User.builder()
                 .providerType(providerType)
                 .providerId(providerId)
+                .loginId(username)
                 .username(username)
                 .userStatus(UserStatus.ACTIVE)
                 .userRole(UserRole.USER)

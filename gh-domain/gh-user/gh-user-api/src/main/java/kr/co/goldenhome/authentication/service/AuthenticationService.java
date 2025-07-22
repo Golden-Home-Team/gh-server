@@ -1,11 +1,10 @@
 package kr.co.goldenhome.authentication.service;
 
-import jakarta.validation.constraints.NotBlank;
 import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
-import kr.co.goldenhome.authentication.impl.AuthenticationTokenManager;
-import kr.co.goldenhome.authentication.impl.UserAuthenticationManager;
+import kr.co.goldenhome.authentication.implement.AuthenticationTokenManager;
+import kr.co.goldenhome.authentication.implement.UserAuthenticationManager;
 import kr.co.goldenhome.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -2,9 +2,10 @@ package kr.co.goldenhome;
 
 import kr.co.goldenhome.repository.ElderlyFacilityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class ElderlyFacilityApiImpl implements ElderlyFacilityApi {
 

@@ -6,8 +6,10 @@ import kr.co.goldenhome.dto.FileUploadResponse;
 import kr.co.goldenhome.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import validator.FileValidator;
 
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +20,9 @@ public class FileUploadController {
 
     @PostMapping
     public List<FileUploadResponse> createPresignedUrlsForUpload(@Valid @RequestBody FileUploadRequest request) {
+        request.fileNames().forEach(FileValidator::validateFileName);
         return fileUploadService.createPresignedUrlsForUpload(request);
     }
+
+
 }

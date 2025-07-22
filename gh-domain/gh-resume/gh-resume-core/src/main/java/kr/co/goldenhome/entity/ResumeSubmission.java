@@ -83,4 +83,8 @@ public class ResumeSubmission {
         this.guardianContactInformation = guardianContactInformation;
         this.relationship = relationShip;
     }
+
+    public boolean isOwnedBy(Long userId) {
+        return this.userId.equals(userId);
+    }
 }

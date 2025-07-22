@@ -14,7 +14,9 @@ ifndef::snippets[]
 :resume-submission-read: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-read
 :resume-submission-readAll: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-readAll
 :resume-submission-modify: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-submission-modify
-:get-pre-signed-url-for-uploady: ../../../gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload
+:get-pre-signed-url-for-upload: ../../../gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload
+:review-write: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write
+:review-readAll: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -169,12 +171,31 @@ include::{resume-submission-modify}/path-parameters.adoc[]
 include::{resume-submission-modify}/http-response.adoc[]
 include::{resume-submission-modify}/response-fields.adoc[]
 
+
 == File Upload API
 == Pre-Signed URL 요청
 === HTTP Request
-include::{get-pre-signed-url-for-uploady}/http-request.adoc[]
-include::{get-pre-signed-url-for-uploady}/request-fields.adoc[]
+include::{get-pre-signed-url-for-upload}/http-request.adoc[]
+include::{get-pre-signed-url-for-upload}/request-fields.adoc[]
 
 === HTTP Response
-include::{get-pre-signed-url-for-uploady}/http-response.adoc[]
-include::{get-pre-signed-url-for-uploady}/response-fields.adoc[]
+include::{get-pre-signed-url-for-upload}/http-response.adoc[]
+include::{get-pre-signed-url-for-upload}/response-fields.adoc[]
+
+[[Review-API]]
+== 리뷰 작성
+=== HTTP Request
+include::{review-write}/http-request.adoc[]
+include::{review-write}/path-parameters.adoc[]
+include::{review-write}/request-fields.adoc[]
+=== HTTP Response
+include::{review-write}/http-response.adoc[]
+
+== 리뷰목록 조회
+=== HTTP Request
+include::{review-readAll}/http-request.adoc[]
+include::{review-readAll}/path-parameters.adoc[]
+include::{review-readAll}/query-parameters.adoc[]
+=== HTTP Response
+include::{review-readAll}/http-response.adoc[]
+include::{review-readAll}/response-fields.adoc[]

@@ -5,7 +5,7 @@ import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.authentication.dto.LoginRequest
 import kr.co.goldenhome.authentication.dto.LoginResponse
 import kr.co.goldenhome.authentication.dto.RefreshRequest
-import kr.co.goldenhome.authentication.service.AuthenticationService
+import kr.co.goldenhome.authentication.service.LoginService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,7 +23,7 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthenticationControllerSpec extends Specification {
+class LoginControllerSpec extends Specification {
 
     @Autowired
     MockMvc mockMvc
@@ -32,7 +32,7 @@ class AuthenticationControllerSpec extends Specification {
     ObjectMapper objectMapper
 
     @SpringBean
-    AuthenticationService authenticationService = Mock()
+    LoginService authenticationService = Mock()
 
     def "로그인 성공"() {
         given:

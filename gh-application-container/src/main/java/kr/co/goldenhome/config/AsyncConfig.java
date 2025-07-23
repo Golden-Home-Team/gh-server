@@ -21,7 +21,7 @@ public class AsyncConfig implements AsyncConfigurer {
         @Override
         public void handleUncaughtException(Throwable ex, Method method, Object... params) {
             log.error("Failed to execute {}", ex.getMessage());
-            List.of(params).forEach(param -> log.error("parameter value = {}", param));
+            List.of(params).forEach(param -> log.error("parameter contact = {}", param));
         }
     }
 }

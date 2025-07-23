@@ -1,13 +1,13 @@
 package kr.co.goldenhome.entity;
 
 import jakarta.persistence.*;
-import kr.co.goldenhome.enums.EmailVerificationType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,33 +18,33 @@ public class EmailVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
     private String emailAddress;
     private String verificationCode;
-    @Enumerated(EnumType.STRING)
-    private EmailVerificationType emailVerificationType;
-    private Boolean isVerified;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private boolean used;
 
     @Builder
-    private EmailVerification(Long id, Long userId, String emailAddress, String verificationCode, EmailVerificationType emailVerificationType, Boolean isVerified) {
+    private EmailVerification(Long id, String emailAddress, String verificationCode, LocalDateTime createdAt, LocalDateTime expiresAt, boolean used) {
         this.id = id;
-        this.userId = userId;
         this.emailAddress = emailAddress;
         this.verificationCode = verificationCode;
-        this.emailVerificationType = emailVerificationType;
-        this.isVerified = isVerified;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
+        this.used = used;
     }
 
-    public static EmailVerification create(Long userId, String emailAddress, EmailVerificationType type) {
+    public static EmailVerification create(String emailAddress) {
         return EmailVerification.builder()
-                .userId(userId)
                 .emailAddress(emailAddress)
-                .verificationCode(UUID.randomUUID().toString())
-                .emailVerificationType(type)
+                .verificationCode(String.format("%06d", new SecureRandom().nextInt(1_000_000)))
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(10))
                 .build();
     }
 
-    public void verify() {
-        this.isVerified = true;
+    public void markAsUsed() {
+        this.used = true;
     }
+
 }

@@ -3,6 +3,8 @@ package kr.co.goldenhome.security;
 import auth.UserPrincipal;
 import exception.CustomException;
 import exception.ErrorCode;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import kr.co.goldenhome.infrastructure.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +27,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,18 +45,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String accessToken = parseToken(request.getHeader("Authorization"));
         if (!StringUtils.hasText(accessToken)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "JwtAuthenticationFilter.doFilterInternal");
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.");
+            return;
         }
-        Long userId = authenticationTokenManager.getUserId(accessToken);
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
-        UserPrincipal userPrincipal = new UserPrincipal(userId);
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
-                userPrincipal,
-                user.getLoginId(),
-                getAuthorities(user)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request, response);
+        try {
+            Long userId = authenticationTokenManager.getUserId(accessToken);
+            User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
+            UserPrincipal userPrincipal = new UserPrincipal(userId);
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userPrincipal,
+                    user.getLoginId(),
+                    getAuthorities(user)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        } catch (MalformedJwtException e) {
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
+        } catch (CustomException e) {
+            sendErrorResponse(response, HttpStatus.valueOf(e.getErrorCode().getHttpStatus()), e.getErrorCode().getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "인증 중 알 수 없는 오류가 발생했습니다.");
+        }
+
     }
 
     @Override
@@ -79,5 +96,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         return authorities;
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
+        response.setStatus(status.value());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(String.format("{\"timestamp\": \"%s\", \"status\": %d, \"error\": \"%s\", \"message\": \"%s\"}",
+                java.time.OffsetDateTime.now(), status.value(), status.getReasonPhrase(), message));
+        response.getWriter().flush();
     }
 }

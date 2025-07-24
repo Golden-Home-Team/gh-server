@@ -83,17 +83,11 @@ public class AuthenticationTokenManager {
     }
 
     private Claims getClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.getClaims");
-        }
-
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private Claims validRefreshToken(String refreshToken) {

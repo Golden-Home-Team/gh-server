@@ -13,6 +13,7 @@ dependencies {
     testImplementation 'com.h2database:h2'
 
     implementation(project(":gh-common"))
+    implementation(project(":gh-api-interface:gh-file-api-interface"))
     implementation(project(":gh-domain:gh-user:gh-user-core"))
     implementation(project(":gh-external-social"))
 

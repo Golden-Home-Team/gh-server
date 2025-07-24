@@ -19,6 +19,8 @@ ifndef::snippets[]
 :review-readAll: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll
 :recovery-id-request: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-request
 :recovery-id-confirm: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-confirm
+:profile-get: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-get
+:profile-image-create: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-image-create
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -104,6 +106,21 @@ include::{recovery-id-confirm}/request-fields.adoc[]
 === HTTP Response
 include::{recovery-id-confirm}/http-response.adoc[]
 include::{recovery-id-confirm}/response-fields.adoc[]
+
+== 프로필 조회
+=== HTTP Request
+include::{profile-get}/http-request.adoc[]
+=== HTTP Response
+include::{profile-get}/http-response.adoc[]
+include::{profile-get}/response-fields.adoc[]
+
+== 프로필 이미지 생성
+=== HTTP Request
+include::{profile-image-create}/http-request.adoc[]
+include::{profile-image-create}/request-fields.adoc[]
+=== HTTP Response
+include::{profile-image-create}/http-response.adoc[]
+include::{profile-image-create}/response-fields.adoc[]
 
 [[Facility-API]]
 == Facility API

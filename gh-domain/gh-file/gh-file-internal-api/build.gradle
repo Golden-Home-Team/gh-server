@@ -2,6 +2,7 @@ dependencies {
 
     implementation(project(":gh-domain:gh-file:gh-file-core"))
     implementation(project(":gh-api-interface:gh-file-api-interface"))
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
 }
 

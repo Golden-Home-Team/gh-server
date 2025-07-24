@@ -5,7 +5,7 @@ import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.authentication.dto.LoginRequest
 import kr.co.goldenhome.authentication.dto.LoginResponse
 import kr.co.goldenhome.authentication.dto.RefreshRequest
-import kr.co.goldenhome.authentication.service.AuthenticationService
+import kr.co.goldenhome.authentication.service.LoginService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -26,11 +26,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields
@@ -41,7 +36,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-class AuthenticationControllerDocsSpec extends Specification {
+class LoginControllerDocsSpec extends Specification {
 
     @Autowired
     MockMvc mockMvc
@@ -50,7 +45,7 @@ class AuthenticationControllerDocsSpec extends Specification {
     ObjectMapper objectMapper
 
     @SpringBean
-    AuthenticationService authenticationService = Mock()
+    LoginService authenticationService = Mock()
 
     def "로그인 성공"() {
 

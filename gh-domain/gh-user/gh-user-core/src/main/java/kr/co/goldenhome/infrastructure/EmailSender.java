@@ -3,7 +3,6 @@ package kr.co.goldenhome.infrastructure;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import kr.co.goldenhome.dto.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,19 +23,18 @@ public class EmailSender implements MailSender {
 
     @Async
     @Override
-    public void send(Email email)  {
+    public void send(String to, String subject, String content) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
         try {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            mimeMessageHelper.setTo(email.getTo());
+            mimeMessageHelper.setTo(to);
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setSubject(email.getSubject());
-            mimeMessageHelper.setText(email.getContent(), true);
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setText(content);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             log.error("[EmailSender] {}", e.getMessage());
         }
-
     }
 }

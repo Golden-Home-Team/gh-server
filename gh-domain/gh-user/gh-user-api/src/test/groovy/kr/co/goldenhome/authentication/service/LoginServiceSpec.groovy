@@ -11,14 +11,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
-class AuthenticationServiceSpec extends Specification {
+class LoginServiceSpec extends Specification {
 
-    AuthenticationService authenticationService
+    LoginService authenticationService
     UserAuthenticationManager userAuthenticationManager = Mock()
     AuthenticationTokenManager authenticationTokenManager = Mock()
 
     def setup() {
-        authenticationService = new AuthenticationService(userAuthenticationManager, authenticationTokenManager)
+        authenticationService = new LoginService(userAuthenticationManager, authenticationTokenManager)
     }
 
     def "login - UserAuthenticationManager, AuthenticationTokenManager 를 호출한다"() {

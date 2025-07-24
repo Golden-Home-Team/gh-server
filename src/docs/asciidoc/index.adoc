@@ -17,6 +17,10 @@ ifndef::snippets[]
 :get-pre-signed-url-for-upload: ../../../gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload
 :review-write: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write
 :review-readAll: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll
+:recovery-id-request: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-request
+:recovery-id-confirm: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-confirm
+:profile-get: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-get
+:profile-image-create: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-image-create
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -84,6 +88,39 @@ include::{token-refresh}/request-fields.adoc[]
 === HTTP Response
 include::{token-refresh}/http-response.adoc[]
 include::{token-refresh}/response-fields.adoc[]
+
+== 로그인 아이디 찾기 - 인증코드 요청
+=== HTTP Request
+include::{recovery-id-request}/http-request.adoc[]
+include::{recovery-id-request}/request-fields.adoc[]
+
+=== HTTP Response
+include::{recovery-id-request}/http-response.adoc[]
+include::{recovery-id-request}/response-fields.adoc[]
+
+== 로그인 아이디 찾기 - 인증코드 확인
+=== HTTP Request
+include::{recovery-id-confirm}/http-request.adoc[]
+include::{recovery-id-confirm}/request-fields.adoc[]
+
+=== HTTP Response
+include::{recovery-id-confirm}/http-response.adoc[]
+include::{recovery-id-confirm}/response-fields.adoc[]
+
+== 프로필 조회
+=== HTTP Request
+include::{profile-get}/http-request.adoc[]
+=== HTTP Response
+include::{profile-get}/http-response.adoc[]
+include::{profile-get}/response-fields.adoc[]
+
+== 프로필 이미지 생성
+=== HTTP Request
+include::{profile-image-create}/http-request.adoc[]
+include::{profile-image-create}/request-fields.adoc[]
+=== HTTP Response
+include::{profile-image-create}/http-response.adoc[]
+include::{profile-image-create}/response-fields.adoc[]
 
 [[Facility-API]]
 == Facility API

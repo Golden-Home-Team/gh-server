@@ -1,9 +1,6 @@
 package kr.co.goldenhome.implement;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import kr.co.goldenhome.dto.ElderlyFacilityResponse;
-import kr.co.goldenhome.entity.ElderlyFacility;
-import kr.co.goldenhome.entity.ElderlyFacilityDocument;
 import kr.co.goldenhome.entity.FacilityDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,22 +18,22 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ElderlyFacilitySearcher {
+public class FacilitySearcher {
 
     private final ElasticsearchOperations elasticsearchOperations;
 
-    public List<ElderlyFacilityDocument> search(String query, String address, String facilityType, String grade, double minPrice, double maxPrice, int withinYears, int page, int size) {
+    public List<FacilityDocument> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size) {
         List<Query> queries = new ArrayList<>();
         List<Query> filters = new ArrayList<>();
-
-        if (StringUtils.hasText(query)) {
+        if (StringUtils.hasText(name)) {
             Query searchQuery = MatchQuery.of(m -> m
-                    .query(query)
+                    .query(name)
                     .field("name")
                     .fuzziness("AUTO")
             )._toQuery();
             queries.add(searchQuery);
         }
+
         if (StringUtils.hasText(address)) {
             Query addressQuery = MatchQuery.of(m -> m
                     .query(address)
@@ -45,13 +42,12 @@ public class ElderlyFacilitySearcher {
             queries.add(addressQuery);
         }
 
-
         if (StringUtils.hasText(facilityType)) {
-            Query facilityTypeFilter = TermQuery.of(t -> t
+            Query addressQuery = MatchQuery.of(m -> m
+                    .query(facilityType)
                     .field("facilityType")
-                    .value(facilityType)
             )._toQuery();
-            filters.add(facilityTypeFilter);
+            queries.add(addressQuery);
         }
 
         if (StringUtils.hasText(grade)) {
@@ -61,13 +57,6 @@ public class ElderlyFacilitySearcher {
             )._toQuery();
             filters.add(gradeFilter);
         }
-
-        Query priceRangeFilter = NumberRangeQuery.of(r -> r
-                .field("price")
-                .gte(minPrice)
-                .lte(maxPrice)
-        )._toRangeQuery()._toQuery();
-        filters.add(priceRangeFilter);
 
         if (withinYears > 0) {
             double currentYear =  Year.now().getValue();
@@ -84,16 +73,28 @@ public class ElderlyFacilitySearcher {
                 .filter(filters)
         )._toQuery();
 
+        Sort sortOption = switch (sort) {
+            case "view" ->
+                    Sort.by(Sort.Direction.DESC, "viewCount");
+            case "review" ->
+                    Sort.by(Sort.Direction.DESC, "reviewCount");
+            case "like" ->
+                    Sort.by(Sort.Direction.DESC, "likeCount");
+            case "consultation" ->
+                    Sort.by(Sort.Direction.DESC, "consultationCount");
+            default ->
+                    Sort.unsorted();
+        };
+
         NativeQuery nativeQuery = NativeQuery.builder()
                 .withQuery(boolQuery)
                 .withPageable(PageRequest.of(page-1, size))
+                .withSort(sortOption)
                 .build();
 
-        SearchHits<ElderlyFacilityDocument> searchHits = elasticsearchOperations.search(nativeQuery, ElderlyFacilityDocument.class);
-        return searchHits.getSearchHits().stream()
-                .map(hit -> hit.getContent()).toList();
+        SearchHits<FacilityDocument> searchHits = elasticsearchOperations.search(nativeQuery, FacilityDocument.class);
+        return searchHits.stream()
+                .map(SearchHit::getContent).toList();
+
     }
-
-
-
 }

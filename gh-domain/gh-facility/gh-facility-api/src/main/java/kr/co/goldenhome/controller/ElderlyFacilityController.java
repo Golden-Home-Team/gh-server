@@ -12,11 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ElderlyFacilityController {
 
-    private final ElderlyFacilityService elderlyFacilityService;
+    private final ElderlyFacilityService ElderlyfacilityService;
 
     @GetMapping("/{facilityId}")
     public ElderlyFacilityResponse read(@PathVariable("facilityId") Long facilityId) {
-        return elderlyFacilityService.read(facilityId);
+        return ElderlyfacilityService.read(facilityId);
     }
 
     @GetMapping("/v1/readAll")
@@ -25,7 +25,7 @@ public class ElderlyFacilityController {
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize
     ) {
-        return elderlyFacilityService.readAll(facilityType, lastId, pageSize);
+        return ElderlyfacilityService.readAll(facilityType, lastId, pageSize);
     }
 
     @GetMapping("/v2/readAll")
@@ -40,6 +40,10 @@ public class ElderlyFacilityController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "20") int size
     ) {
-        return elderlyFacilityService.search(query, address, facilityType, grade, minPrice, maxPrice, withinYears, page, size);
+        return ElderlyfacilityService.search(query, address, facilityType, grade, minPrice, maxPrice, withinYears, page, size);
     }
+
+
+
+
 }

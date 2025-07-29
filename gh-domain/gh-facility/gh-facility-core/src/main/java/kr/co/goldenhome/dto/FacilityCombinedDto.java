@@ -1,0 +1,51 @@
+package kr.co.goldenhome.dto;
+
+public record FacilityCombinedDto(
+        Long id, // facilities
+        String institutionSymbol,
+        String name,
+        String facilityType,
+        String address,
+        String phoneNumber,
+        Integer establishmentDate,
+        String grade,
+        Integer capacity,
+        Integer currentTotal,
+        Integer currentMale,
+        Integer currentFemale,
+        Long facilityDetailId, // facility_details
+        String singleRoomCount,
+        String doubleRoomCount,
+        String tripleRoomCount,
+        String quadRoomCount,
+        String officeCount,
+        String medicalNurseRoomCount,
+        String dailyLivingTrainingRoomCount,
+        String programRoomCount,
+        String kitchenDiningRoomCount,
+        String bathroomCount,
+        String washBathRoomCount,
+        String laundryRoomCount,
+        Long facilityStaffInformationId, //facility_staff_information
+        Integer directorCount,
+        Integer headOfOfficeCount,
+        Integer socialWorkerCount,
+        Integer residentDoctorCount,
+        Integer visitingDoctorCount,
+        Integer nurseCount,
+        Integer assistantNurseCount,
+        Integer dentalHygienistCount,
+        Integer physicalTherapistCount,
+        Integer occupationalTherapistCount,
+        Integer caregiverLevel1Count,
+        Integer caregiverLevel2Count,
+        Integer caregiverDeferredCount,
+        Integer officeWorkerCount,
+        Integer dietitianCount,
+        Integer cookCount,
+        Integer hygieneWorkerCount,
+        Integer maintenanceWorkerCount,
+        Integer assistantWorkerCount,
+        Integer otherWorkerCount
+) {
+}

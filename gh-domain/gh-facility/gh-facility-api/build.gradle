@@ -6,6 +6,8 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     testImplementation 'com.h2database:h2'
+    testImplementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-facility:gh-facility-core"))

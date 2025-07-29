@@ -4,11 +4,9 @@ import kr.co.goldenhome.entity.ElderlyFacility
 import kr.co.goldenhome.entity.ElderlyFacilityDocument
 import kr.co.goldenhome.implement.ElderlyFacilityReader
 import kr.co.goldenhome.implement.ElderlyFacilitySearcher
-import kr.co.goldenhome.repository.ElderlyFacilityRepository
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import spock.lang.Specification
 
-class ElderlyFacilityServiceSpec extends Specification {
+class elderlyfacilityServiceSpec extends Specification {
 
     ElderlyFacilityService elderlyFacilityService
     ElderlyFacilityReader elderlyFacilityReader = Mock()

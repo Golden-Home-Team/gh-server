@@ -7,6 +7,9 @@ bootJar.enabled = true
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation("org.hibernate.orm:hibernate-community-dialects:7.0.7.Final")
+    implementation("org.xerial:sqlite-jdbc:3.50.3.0")
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     implementation(project(":gh-domain:gh-facility:gh-facility-core"))

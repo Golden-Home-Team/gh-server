@@ -23,7 +23,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        log.error("CustomException occurred. message={}, origin={}", e.getMessage(), e.getOrigin());
+        log.error("CustomException occurred. message={}, origin={}", e.getErrorCode().getMessage(), e.getOrigin());
         return ErrorResponse.toResponse(e);
     }
 

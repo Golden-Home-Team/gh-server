@@ -15,7 +15,7 @@ public class SignupController {
     private final SignupService signUpService;
 
     @GetMapping("/loginId/duplicated")
-    public CommonResponse userExists(@RequestParam("loginId") String loginId) {
+    public CommonResponse checkLoginIdDuplication(@RequestParam("loginId") String loginId) {
         signUpService.isLoginIdDuplicated(loginId);
         return CommonResponse.ok();
     }
@@ -23,6 +23,12 @@ public class SignupController {
     @PostMapping
     public CommonResponse signup(@RequestBody SignupRequest request) {
         signUpService.signup(request);
+        return CommonResponse.ok();
+    }
+
+    @GetMapping("/email/duplicated")
+    public CommonResponse checkEmailDuplication(@RequestParam("email") String email) {
+        signUpService.isEmailDuplicated(email);
         return CommonResponse.ok();
     }
 

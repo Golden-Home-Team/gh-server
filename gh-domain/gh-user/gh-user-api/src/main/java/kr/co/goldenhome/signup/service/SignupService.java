@@ -19,4 +19,7 @@ public class SignupService {
         signupManager.createUser(request);
     }
 
+    public void isEmailDuplicated(String email) {
+        signupManager.isEmailDuplicated(email);
+    }
 }

@@ -47,4 +47,19 @@ class SignupServiceSpec extends Specification {
 
     }
 
+    def "isEmailDuplicated - SignupManager 를 호출한다"() {
+        given:
+        def givenEmail = "gocuding1234@naver.com"
+
+        when:
+        signupService.isEmailDuplicated(givenEmail)
+
+        then:
+        1 * signupManager.isEmailDuplicated(*_) >> {
+            String loginId ->
+                loginId == givenEmail
+        }
+
+    }
+
 }

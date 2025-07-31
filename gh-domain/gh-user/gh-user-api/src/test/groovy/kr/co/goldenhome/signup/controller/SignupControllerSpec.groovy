@@ -29,7 +29,7 @@ class SignupControllerSpec extends Specification {
     @SpringBean
     SignupService signupService = Mock() // ??? 왜 MockitoBean은 안될까
 
-    def "기존 사용자 존재여부 확인"() {
+    def "기존 사용자 아이디 존재여부 확인"() {
         given:
         def request = "gucoding1234"
 
@@ -53,6 +53,22 @@ class SignupControllerSpec extends Specification {
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value("true")
+        }
+    }
+
+    def "기존 사용자 이메일 존재여부 확인"() {
+        given:
+        def request = "gucoding1234@naver.com"
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/users/signup/email/duplicated")
+                .queryParam("email", request)
+        )
 
         then:
         response.andExpect {

@@ -40,7 +40,7 @@ class SignupControllerDocsSpec extends Specification {
     @SpringBean
     SignupService signupService = Mock()
 
-    def "기존 사용자 존재여부 확인"() {
+    def "기존 사용자 아이디 존재여부 확인"() {
         given:
         def request = "gucoding1234"
 
@@ -91,6 +91,29 @@ class SignupControllerDocsSpec extends Specification {
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
+        }
+    }
+
+    def "기존 사용자 이메일 존재여부 확인"() {
+        given:
+        def request = "gucoding1234@naver.com"
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/users/signup/email/duplicated")
+                .queryParam("email", request))
+                .andDo(document("user-email-duplicated",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        queryParameters(
+                                parameterWithName("email").description("이메일"),
+                        ),
+                        responseFields(fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부"))))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value("true")
         }
     }
 

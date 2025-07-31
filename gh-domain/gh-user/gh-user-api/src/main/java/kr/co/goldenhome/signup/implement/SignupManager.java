@@ -27,4 +27,8 @@ public class SignupManager {
         userRepository.save(User.create(request.loginId(), request.email(), encodedPassword, request.phoneNumber(), UserRole.USER));
     }
 
+    public void isEmailDuplicated(String email) {
+        boolean userExists = userRepository.existsByEmail(email);
+        if (userExists) throw new CustomException(ErrorCode.DUPLICATED_EMAIL_ID, "isEmailDuplicated.isLoginIdDuplicated");
+    }
 }

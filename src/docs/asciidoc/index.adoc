@@ -2,6 +2,7 @@ ifndef::snippets[]
 :user-signup-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
 :user-login-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
 :user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
+:user-email-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-email-duplicated
 :social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
 :social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
@@ -36,7 +37,7 @@ endif::[]
 [[User-API]]
 == User API
 
-== 중복된 유저 확인
+== 중복된 유저 아이디 확인
 === HTTP Request
 include::{user-check-duplicated}/http-request.adoc[]
 include::{user-check-duplicated}/query-parameters.adoc[]
@@ -45,6 +46,16 @@ include::{user-check-duplicated}/query-parameters.adoc[]
 === HTTP Response
 include::{user-check-duplicated}/http-response.adoc[]
 include::{user-check-duplicated}/response-fields.adoc[]
+
+== 중복된 유저 이메일 확인
+=== HTTP Request
+include::{user-email-duplicated}/http-request.adoc[]
+include::{user-email-duplicated}/query-parameters.adoc[]
+
+
+=== HTTP Response
+include::{user-email-duplicated}/http-response.adoc[]
+include::{user-email-duplicated}/response-fields.adoc[]
 
 == 회원가입
 === HTTP Request
@@ -222,6 +233,7 @@ include::{get-pre-signed-url-for-upload}/http-response.adoc[]
 include::{get-pre-signed-url-for-upload}/response-fields.adoc[]
 
 [[Review-API]]
+== Review API
 == 리뷰 작성
 === HTTP Request
 include::{review-write}/http-request.adoc[]

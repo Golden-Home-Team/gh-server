@@ -19,7 +19,8 @@ public enum ErrorCode {
     RESUME_NOT_FOUND(404, "이력서 제출전에 작성해야합니다."),
     EMAIL_NOT_FOUND(404, "해당 이메일로 가입한 계정이 존재하지 않습니다."),
     FACILITY_NOT_FOUND(404, "존재하지 않는 시설입니다"),
-    DUPLICATED_LOGIN_ID(409, "이미 존재하는 로그인 아이디입니다.");
+    DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
+    DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다.");
     private final int httpStatus;
     private final String message;
 }

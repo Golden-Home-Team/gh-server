@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Table(name = "resumes")
-@Entity
+@Table(name = "resumes", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "user_id", name = "UQ_RESUMES_USER_ID")
+})@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resume {
@@ -27,9 +29,12 @@ public class Resume {
     private String guardianName;
     private String guardianContactInformation;
     private String relationship;
+    private String facilityType;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Builder
-    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
+    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -41,9 +46,12 @@ public class Resume {
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
         this.relationship = relationship;
+        this.facilityType = facilityType;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public static Resume create(Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
+    public static Resume create(Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType) {
         return Resume.builder()
                 .userId(userId)
                 .name(name)
@@ -55,10 +63,13 @@ public class Resume {
                 .guardianName(guardianName)
                 .guardianContactInformation(guardianContactInformation)
                 .relationship(relationship)
+                .facilityType(facilityType)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
-    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship) {
+    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
@@ -68,5 +79,7 @@ public class Resume {
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
         this.relationship = relationship;
+        this.facilityType = facilityType;
+        this.updatedAt = LocalDateTime.now();
     }
 }

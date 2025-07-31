@@ -24,7 +24,8 @@ public class ResumeWriter {
                         request.specialNotes(),
                         request.guardianName(),
                         request.guardianContactInformation(),
-                        request.relationShip()
+                        request.relationShip(),
+                        request.facilityType()
                 )
         );
     }

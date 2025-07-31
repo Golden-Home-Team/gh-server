@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
@@ -55,7 +56,8 @@ class ResumeControllerDocsSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
 
         when:
@@ -85,10 +87,11 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
                                 fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계")
+                                        .description("보호자 관계"),
+                                fieldWithPath("facilityType").type(JsonFieldType.STRING)
+                                        .description("시설 타입")
                         ),
                         responseFields(
-
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                         .description("성공여부")
                         )
@@ -115,7 +118,9 @@ class ResumeControllerDocsSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원",
+                LocalDateTime.of(2020, 10, 10, 10, 10)
         )
         resumeService.read(*_) >> expectedResponse
 
@@ -148,7 +153,11 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
                                 fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계")
+                                        .description("보호자 관계"),
+                                fieldWithPath("facilityType").type(JsonFieldType.STRING)
+                                        .description("시설 타입"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING)
+                                        .description("수정 일")
                         )
                 ))
 
@@ -166,6 +175,8 @@ class ResumeControllerDocsSpec extends Specification{
             MockMvcResultMatchers.jsonPath('$.guardianName').value("구머니")
             MockMvcResultMatchers.jsonPath('$.guardianContactInformation').value("01040363457")
             MockMvcResultMatchers.jsonPath('$.relationShip').value("모")
+            MockMvcResultMatchers.jsonPath('$.facilityType').value("양로원")
+            MockMvcResultMatchers.jsonPath('$.updatedAt').value( LocalDateTime.of(2020, 10, 10, 10, 10))
         }
 
     }
@@ -182,7 +193,8 @@ class ResumeControllerDocsSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
 
         when:
@@ -212,7 +224,9 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
                                 fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계")
+                                        .description("보호자 관계"),
+                                fieldWithPath("facilityType").type(JsonFieldType.STRING)
+                                        .description("시설 타입")
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)

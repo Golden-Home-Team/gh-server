@@ -16,4 +16,8 @@ public class ResumeReader {
     public Resume read(Long userId) {
         return resumeRepository.findByUserId(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "ResumeService.readBaseResume"));
     }
+
+    public boolean isExist(Long userId) {
+        return resumeRepository.existsByUserId(userId);
+    }
 }

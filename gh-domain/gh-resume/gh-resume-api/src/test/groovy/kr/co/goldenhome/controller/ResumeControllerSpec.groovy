@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -43,7 +44,8 @@ class ResumeControllerSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
 
         when:
@@ -72,7 +74,9 @@ class ResumeControllerSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원",
+                LocalDateTime.of(2020, 10, 10, 10, 10)
         )
         resumeService.read(1L) >> expectedResponse
 
@@ -95,6 +99,8 @@ class ResumeControllerSpec extends Specification{
             MockMvcResultMatchers.jsonPath('$.guardianName').value("구머니")
             MockMvcResultMatchers.jsonPath('$.guardianContactInformation').value("01040363457")
             MockMvcResultMatchers.jsonPath('$.relationShip').value("모")
+            MockMvcResultMatchers.jsonPath('$.facilityType').value("양로원")
+            MockMvcResultMatchers.jsonPath('$.updatedAt').value(LocalDateTime.of(2020, 10, 10, 10, 10))
         }
 
     }
@@ -111,7 +117,8 @@ class ResumeControllerSpec extends Specification{
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
 
         when:

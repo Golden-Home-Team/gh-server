@@ -36,7 +36,8 @@ class ResumeServiceSpec extends Specification {
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
         def givenUserId = 1L
 
@@ -79,7 +80,8 @@ class ResumeServiceSpec extends Specification {
                 "없음",
                 "구머니",
                 "01040363457",
-                "모"
+                "모",
+                "양로원"
         )
         def givenUserId = 1L
 

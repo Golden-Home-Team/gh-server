@@ -4,6 +4,7 @@ import exception.CustomException;
 import exception.ErrorCode;
 import exception.ExternalApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -74,6 +75,14 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(400, "잘못된 형식의 json 요청입니다."));
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        log.error("DataIntegrityViolationException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(400, "해당 데이터는 사용자당 한개만 할당됩니다."));
+    }
+
 
     private String createMessage(BindException e) {
         if (e.getFieldError() != null && e.getFieldError().getDefaultMessage() != null) {

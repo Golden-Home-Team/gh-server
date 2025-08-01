@@ -79,4 +79,8 @@ public class User {
                 .build();
     }
 
+    public void resetPassword(String password) {
+        this.password = password;
+    }
+
 }

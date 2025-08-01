@@ -2,19 +2,20 @@ package kr.co.goldenhome.authentication.service;
 
 import exception.CustomException;
 import exception.ErrorCode;
-import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest;
-import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse;
-import kr.co.goldenhome.authentication.dto.VerificationRequest;
-import kr.co.goldenhome.authentication.dto.VerificationResponse;
+import kr.co.goldenhome.authentication.dto.*;
+import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.enums.VerificationPurpose;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.authentication.implement.VerificationManager;
+import kr.co.goldenhome.infrastructure.PasswordProcessor;
 import kr.co.goldenhome.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class AuthRecoveryService {
 
     private final List<VerificationManager> verificationManagers;
     private final UserRepository userRepository;
+    private final PasswordProcessor passwordProcessor;
 
     public VerificationResponse requestVerification(VerificationRequest request) {
         VerificationPurpose purpose = VerificationPurpose.FIND_ID;
@@ -47,5 +49,13 @@ public class AuthRecoveryService {
             }
         }
         return null;
+    }
+
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        if (!Objects.equals(request.newPassword(), request.confirmPassword())) throw new CustomException(ErrorCode.INVALID_PASSWORD, "AuthRecoveryService.resetPassword");
+        String encodedPassword = passwordProcessor.encode(request.newPassword());
+        User user = userRepository.findByLoginId(request.loginId()).orElseThrow(() -> new CustomException(ErrorCode.LOGIN_ID_NOT_FOUND, "AuthRecoveryService.resetPassword"));
+        user.resetPassword(encodedPassword);
     }
 }

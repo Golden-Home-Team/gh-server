@@ -1,6 +1,7 @@
 package kr.co.goldenhome.authentication.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse
 import kr.co.goldenhome.authentication.dto.VerificationRequest
@@ -40,7 +41,7 @@ class AuthRecoveryControllerSpec extends Specification {
         def expectedResponse = new VerificationResponse("12345678", VerificationPurpose.FIND_ID)
         authRecoveryService.requestVerification(*_) >> expectedResponse
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/id/verification-request")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-request")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
 
@@ -59,7 +60,7 @@ class AuthRecoveryControllerSpec extends Specification {
         def expectedResponse = new VerificationConfirmResponse(LocalDateTime.of(2000, 1, 1, 10, 10), "gucoding1234", VerificationPurpose.FIND_ID)
         authRecoveryService.confirm(*_) >> expectedResponse
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/id/verification-confirm")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-confirm")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
 
@@ -72,4 +73,21 @@ class AuthRecoveryControllerSpec extends Specification {
         }
 
     }
+
+    def "비밀번호 재설정"() {
+        given:
+        def request = new ResetPasswordRequest("test1234", "1234", "1234")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
 }

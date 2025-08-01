@@ -11,6 +11,7 @@ public enum ErrorCode {
     INVALID_ENUM(400, "잘못된 enum"),
     INVALID_FILENAME(400, "파일 이름은 한글, 영어, 숫자, 점, 밑줄, 하이픈만 포함할 수 있습니다."),
     INVALID_VERIFICATION_CODE(400, "유효한 인증번호가 존재하지 않거나 만료되었습니다."),
+    INVALID_PASSWORD(400, "비밀번호와 비밀번호 확인이 다릅니다."),
     LOGIN_FAILED(401, "이메일 혹은 비밀번호가 틀립니다."),
     UNAUTHORIZED_TOKEN(401, "유효하지 않은 토큰입니다."),
     SOCIAL_LOGIN_FAILED(401, "소셜 로그인에 실패했습니다."),

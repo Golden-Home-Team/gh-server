@@ -1,10 +1,13 @@
 package kr.co.goldenhome.authentication.service
 
+import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationRequest
 import kr.co.goldenhome.authentication.dto.VerificationResponse
 import kr.co.goldenhome.authentication.implement.VerificationManager
+import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.enums.VerificationPurpose
 import kr.co.goldenhome.enums.VerificationType
+import kr.co.goldenhome.infrastructure.PasswordProcessor
 import kr.co.goldenhome.infrastructure.UserRepository
 import spock.lang.Specification
 
@@ -13,9 +16,10 @@ class AuthRecoveryServiceSpec extends Specification {
     AuthRecoveryService authRecoveryService
     UserRepository userRepository = Mock()
     VerificationManager emailVerificationManager = Mock()
+    PasswordProcessor passwordProcessor = Mock()
 
     def "setup"() {
-        authRecoveryService = new AuthRecoveryService([emailVerificationManager], userRepository)
+        authRecoveryService = new AuthRecoveryService([emailVerificationManager], userRepository, passwordProcessor)
         emailVerificationManager.getVerificationType() >> VerificationType.EMAIL
     }
 
@@ -71,6 +75,20 @@ class AuthRecoveryServiceSpec extends Specification {
         and:
         1 * emailVerificationManager.create(contact)
         1 * emailVerificationManager.send(contact, *_)
+    }
+
+    def "resetPassword - passwordProcessor, userRepository 를 호출한다"() {
+        given:
+        def givenRequest = new ResetPasswordRequest("test1234", "1234", "1234")
+
+        when:
+        authRecoveryService.resetPassword(givenRequest)
+
+        then:
+        1 * passwordProcessor.encode(*_)
+
+        and:
+        1 * userRepository.findByLoginId(*_) >> Optional.of(User.builder().build())
     }
 
 

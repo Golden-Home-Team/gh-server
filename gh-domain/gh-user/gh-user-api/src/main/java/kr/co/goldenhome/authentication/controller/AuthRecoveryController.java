@@ -1,9 +1,7 @@
 package kr.co.goldenhome.authentication.controller;
 
-import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest;
-import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse;
-import kr.co.goldenhome.authentication.dto.VerificationRequest;
-import kr.co.goldenhome.authentication.dto.VerificationResponse;
+import dto.CommonResponse;
+import kr.co.goldenhome.authentication.dto.*;
 import kr.co.goldenhome.enums.VerificationPurpose;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.authentication.service.AuthRecoveryService;
@@ -32,5 +30,11 @@ public class AuthRecoveryController {
         EnumValidator.validate(VerificationType.class, "type", request.type(), "AccountController.confirmVerification");
         EnumValidator.validate(VerificationPurpose.class, "purpose", request.purpose(), "AccountController.confirmVerification");
         return authRecoveryService.confirm(request);
+    }
+
+    @PostMapping("/password")
+    public CommonResponse resetPassword(@RequestBody ResetPasswordRequest request) {
+        authRecoveryService.resetPassword(request);
+        return CommonResponse.ok();
     }
 }

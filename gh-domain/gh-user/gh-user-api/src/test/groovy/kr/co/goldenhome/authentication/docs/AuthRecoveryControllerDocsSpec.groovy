@@ -1,6 +1,7 @@
 package kr.co.goldenhome.authentication.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse
 import kr.co.goldenhome.authentication.dto.VerificationRequest
@@ -128,5 +129,38 @@ class AuthRecoveryControllerDocsSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.purpose').value("FIND_ID")
         }
 
+    }
+
+    def "비밀번호 재설정"() {
+        given:
+        def request = new ResetPasswordRequest("test1234", "1234", "1234")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(document("password-change",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("loginId").type(JsonFieldType.STRING)
+                                        .description("로그인 아이디"),
+                                fieldWithPath("newPassword").type(JsonFieldType.STRING)
+                                        .description("새 비밀번호"),
+                                fieldWithPath("confirmPassword").type(JsonFieldType.STRING)
+                                        .description("비밀번호 확인")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                        .description("성공여부")
+                        )
+                ))
+
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
     }
 }

@@ -82,7 +82,8 @@ allprojects {
                 'review-write': 'gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write',
                 'review-readAll': 'gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll',
                 'recovery-request': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-request',
-                'recovery-confirm': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm'
+                'recovery-confirm': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm',
+                'password-change': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change'
 
 
 

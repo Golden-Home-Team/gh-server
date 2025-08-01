@@ -1,11 +1,13 @@
 package kr.co.goldenhome.authentication.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse
 import kr.co.goldenhome.authentication.dto.VerificationRequest
 import kr.co.goldenhome.authentication.dto.VerificationResponse
 import kr.co.goldenhome.authentication.service.AuthRecoveryService
+import kr.co.goldenhome.enums.VerificationPurpose
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -33,13 +35,13 @@ class AuthRecoveryControllerSpec extends Specification {
     @SpringBean
     AuthRecoveryService authRecoveryService = Mock()
 
-    def "로그인 아이디 찾기 - 인증요청"() {
+    def "계정 찾기 - 인증요청"() {
         given:
-        def request = new VerificationRequest("EMAIL", "gucoding1234@google.com")
-        def expectedResponse = new VerificationResponse("12345678")
+        def request = new VerificationRequest("EMAIL", "gucoding1234@google.com", "test1234")
+        def expectedResponse = new VerificationResponse("12345678", VerificationPurpose.FIND_ID)
         authRecoveryService.requestVerification(*_) >> expectedResponse
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/id/verification-request")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-request")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
 
@@ -47,18 +49,18 @@ class AuthRecoveryControllerSpec extends Specification {
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
             MockMvcResultMatchers.jsonPath('$.verificationCode').value("12345678")
-
+            MockMvcResultMatchers.jsonPath('$.purpose').value("FIND_ID")
         }
 
     }
 
-    def "로그인 아이디 찾기 - 인증확인"() {
+    def "계정 찾기 - 인증확인"() {
         given:
-        def request = new VerificationConfirmRequest("EMAIL", "gucoding1234@google.com", "12345678")
-        def expectedResponse = new VerificationConfirmResponse(LocalDateTime.of(2000, 1, 1, 10, 10), "gucoding1234")
+        def request = new VerificationConfirmRequest("EMAIL", "gucoding1234@google.com", "12345678", VerificationPurpose.FIND_ID.name())
+        def expectedResponse = new VerificationConfirmResponse(LocalDateTime.of(2000, 1, 1, 10, 10), "gucoding1234", VerificationPurpose.FIND_ID)
         authRecoveryService.confirm(*_) >> expectedResponse
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/id/verification-confirm")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-confirm")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
 
@@ -67,8 +69,25 @@ class AuthRecoveryControllerSpec extends Specification {
             MockMvcResultMatchers.status().isOk()
             MockMvcResultMatchers.jsonPath('$.createdAt').value(LocalDateTime.of(2000, 1, 1, 10, 10))
             MockMvcResultMatchers.jsonPath('$.loginId').value("gucoding1234")
-
+            MockMvcResultMatchers.jsonPath('$.purpose').value("FIND_ID")
         }
 
     }
+
+    def "비밀번호 재설정"() {
+        given:
+        def request = new ResetPasswordRequest("test1234", "1234", "1234")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
 }

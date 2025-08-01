@@ -81,13 +81,13 @@ allprojects {
                 'get-pre-signed-url-for-upload': 'gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload',
                 'review-write': 'gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write',
                 'review-readAll': 'gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll',
-                'recovery-id-request': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-request',
-                'recovery-id-confirm': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-id-confirm'
+                'recovery-request': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-request',
+                'recovery-confirm': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm'
 
 
 
         sources {
-            include '**/index.adoc' // [변경 10]: index.adoc만 처리
+            include '**/index.adoc'
         }
 
         dependsOn subprojects.test

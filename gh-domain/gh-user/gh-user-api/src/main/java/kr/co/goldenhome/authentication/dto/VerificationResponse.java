@@ -1,4 +1,6 @@
 package kr.co.goldenhome.authentication.dto;
 
-public record VerificationResponse(String verificationCode) {
+import kr.co.goldenhome.enums.VerificationPurpose;
+
+public record VerificationResponse(String verificationCode, VerificationPurpose purpose) {
 }

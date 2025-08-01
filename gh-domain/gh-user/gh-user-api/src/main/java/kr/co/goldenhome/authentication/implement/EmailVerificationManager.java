@@ -5,6 +5,7 @@ import exception.ErrorCode;
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse;
 import kr.co.goldenhome.entity.EmailVerification;
 import kr.co.goldenhome.entity.User;
+import kr.co.goldenhome.enums.VerificationPurpose;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.infrastructure.EmailVerificationRepository;
 import kr.co.goldenhome.infrastructure.MailSender;
@@ -42,12 +43,12 @@ public class EmailVerificationManager implements VerificationManager {
 
     @Override
     @Transactional
-    public VerificationConfirmResponse confirm(String emailAddress, String verificationCode) {
+    public VerificationConfirmResponse confirm(String emailAddress, String verificationCode, VerificationPurpose purpose) {
         EmailVerification emailVerification = emailVerificationRepository.findTopByEmailAddressAndUsedIsFalseAndExpiresAtAfterOrderByCreatedAtDesc(emailAddress, LocalDateTime.now()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE, "EmailVerificationManager.confirm"));
         if (!emailVerification.getVerificationCode().equals(verificationCode)) throw new CustomException(ErrorCode.INVALID_VERIFICATION_CODE, "EmailVerificationManager.confirm");
         emailVerification.markAsUsed();
         User user = userRepository.findByEmail(emailVerification.getEmailAddress()).orElseThrow(() -> new CustomException(ErrorCode.EMAIL_NOT_FOUND, "EmailVerificationManager.confirm"));
-        return new VerificationConfirmResponse(user.getCreatedAt(), user.getLoginId());
+        return new VerificationConfirmResponse(user.getCreatedAt(), user.getLoginId(), purpose);
     }
 
 

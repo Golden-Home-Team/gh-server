@@ -1,5 +1,5 @@
 package kr.co.goldenhome.authentication.dto;
 
-public record VerificationRequest(String type, String contact, String loginId) {
+public record VerificationRequest(String type, String contact) {
 
 }

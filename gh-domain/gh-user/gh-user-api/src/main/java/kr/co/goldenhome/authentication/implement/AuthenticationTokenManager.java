@@ -7,7 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
-import kr.co.goldenhome.infrastructure.RefreshTokenRepository;
+import kr.co.goldenhome.infrastructure.TokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,14 +21,14 @@ import java.util.Date;
 public class AuthenticationTokenManager {
 
     private final SecretKey key;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenRepository tokenRepository;
     public static final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24;
     public static final Long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 30;
 
-    public AuthenticationTokenManager(@Value("${JWT_SECRET_KEY}") String secretKey, RefreshTokenRepository refreshTokenRepository) {
+    public AuthenticationTokenManager(@Value("${JWT_SECRET_KEY}") String secretKey, TokenRepository tokenRepository) {
         byte[] secretKeyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(secretKeyBytes);
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.tokenRepository = tokenRepository;
     }
 
     public LoginResponse create(Long userId) {
@@ -78,7 +78,7 @@ public class AuthenticationTokenManager {
                 .expiration(new Date(currentTime.getTime() + REFRESH_TOKEN_VALID_TIME))
                 .signWith(key)
                 .compact();
-        refreshTokenRepository.save(userId, refreshToken, Duration.ofMillis(REFRESH_TOKEN_VALID_TIME));
+        tokenRepository.save(String.valueOf(userId), refreshToken, Duration.ofMillis(REFRESH_TOKEN_VALID_TIME));
         return refreshToken;
     }
 
@@ -94,7 +94,7 @@ public class AuthenticationTokenManager {
         Claims claims = getClaims(refreshToken);
         if (!claims.getSubject().equals("refreshToken")) throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.validRefreshToken");
         Long userId = claims.get("userId", Long.class);
-        String storedToken = refreshTokenRepository.getByUserId(userId);
+        String storedToken = tokenRepository.getByKey(String.valueOf(userId));
         if (!refreshToken.equals(storedToken)) throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "AuthenticationTokenManager.validRefreshToken");
         return claims;
     }

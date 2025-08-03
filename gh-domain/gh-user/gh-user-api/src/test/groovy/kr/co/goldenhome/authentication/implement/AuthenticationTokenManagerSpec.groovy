@@ -1,6 +1,6 @@
 package kr.co.goldenhome.authentication.implement
 
-import kr.co.goldenhome.infrastructure.RefreshTokenRepository
+import kr.co.goldenhome.infrastructure.TokenRepository
 import spock.lang.Specification
 
 import java.time.Duration
@@ -8,10 +8,10 @@ import java.time.Duration
 class AuthenticationTokenManagerSpec extends Specification {
 
     AuthenticationTokenManager authenticationTokenManager
-    RefreshTokenRepository refreshTokenRepository = Mock()
+    TokenRepository refreshTokenRepository = Mock()
 
     def setup() {
-        authenticationTokenManager = new AuthenticationTokenManager("eL2=kPzQxR9sT0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1qR2sT3uV4wX5yZ6aB7c", refreshTokenRepository)
+        authenticationTokenManager = new AuthenticationTokenManager("eL3=kPzQxRQsT0uV2wX1yZ3aB4cD5eF6gH7if8kL9ma0oP1qR0sT3uV4wX5yZKaB7c", refreshTokenRepository)
     }
 
     def "create - RefreshTokenRepository 를 호출한다"() {
@@ -23,9 +23,8 @@ class AuthenticationTokenManagerSpec extends Specification {
 
         then:
         1 * refreshTokenRepository.save(*_) >> {
-            Long userId, String refreshToken, Duration expirationDuration->
-                userId == givenUserId
-                refreshToken
+            String userId, String refreshToken, Duration duration ->
+                userId == String.valueOf(givenUserId)
         }
     }
 }

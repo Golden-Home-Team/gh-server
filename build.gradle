@@ -94,6 +94,9 @@ allprojects {
         dependsOn subprojects.test
     }
 
+//    tasks.withType(JavaCompile).configureEach {
+//        options.compilerArgs << "-parameters"
+//    }
 
 
     bootJar.enabled = false

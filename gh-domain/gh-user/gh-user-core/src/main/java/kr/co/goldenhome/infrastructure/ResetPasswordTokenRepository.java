@@ -8,22 +8,21 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-@Primary
-@Qualifier(value = "refreshTokenRepository")
+//@Primary
+@Qualifier("resetPasswordTokenRepository")
 @Repository
 @RequiredArgsConstructor
-public class RefreshTokenRepository implements TokenRepository {
-
+public class ResetPasswordTokenRepository implements TokenRepository{
     private final StringRedisTemplate redisTemplate;
-    private static final String REFRESH_TOKEN_PREFIX = "userId:";
+    private static final String RESET_PASSWORD = "reset-password:";
 
     @Override
     public void save(String key, String token, Duration expirationDuration) {
-        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX + key, token, expirationDuration);
+        redisTemplate.opsForValue().set(RESET_PASSWORD + key, token, expirationDuration);
     }
 
     @Override
-    public String getByKey(String userId) {
-        return redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + userId);
+    public String getByKey(String key) {
+        return redisTemplate.opsForValue().get(RESET_PASSWORD + key);
     }
 }

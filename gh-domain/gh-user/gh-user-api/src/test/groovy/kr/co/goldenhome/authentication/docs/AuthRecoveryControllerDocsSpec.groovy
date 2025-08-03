@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse
+import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse
 import kr.co.goldenhome.authentication.dto.VerificationRequest
 import kr.co.goldenhome.authentication.dto.VerificationResponse
 import kr.co.goldenhome.authentication.service.AuthRecoveryService
-import kr.co.goldenhome.enums.VerificationPurpose
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -27,10 +27,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields
@@ -52,8 +48,8 @@ class AuthRecoveryControllerDocsSpec extends Specification {
 
     def "계정 찾기 - 인증요청"() {
         given:
-        def request = new VerificationRequest("EMAIL", "gucoding1234@google.com", "test1234")
-        def expectedResponse = new VerificationResponse("12345678", VerificationPurpose.FIND_ID)
+        def request = new VerificationRequest("EMAIL", "gucoding1234@google.com")
+        def expectedResponse = new VerificationResponse("12345678")
         authRecoveryService.requestVerification(*_) >> expectedResponse
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-request")
@@ -66,15 +62,11 @@ class AuthRecoveryControllerDocsSpec extends Specification {
                                 fieldWithPath("type").type(JsonFieldType.STRING)
                                         .description("로그인 아이디 찾는 방법 e.g. EMAIL, PHONE"),
                                 fieldWithPath("contact").type(JsonFieldType.STRING)
-                                        .description("연락처 이메일주소 or 전화번호"),
-                                fieldWithPath("loginId").type(JsonFieldType.STRING)
-                                        .description("로그인 아이디")
+                                        .description("연락처 이메일주소 or 전화번호")
                         ),
                         responseFields(
                                 fieldWithPath("verificationCode").type(JsonFieldType.STRING)
-                                        .description("인증코드"),
-                                fieldWithPath("purpose").type(JsonFieldType.STRING)
-                                        .description(" FIND_ID , RESET_PASSWORD")
+                                        .description("인증코드")
                         )
                 ))
 
@@ -82,16 +74,14 @@ class AuthRecoveryControllerDocsSpec extends Specification {
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
             MockMvcResultMatchers.jsonPath('$.verificationCode').value("12345678")
-            MockMvcResultMatchers.jsonPath('$.purpose').value("FIND_ID")
-
         }
 
     }
 
     def "계정 찾기 - 인증확인"() {
         given:
-        def request = new VerificationConfirmRequest("EMAIL", "gucoding1234@google.com", "12345678", "FIND_ID")
-        def expectedResponse = new VerificationConfirmResponse(LocalDateTime.of(2000, 1, 1, 10, 10), "gucoding1234", VerificationPurpose.FIND_ID)
+        def request = new VerificationConfirmRequest("EMAIL", "gucoding1234@google.com", "12345678", "testLoginId")
+        def expectedResponse = new VerificationConfirmResponse(LocalDateTime.of(2000, 1, 1, 10, 10), "gucoding1234", "abc-123")
         authRecoveryService.confirm(*_) >> expectedResponse
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/verification-confirm")
@@ -107,16 +97,16 @@ class AuthRecoveryControllerDocsSpec extends Specification {
                                         .description("연락처 이메일주소 or 전화번호"),
                                 fieldWithPath("verificationCode").type(JsonFieldType.STRING)
                                         .description("인증코드"),
-                                fieldWithPath("purpose").type(JsonFieldType.STRING)
-                                        .description("로그인 아이디 찾기, 비밀번호 찾기 통합 e.g. FIND_ID , RESET_PASSWORD")
+                                fieldWithPath("loginId").type(JsonFieldType.STRING)
+                                        .description("로그인 아이디(비밀번호 찾기 요청일 경우 필요합니다.) [Optional]").optional()
                         ),
                         responseFields(
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING)
                                         .description("가입일"),
                                 fieldWithPath("loginId").type(JsonFieldType.STRING)
                                         .description("로그인 아이디"),
-                                fieldWithPath("purpose").type(JsonFieldType.STRING)
-                                        .description("로그인 아이디 찾기, 비밀번호 찾기 통합 e.g. FIND_ID , RESET_PASSWORD")
+                                fieldWithPath("resetPasswordToken").type(JsonFieldType.STRING)
+                                        .description("비밀번호 재설정 시 필요한 토큰입니다.")
                         )
                 )
                 )
@@ -126,14 +116,14 @@ class AuthRecoveryControllerDocsSpec extends Specification {
             MockMvcResultMatchers.status().isOk()
             MockMvcResultMatchers.jsonPath('$.createdAt').value(LocalDateTime.of(2000, 1, 1, 10, 10))
             MockMvcResultMatchers.jsonPath('$.loginId').value("gucoding1234")
-            MockMvcResultMatchers.jsonPath('$.purpose').value("FIND_ID")
+            MockMvcResultMatchers.jsonPath('$.resetPasswordToken').value("abc-123")
         }
 
     }
 
     def "비밀번호 재설정"() {
         given:
-        def request = new ResetPasswordRequest("test1234", "1234", "1234")
+        def request = new ResetPasswordRequest("abcd-1234","test1234", "1234", "1234")
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/recover/password")
@@ -143,6 +133,8 @@ class AuthRecoveryControllerDocsSpec extends Specification {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
+                                fieldWithPath("resetPasswordToken").type(JsonFieldType.STRING)
+                                        .description("비밀번호 재설정 검증 토큰"),
                                 fieldWithPath("loginId").type(JsonFieldType.STRING)
                                         .description("로그인 아이디"),
                                 fieldWithPath("newPassword").type(JsonFieldType.STRING)

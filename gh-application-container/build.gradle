@@ -14,6 +14,7 @@ plugins {
 //    }
 //}
 
+
 bootJar {
     enabled = true
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE

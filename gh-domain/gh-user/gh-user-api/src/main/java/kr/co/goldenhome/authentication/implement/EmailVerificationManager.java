@@ -2,10 +2,9 @@ package kr.co.goldenhome.authentication.implement;
 
 import exception.CustomException;
 import exception.ErrorCode;
-import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse;
+import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse;
 import kr.co.goldenhome.entity.EmailVerification;
 import kr.co.goldenhome.entity.User;
-import kr.co.goldenhome.enums.VerificationPurpose;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.infrastructure.EmailVerificationRepository;
 import kr.co.goldenhome.infrastructure.MailSender;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -43,12 +41,12 @@ public class EmailVerificationManager implements VerificationManager {
 
     @Override
     @Transactional
-    public VerificationConfirmResponse confirm(String emailAddress, String verificationCode, VerificationPurpose purpose) {
+    public VerificationConfirmServiceResponse confirm(String emailAddress, String verificationCode) {
         EmailVerification emailVerification = emailVerificationRepository.findTopByEmailAddressAndUsedIsFalseAndExpiresAtAfterOrderByCreatedAtDesc(emailAddress, LocalDateTime.now()).orElseThrow(() -> new CustomException(ErrorCode.INVALID_VERIFICATION_CODE, "EmailVerificationManager.confirm"));
         if (!emailVerification.getVerificationCode().equals(verificationCode)) throw new CustomException(ErrorCode.INVALID_VERIFICATION_CODE, "EmailVerificationManager.confirm");
         emailVerification.markAsUsed();
         User user = userRepository.findByEmail(emailVerification.getEmailAddress()).orElseThrow(() -> new CustomException(ErrorCode.EMAIL_NOT_FOUND, "EmailVerificationManager.confirm"));
-        return new VerificationConfirmResponse(user.getCreatedAt(), user.getLoginId(), purpose);
+        return new VerificationConfirmServiceResponse(user.getCreatedAt(), user.getLoginId());
     }
 
 

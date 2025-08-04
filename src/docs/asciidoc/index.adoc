@@ -25,6 +25,11 @@ ifndef::snippets[]
 :password-change: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change
 :profile-get: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-get
 :profile-image-create: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-image-create
+:profile-modify-name: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-name
+:profile-modify-loginId: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-loginId
+:profile-modify-phoneNumber: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-phoneNumber
+:profile-modify-email: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email
+:profile-modify-password: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -145,6 +150,52 @@ include::{profile-image-create}/request-fields.adoc[]
 === HTTP Response
 include::{profile-image-create}/http-response.adoc[]
 include::{profile-image-create}/response-fields.adoc[]
+
+== 프로필 - 이름 수정
+=== HTTP Request
+include::{profile-modify-name}/http-request.adoc[]
+include::{profile-modify-name}/request-fields.adoc[]
+
+=== HTTP Response
+include::{profile-modify-name}/http-response.adoc[]
+include::{profile-modify-name}/response-fields.adoc[]
+
+== 프로필 - 로그인아이디 수정
+=== HTTP Request
+include::{profile-modify-loginId}/http-request.adoc[]
+include::{profile-modify-loginId}/request-fields.adoc[]
+
+=== HTTP Response
+include::{profile-modify-loginId}/http-response.adoc[]
+include::{profile-modify-loginId}/response-fields.adoc[]
+
+== 프로필 - 전화번호 수정
+=== HTTP Request
+include::{profile-modify-phoneNumber}/http-request.adoc[]
+include::{profile-modify-phoneNumber}/request-fields.adoc[]
+
+=== HTTP Response
+include::{profile-modify-phoneNumber}/http-response.adoc[]
+include::{profile-modify-phoneNumber}/response-fields.adoc[]
+
+== 프로필 - 이메일 수정
+=== HTTP Request
+include::{profile-modify-email}/http-request.adoc[]
+include::{profile-modify-email}/request-fields.adoc[]
+
+=== HTTP Response
+include::{profile-modify-email}/http-response.adoc[]
+include::{profile-modify-email}/response-fields.adoc[]
+
+== 프로필 - 비밀번호 수정
+=== HTTP Request
+include::{profile-modify-password}/http-request.adoc[]
+include::{profile-modify-password}/request-fields.adoc[]
+
+=== HTTP Response
+include::{profile-modify-password}/http-response.adoc[]
+include::{profile-modify-password}/response-fields.adoc[]
+
 
 [[Facility-API]]
 == Facility API

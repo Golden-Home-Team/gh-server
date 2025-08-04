@@ -2,7 +2,12 @@ package kr.co.goldenhome.profile.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ProfileImageApiResponse
+import kr.co.goldenhome.profile.dto.ProfileEmailRequest
 import kr.co.goldenhome.profile.dto.ProfileImageRequest
+import kr.co.goldenhome.profile.dto.ProfileLoginIdRequest
+import kr.co.goldenhome.profile.dto.ProfileNameRequest
+import kr.co.goldenhome.profile.dto.ProfilePasswordRequest
+import kr.co.goldenhome.profile.dto.ProfilePhoneNumberRequest
 import kr.co.goldenhome.profile.dto.ProfileResponse
 import kr.co.goldenhome.profile.service.ProfileService
 import org.spockframework.spring.SpringBean
@@ -108,6 +113,141 @@ class ProfileControllerDocsSpec extends Specification {
                                         .description("성공여부")
                         )
                 ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 이름 수정"() {
+        def givenRequest = new ProfileNameRequest("구준형2")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/name")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        ).andDo(document("profile-modify-name",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING)
+                                .description("사용자 이름"),
+                ),
+                responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부")
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 로그인아이디 수정"() {
+        def givenRequest = new ProfileLoginIdRequest("test2user")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/loginId")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        ).andDo(document("profile-modify-loginId",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                        fieldWithPath("loginId").type(JsonFieldType.STRING)
+                                .description("로그인아이디"),
+                ),
+                responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부")
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 전화번호 수정"() {
+        def givenRequest = new ProfilePhoneNumberRequest("01012345678")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/phoneNumber")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        ).andDo(document("profile-modify-phoneNumber",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                        fieldWithPath("phoneNumber").type(JsonFieldType.STRING)
+                                .description("전화번호"),
+                ),
+                responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부")
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 이메일 수정"() {
+        def givenRequest = new ProfileEmailRequest("test2@naver.com")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/email")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        ).andDo(document("profile-modify-email",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING)
+                                .description("사용자 이름"),
+                ),
+                responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부")
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 비밀번호 수정"() {
+        def givenRequest = new ProfilePasswordRequest("1234")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        ).andDo(document("profile-modify-password",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                        fieldWithPath("password").type(JsonFieldType.STRING)
+                                .description("비밀번호"),
+                ),
+                responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                .description("성공여부")
+                )
+        ))
 
         then:
         response.andExpect {

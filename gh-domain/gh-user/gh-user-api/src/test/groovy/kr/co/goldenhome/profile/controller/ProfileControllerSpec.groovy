@@ -2,7 +2,12 @@ package kr.co.goldenhome.profile.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ProfileImageApiResponse
+import kr.co.goldenhome.profile.dto.ProfileEmailRequest
 import kr.co.goldenhome.profile.dto.ProfileImageRequest
+import kr.co.goldenhome.profile.dto.ProfileLoginIdRequest
+import kr.co.goldenhome.profile.dto.ProfileNameRequest
+import kr.co.goldenhome.profile.dto.ProfilePasswordRequest
+import kr.co.goldenhome.profile.dto.ProfilePhoneNumberRequest
 import kr.co.goldenhome.profile.dto.ProfileResponse
 import kr.co.goldenhome.profile.service.ProfileService
 import org.spockframework.spring.SpringBean
@@ -60,6 +65,86 @@ class ProfileControllerSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/profiles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 이름 수정"() {
+        def givenRequest = new ProfileNameRequest("구준형2")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/name")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 로그인아이디 수정"() {
+        def givenRequest = new ProfileLoginIdRequest("test2user")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/loginId")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 전화번호 수정"() {
+        def givenRequest = new ProfilePhoneNumberRequest("01012345678")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/phoneNumber")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 이메일 수정"() {
+        def givenRequest = new ProfileEmailRequest("test2@naver.com")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/email")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+    }
+
+    def "프로필 - 비밀번호 수정"() {
+        def givenRequest = new ProfilePasswordRequest("1234")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/password")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         )

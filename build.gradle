@@ -83,7 +83,14 @@ allprojects {
                 'review-readAll': 'gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll',
                 'recovery-request': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-request',
                 'recovery-confirm': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm',
-                'password-change': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change'
+                'password-change': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change',
+                'profile-get': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-get',
+                'profile-image-create': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-image-create',
+                'profile-modify-name': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-name',
+                'profile-modify-loginId': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-loginId',
+                'profile-modify-phoneNumber': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-phoneNumber',
+                'profile-modify-email': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email',
+                'profile-modify-password': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password'
 
 
 

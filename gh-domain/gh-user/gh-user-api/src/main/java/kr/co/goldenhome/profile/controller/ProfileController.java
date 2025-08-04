@@ -2,8 +2,8 @@ package kr.co.goldenhome.profile.controller;
 
 import auth.UserPrincipal;
 import dto.CommonResponse;
-import kr.co.goldenhome.profile.dto.ProfileImageRequest;
-import kr.co.goldenhome.profile.dto.ProfileResponse;
+import jakarta.validation.Valid;
+import kr.co.goldenhome.profile.dto.*;
 import kr.co.goldenhome.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,8 +22,38 @@ public class ProfileController {
     }
 
     @PostMapping
-    public CommonResponse createProfileImage(@RequestBody ProfileImageRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public CommonResponse createProfileImage(@Valid @RequestBody ProfileImageRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         profileService.createProfileImage(request, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+    @PutMapping("/name")
+    public CommonResponse modifyName(@Valid @RequestBody ProfileNameRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        profileService.modifyName(request, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+    @PutMapping("/loginId")
+    public CommonResponse modifyLoginId(@Valid @RequestBody ProfileLoginIdRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        profileService.modifyLoginId(request, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+    @PutMapping("/phoneNumber")
+    public CommonResponse modifyPhoneNumber(@Valid @RequestBody ProfilePhoneNumberRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        profileService.modifyPhoneNumber(request, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+    @PutMapping("/email")
+    public CommonResponse modifyEmail(@Valid @RequestBody ProfileEmailRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        profileService.modifyEmail(request, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+    @PutMapping("/password")
+    public CommonResponse modifyPassword(@Valid @RequestBody ProfilePasswordRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        profileService.modifyPassword(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 }

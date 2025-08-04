@@ -2,5 +2,5 @@ package kr.co.goldenhome.profile.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ProfileImageRequest(@NotBlank String formattedImageName) {
+public record ProfileLoginIdRequest(@NotBlank String loginId) {
 }

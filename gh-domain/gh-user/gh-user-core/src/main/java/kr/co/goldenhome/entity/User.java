@@ -102,4 +102,8 @@ public class User {
     public void modifyPassword(String encodePassword) {
         this.password = encodePassword;
     }
+
+    public void withdraw() {
+        this.userStatus = UserStatus.DELETED;
+    }
 }

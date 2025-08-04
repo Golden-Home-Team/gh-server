@@ -168,8 +168,7 @@ class LoginControllerDocsSpec extends Specification {
                                 fieldWithPath("refreshToken").type(JsonFieldType.STRING)
                                         .description("리프레시 토큰 : 유효기간이 1주일 이하면 새로운 토큰이 전달됩니다.")
                         )
-                )
-                )
+                ))
 
         then:
         response.andExpect {
@@ -178,4 +177,5 @@ class LoginControllerDocsSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.refreshToken').value(expectedLoginResponse.refreshToken())
         }
     }
+
 }

@@ -4,6 +4,7 @@ ifndef::snippets[]
 :user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
 :user-email-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-email-duplicated
 :user-withdraw: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-withdraw
+:user-logout: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-logout
 :social-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login
 :social-login-callback: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
@@ -90,6 +91,14 @@ include::{user-withdraw}/http-request.adoc[]
 === HTTP Response
 include::{user-withdraw}/http-response.adoc[]
 include::{user-withdraw}/response-fields.adoc[]
+
+== 로그아웃
+=== HTTP Request
+include::{user-logout}/http-request.adoc[]
+
+=== HTTP Response
+include::{user-logout}/http-response.adoc[]
+include::{user-logout}/response-fields.adoc[]
 
 == 소셜 로그인
 === HTTP Request

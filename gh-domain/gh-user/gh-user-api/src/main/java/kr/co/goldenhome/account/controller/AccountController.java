@@ -21,4 +21,10 @@ public class AccountController {
         accountService.withdraw(userPrincipal.userId());
         return CommonResponse.ok();
     }
+
+    @PostMapping("/logout")
+    public CommonResponse logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        accountService.logout(userPrincipal.userId());
+        return CommonResponse.ok();
+    }
 }

@@ -26,4 +26,8 @@ public class RefreshTokenRepository implements TokenRepository {
     public String getByKey(String userId) {
         return redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + userId);
     }
+
+    public void deleteByKey(String userId) {
+        redisTemplate.delete(REFRESH_TOKEN_PREFIX + userId);
+    }
 }

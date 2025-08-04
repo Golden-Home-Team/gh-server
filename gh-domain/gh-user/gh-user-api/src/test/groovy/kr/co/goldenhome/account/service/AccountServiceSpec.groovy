@@ -1,6 +1,7 @@
 package kr.co.goldenhome.account.service
 
 import kr.co.goldenhome.entity.User
+import kr.co.goldenhome.infrastructure.TokenRepository
 import kr.co.goldenhome.infrastructure.UserRepository
 import spock.lang.Specification
 
@@ -8,9 +9,10 @@ class AccountServiceSpec extends Specification {
 
     AccountService accountService
     UserRepository userRepository = Mock()
+    TokenRepository tokenRepository = Mock()
 
     def setup() {
-        accountService = new AccountService(userRepository)
+        accountService = new AccountService(userRepository,tokenRepository)
     }
 
     def "withdraw - userRepository 를 호출한다"() {
@@ -24,5 +26,14 @@ class AccountServiceSpec extends Specification {
                 userId == 1L
                 Optional.of(User.builder().build())
         }
+    }
+
+    def "logout - tokenRepository 를 호출한다"() {
+
+        when:
+        accountService.logout(1L)
+
+        then:
+        1 * tokenRepository.deleteByKey("1")
     }
 }

@@ -67,6 +67,7 @@ allprojects {
                 'user-check-duplicated': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated',
                 'user-email-duplicated': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-email-duplicated',
                 'user-withdraw': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-withdraw',
+                'user-logout': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/user-logout',
                 'social-login': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login',
                 'social-login-callback': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback',
                 'token-refresh': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh',

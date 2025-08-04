@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 
-//@Primary
 @Qualifier("resetPasswordTokenRepository")
 @Repository
 @RequiredArgsConstructor
@@ -24,5 +23,10 @@ public class ResetPasswordTokenRepository implements TokenRepository{
     @Override
     public String getByKey(String key) {
         return redisTemplate.opsForValue().get(RESET_PASSWORD + key);
+    }
+
+    @Override
+    public void deleteByKey(String key) {
+
     }
 }

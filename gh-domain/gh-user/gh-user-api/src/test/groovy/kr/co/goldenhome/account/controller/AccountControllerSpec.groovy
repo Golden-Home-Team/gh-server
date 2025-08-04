@@ -39,4 +39,17 @@ class AccountControllerSpec extends Specification {
             MockMvcResultMatchers.status().isOk()
         }
     }
+
+    def "로그아웃"() {
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/logout")
+                .contentType(MediaType.APPLICATION_JSON))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+        }
+
+    }
 }

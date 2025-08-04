@@ -55,4 +55,24 @@ class AccountControllerDocsSpec extends Specification {
             MockMvcResultMatchers.status().isOk()
         }
     }
+
+    def "로그아웃"() {
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/logout")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("user-logout",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                        .description("로그아웃은 헤더에 액세스 토큰을 없애주세요. 해당 api 는 Refresh Token 을 없애는 용도입니다.")
+                        )
+                ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+        }
+
+    }
 }

@@ -8,6 +8,7 @@ import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.UserInfo
 import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.enums.ProviderType
+import kr.co.goldenhome.enums.UserStatus
 import kr.co.goldenhome.infrastructure.PasswordProcessor
 import kr.co.goldenhome.infrastructure.UserRepository
 import org.springframework.http.HttpHeaders
@@ -32,7 +33,7 @@ class UserAuthenticationManagerSpec extends Specification {
         given:
         def givenLoginId = "gucoding1234"
         def givenPassword = "1234"
-        def expectedUser = User.builder().password("1234").build()
+        def expectedUser = User.builder().password("1234").userStatus(UserStatus.ACTIVE).build()
 
         when:
         userAuthenticationManager.authenticate(givenLoginId, givenPassword)
@@ -56,8 +57,11 @@ class UserAuthenticationManagerSpec extends Specification {
     @Unroll
     def "authenticate - #description"() {
         given:
-        1 * userRepository.findByLoginId(*_) >> findByLoginIdResult
-        (findByLoginIdResult.isPresent() ? 1 : 0) * passwordProcessor.matches(*_) >> matchesResult
+        userRepository.findByLoginId(*_) >> findByLoginIdResult
+
+        if (invokePasswordMatches) {
+            passwordProcessor.matches(*_) >> matchesResult
+        }
 
         when:
         userAuthenticationManager.authenticate("gucoding@navercom", "1233")
@@ -67,10 +71,12 @@ class UserAuthenticationManagerSpec extends Specification {
         exception.getErrorCode() == expectedErrorCode
 
         where:
-        description       | findByLoginIdResult            | matchesResult | expectedErrorCode
-        "존재하지 않는 사용자" | Optional.empty()             | false         | ErrorCode.LOGIN_FAILED
-        "비밀번호 불일치"     |  Optional.of(User.builder().build()) | false         | ErrorCode.LOGIN_FAILED
+        description           | findByLoginIdResult                        | invokePasswordMatches | matchesResult | expectedErrorCode
+        "존재하지 않는 사용자" | Optional.empty()                           | false                 | false         | ErrorCode.LOGIN_FAILED
+        "비밀번호 불일치"     | Optional.of(User.builder().password("encodedPw").userStatus(UserStatus.ACTIVE).build()) | true                  | false         | ErrorCode.LOGIN_FAILED
+        "비활성화된 사용자"   | Optional.of(User.builder().password("encodedPw").userStatus(UserStatus.DELETED).build()) | false             | false         | ErrorCode.FORBIDDEN_USER
     }
+
 
     def "getAuthorizationCode - SocialLoginManager 을 호출한다."() {
         given:

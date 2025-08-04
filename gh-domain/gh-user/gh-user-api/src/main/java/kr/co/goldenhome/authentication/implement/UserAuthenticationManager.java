@@ -8,6 +8,7 @@ import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.UserInfo;
 import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.enums.ProviderType;
+import kr.co.goldenhome.enums.UserStatus;
 import kr.co.goldenhome.infrastructure.PasswordProcessor;
 import kr.co.goldenhome.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,9 @@ public class UserAuthenticationManager {
     private final SocialLoginManager socialLoginManager;
 
     public User authenticate(String loginId, String password) {
-        User user = userRepository.findByLoginId(loginId).orElse(null);
-        if (user == null || !passwordProcessor.matches(password, user.getPassword())) {
+        User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ErrorCode.LOGIN_FAILED, "UserAuthenticationManager.authenticate()"));
+        if (user.getUserStatus() != UserStatus.ACTIVE) throw new CustomException(ErrorCode.FORBIDDEN_USER, "UserAuthenticationManager.authenticate()");
+        if (!passwordProcessor.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_FAILED, "AuthenticationManager.authenticate");
         }
         return user;

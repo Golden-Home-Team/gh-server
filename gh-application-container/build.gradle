@@ -54,6 +54,8 @@ dependencies {
 
     implementation(project(":gh-domain:gh-review:gh-review-api"))
 
+    implementation(project(":gh-domain:gh-like:gh-like-api"))
+
     implementation(project(":gh-common"))
 
     implementation(project(":gh-external-social"))

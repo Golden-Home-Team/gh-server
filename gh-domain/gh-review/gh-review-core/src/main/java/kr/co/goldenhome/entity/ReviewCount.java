@@ -6,30 +6,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "facility_like_counts")
+@Table(name = "review_counts")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FacilityLikeCount {
-
+public class ReviewCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long facilityId;
-    private Long likeCount;
+    private Long reviewCount;
 
     @Builder
-    private FacilityLikeCount(Long id, Long facilityId, long likeCount) {
+    private ReviewCount(Long id, Long facilityId, Long reviewCount) {
         this.id = id;
         this.facilityId = facilityId;
-        this.likeCount = likeCount;
+        this.reviewCount = reviewCount;
     }
 
-    public static FacilityLikeCount create(Long facilityId) {
-        return FacilityLikeCount.builder()
-                .facilityId(facilityId)
-                .likeCount(1L)
-                .build();
+    public static ReviewCount create(Long facilityId, Long reviewCount) {
+        return ReviewCount.builder().facilityId(facilityId).reviewCount(reviewCount).build();
     }
-
 }

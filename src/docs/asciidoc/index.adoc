@@ -32,6 +32,8 @@ ifndef::snippets[]
 :profile-modify-phoneNumber: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-phoneNumber
 :profile-modify-email: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email
 :profile-modify-password: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password
+:facility-like: ../../../gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-like
+:facility-unlike: ../../../gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-unlike
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -235,6 +237,24 @@ include::{facility-search-latest}/query-parameters.adoc[]
 === HTTP Response
 include::{facility-search-latest}/http-response.adoc[]
 include::{facility-search-latest}/response-fields.adoc[]
+
+== 시설 좋아요
+=== HTTP Request
+include::{facility-like}/http-request.adoc[]
+include::{facility-like}/request-body.adoc[]
+
+=== HTTP Response
+include::{facility-like}/http-response.adoc[]
+include::{facility-like}/response-body.adoc[]
+
+== 시설 좋아요 취소
+=== HTTP Request
+include::{facility-unlike}/http-request.adoc[]
+include::{facility-unlike}/request-body.adoc[]
+
+=== HTTP Response
+include::{facility-unlike}/http-response.adoc[]
+include::{facility-unlike}/response-body.adoc[]
 
 [[Resume-API]]
 == Resume API

@@ -92,7 +92,9 @@ allprojects {
                 'profile-modify-loginId': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-loginId',
                 'profile-modify-phoneNumber': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-phoneNumber',
                 'profile-modify-email': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email',
-                'profile-modify-password': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password'
+                'profile-modify-password': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password',
+                'facility-like': 'gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-like',
+                'facility-unlike': 'gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-unlike'
 
 
 

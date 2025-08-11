@@ -15,11 +15,11 @@ class ReviewRepositorySpec extends Specification {
 
     def setup() {
         List<Review> list = new ArrayList<>()
-        list.add(Review.create(1L, 1L, "좋은시설1", 1))
-        list.add(Review.create(1L, 1L, "좋은시설2", 5))
-        list.add(Review.create(1L, 1L, "좋은시설3", 4))
-        list.add(Review.create(1L, 1L, "좋은시설4", 4))
-        list.add(Review.create(1L, 1L, "좋은시설5", 4))
+        list.add(Review.create(1L, 1L, "좋은시설1", 1, false))
+        list.add(Review.create(1L, 1L, "좋은시설2", 5, false))
+        list.add(Review.create(1L, 1L, "좋은시설3", 4, false))
+        list.add(Review.create(1L, 1L, "좋은시설4", 4, false))
+        list.add(Review.create(1L, 1L, "좋은시설5", 4, false))
         reviewRepository.saveAllAndFlush(list)
     }
 

@@ -1,6 +1,7 @@
 package kr.co.goldenhome.service
 
 import kr.co.goldenhome.ReviewImageApi
+import kr.co.goldenhome.ReviewImageApiResponse
 import kr.co.goldenhome.UserApi
 import kr.co.goldenhome.entity.Review
 import kr.co.goldenhome.implement.ReviewAppender
@@ -47,13 +48,13 @@ class ReviewServiceSpec extends Specification {
 
         given:
         Long givenFacilityId = 1L
-        Long givenLastId = null
-        Integer givenLastScore = null
+        Long givenLastId = 1L
+        Integer givenLastScore = 5
         Long givenPageSize = 10L
         String givenSort = "score"
 
         when:
-        reviewService.readAll(givenFacilityId, givenLastId, givenLastScore, givenPageSize, givenSort)
+        reviewService.readAll(givenFacilityId, givenLastId, givenLastScore, givenPageSize, givenSort, false)
 
         then:
         1 * reviewReader.readAll(*_) >> {

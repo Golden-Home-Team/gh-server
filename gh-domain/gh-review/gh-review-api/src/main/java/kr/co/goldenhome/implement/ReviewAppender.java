@@ -21,8 +21,9 @@ public class ReviewAppender {
 
     @Transactional
     public void write(String content, int score, List<String> formattedFileNames, Long facilityId, Long userId) {
-        Review review = reviewRepository.save(Review.create(facilityId, userId, content, score));
-        if (!formattedFileNames.isEmpty()) reviewImageApi.saveAll(review.getId(), formattedFileNames);
+        boolean hasPhoto = !formattedFileNames.isEmpty();
+        Review review = reviewRepository.save(Review.create(facilityId, userId, content, score, hasPhoto));
+        if (hasPhoto) reviewImageApi.saveAll(review.getId(), formattedFileNames);
         int result = reviewCountRepository.increase(facilityId);
         if (result == 0) {
             reviewCountRepository.save(ReviewCount.create(facilityId, 1L));

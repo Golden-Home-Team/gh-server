@@ -58,6 +58,7 @@ class ReviewControllerSpec extends Specification {
                 .param("lastId", "1")
                 .param("lastScore", "1")
                 .param("pageSize", "20")
+                .param("hasPhoto", "false")
         )
 
         then:

@@ -95,6 +95,7 @@ class ReviewControllerDocsSpec extends Specification {
                 .param("lastId", "1")
                 .param("lastScore", "1")
                 .param("pageSize", "20")
+                .param("hasPhoto", "false")
         ).andDo(document("review-readAll",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -106,6 +107,7 @@ class ReviewControllerDocsSpec extends Specification {
                         parameterWithName("lastId").description("마지막으로 조회한 리뷰 아이디 (lastScore 와 동반)"),
                         parameterWithName("lastScore").description("마지막으로 조회한 리뷰 별점 (lastId 와 동반)"),
                         parameterWithName("pageSize").description("페이지 사이즈 default 20"),
+                        parameterWithName("hasPhoto").description("사진 리뷰만 필터링(true 값을 보내주세요)")
                 ),
                 responseFields(
                         fieldWithPath("[]").type(JsonFieldType.ARRAY)

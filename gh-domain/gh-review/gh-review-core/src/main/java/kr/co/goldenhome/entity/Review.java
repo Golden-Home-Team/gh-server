@@ -25,24 +25,27 @@ public class Review {
     private String content;
     @Column(columnDefinition = "integer default 5")
     private Integer score = 5;
+    private boolean hasPhoto = false;
     private LocalDateTime createdAt;
 
     @Builder
-    private Review(Long id, Long facilityId, Long writerId, String content, Integer score, LocalDateTime createdAt) {
+    private Review(Long id, Long facilityId, Long writerId, String content, Integer score, boolean hasPhoto, LocalDateTime createdAt) {
         this.id = id;
         this.facilityId = facilityId;
         this.writerId = writerId;
         this.content = content;
         this.score = score;
+        this.hasPhoto = hasPhoto;
         this.createdAt = createdAt;
     }
 
-    public static Review create(Long facilityId, Long writerId, String content, Integer score) {
+    public static Review create(Long facilityId, Long writerId, String content, Integer score, boolean hasPhoto) {
         return Review.builder()
                 .facilityId(facilityId)
                 .writerId(writerId)
                 .content(content)
                 .score(score)
+                .hasPhoto(hasPhoto)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

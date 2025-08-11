@@ -33,9 +33,9 @@ public class ReviewController {
             @RequestParam(value = "sort", defaultValue = "score") String sort,
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam(value = "lastScore", required = false) Integer lastScore,
-            @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize) {
-
-        return reviewService.readAll(facilityId, lastId, lastScore, pageSize, sort);
+            @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize,
+            @RequestParam(value = "hasPhoto", defaultValue = "false") boolean hasPhoto) {
+        return reviewService.readAll(facilityId, lastId, lastScore, pageSize, sort, hasPhoto);
     }
 
 }

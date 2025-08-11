@@ -24,9 +24,14 @@ public class ReviewService {
         reviewAppender.write(content, score, formattedFileNames, facilityId, userId);
     }
 
-    public List<ReviewResponse> readAll(Long facilityId, Long lastId, Integer lastScore, Long pageSize, String sort) {
-        LocalDateTime now = LocalDateTime.now();
-        return reviewReader.readAll(facilityId, lastId, lastScore, pageSize, sort)
-                .stream().map(review -> ReviewResponse.of(review, userApi.getLoginId(review.getWriterId()), reviewImageApi.getByReviewId(review.getId()), now)).toList();
+    public List<ReviewResponse> readAll(Long facilityId, Long lastId, Integer lastScore, Long pageSize, String sort, boolean hasPhoto) {
+        List<ReviewResponse> reviewResponses = reviewReader.readAll(facilityId, lastId, lastScore, pageSize, sort)
+                .stream().map(review -> ReviewResponse.of(review, userApi.getLoginId(review.getWriterId()), reviewImageApi.getByReviewId(review.getId()), LocalDateTime.now())).toList();
+        if (hasPhoto) {
+            reviewResponses = reviewResponses.stream()
+                    .filter(reviewResponse -> !reviewResponse.reviewImageApiResponses().isEmpty())
+                    .toList();
+        }
+        return reviewResponses;
     }
 }

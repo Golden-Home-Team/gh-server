@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * AND (
@@ -46,5 +47,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             @Param("limit") Long limit,
             @Param("sort") String sort
     );
+
+    List<Review> findByFacilityId(Long facilityId);
 
 }

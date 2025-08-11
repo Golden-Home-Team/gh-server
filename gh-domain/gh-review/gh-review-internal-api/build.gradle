@@ -1,0 +1,9 @@
+dependencies {
+
+    implementation(project(":gh-domain:gh-review:gh-review-core"))
+    implementation(project(":gh-api-interface:gh-review-api-interface"))
+
+    implementation(project(":gh-common"))
+}
+
+jar.enabled = true

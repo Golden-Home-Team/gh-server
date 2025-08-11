@@ -2,9 +2,12 @@ package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.dto.FacilityDetailResponse
+import kr.co.goldenhome.dto.FacilityDetailServiceResponse
+import kr.co.goldenhome.dto.FacilityInfoInnerResponse
 import kr.co.goldenhome.dto.FacilityPhotoResponse
 import kr.co.goldenhome.dto.FacilityProgramResponse
 import kr.co.goldenhome.dto.FacilityResponse
+import kr.co.goldenhome.dto.FacilityStaffInnerResponse
 import kr.co.goldenhome.service.FacilityService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,23 +25,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName
@@ -87,7 +73,7 @@ class FacilityControllerDocsSpec extends Specification {
                         .param("withinYears", givenWithinYears as String)
                         .param("page", givenPage as String)
                         .param("size", givenSize as String)
-        ).andDo(document("facility-search-latest",
+        ).andDo(document("facility-search",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 queryParameters(
@@ -146,6 +132,7 @@ class FacilityControllerDocsSpec extends Specification {
     def "시설 조회"() {
         given:
         def givenFacilityId = 1L
+        def givenUserId = 1L
         def expectedResponse = new FacilityDetailResponse(
                 50L,
                 "24713000311",
@@ -159,7 +146,7 @@ class FacilityControllerDocsSpec extends Specification {
                 22,
                 8,
                 14,
-                new FacilityDetailResponse.FacilityInfoResponse(
+                new FacilityInfoInnerResponse(
                         50L,
                         "0",
                         "0",
@@ -174,7 +161,7 @@ class FacilityControllerDocsSpec extends Specification {
                         "0",
                         "0"
                 ),
-                new FacilityDetailResponse.FacilityStaffResponse(
+                new FacilityStaffInnerResponse(
                         40L,
                         0,
                         0,
@@ -210,15 +197,19 @@ class FacilityControllerDocsSpec extends Specification {
                         "24713000311",
                         "기타",
                         "노래방"
-                ))
-
+                )),
+                5.0,
+                1,
+                0,0,0,0,1,
+                true
         )
 
 
-        facilityService.read(givenFacilityId) >> expectedResponse
+        facilityService.read(*_) >> expectedResponse
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/facilities/{facilityId}", givenFacilityId))
-                .andDo(document("facility-read-latest",
+
+                .andDo(document("facility-read",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
@@ -250,90 +241,90 @@ class FacilityControllerDocsSpec extends Specification {
                                 fieldWithPath("currentFemale").type(JsonFieldType.NUMBER)
                                         .description("현재 인원 (여성)"),
 
-                                // FacilityInfoResponse
-                                fieldWithPath("facilityInfoResponse.facilityDetailId").type(JsonFieldType.NUMBER)
+                                // facilityInfoInnerResponse
+                                fieldWithPath("facilityInfoInnerResponse.facilityDetailId").type(JsonFieldType.NUMBER)
                                         .description("시설 상세 정보 아이디"),
-                                fieldWithPath("facilityInfoResponse.singleRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.singleRoomCount").type(JsonFieldType.STRING)
                                         .description("1인실 수"),
-                                fieldWithPath("facilityInfoResponse.doubleRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.doubleRoomCount").type(JsonFieldType.STRING)
                                         .description("2인실 수"),
-                                fieldWithPath("facilityInfoResponse.tripleRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.tripleRoomCount").type(JsonFieldType.STRING)
                                         .description("3인실 수"),
-                                fieldWithPath("facilityInfoResponse.quadRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.quadRoomCount").type(JsonFieldType.STRING)
                                         .description("4인실 수"),
-                                fieldWithPath("facilityInfoResponse.officeCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.officeCount").type(JsonFieldType.STRING)
                                         .description("사무실 수"),
-                                fieldWithPath("facilityInfoResponse.medicalNurseRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.medicalNurseRoomCount").type(JsonFieldType.STRING)
                                         .description("의료 및 간호사실 수"),
-                                fieldWithPath("facilityInfoResponse.dailyLivingTrainingRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.dailyLivingTrainingRoomCount").type(JsonFieldType.STRING)
                                         .description("일상생활 훈련실 수"),
-                                fieldWithPath("facilityInfoResponse.programRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.programRoomCount").type(JsonFieldType.STRING)
                                         .description("프로그램실 수"),
-                                fieldWithPath("facilityInfoResponse.kitchenDiningRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.kitchenDiningRoomCount").type(JsonFieldType.STRING)
                                         .description("주방 및 식당 수"), // 또는 해당 필드에 대한 정확한 설명
-                                fieldWithPath("facilityInfoResponse.bathroomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.bathroomCount").type(JsonFieldType.STRING)
                                         .description("화장실 수"),
-                                fieldWithPath("facilityInfoResponse.washBathRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.washBathRoomCount").type(JsonFieldType.STRING)
                                         .description("세면 및 목욕실 수"),
-                                fieldWithPath("facilityInfoResponse.laundryRoomCount").type(JsonFieldType.STRING)
+                                fieldWithPath("facilityInfoInnerResponse.laundryRoomCount").type(JsonFieldType.STRING)
                                         .description("세탁물 보관실 수"),
 
-                                // FacilityStaffResponse
-                                fieldWithPath("facilityStaffResponse.facilityStaffInformationId").type(JsonFieldType.NUMBER)
+                                // facilityStaffInnerResponse
+                                fieldWithPath("facilityStaffInnerResponse.facilityStaffInformationId").type(JsonFieldType.NUMBER)
                                         .description("시설 직원 정보 아이디"),
-                                fieldWithPath("facilityStaffResponse.directorCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.directorCount").type(JsonFieldType.NUMBER)
                                         .description("시설장 수"),
-                                fieldWithPath("facilityStaffResponse.headOfOfficeCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.headOfOfficeCount").type(JsonFieldType.NUMBER)
                                         .description("사무국장 수"),
-                                fieldWithPath("facilityStaffResponse.socialWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.socialWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("사회복지사 수"),
-                                fieldWithPath("facilityStaffResponse.residentDoctorCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.residentDoctorCount").type(JsonFieldType.NUMBER)
                                         .description("상근 의사 수"),
-                                fieldWithPath("facilityStaffResponse.visitingDoctorCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.visitingDoctorCount").type(JsonFieldType.NUMBER)
                                         .description("방문 의사 수"),
-                                fieldWithPath("facilityStaffResponse.nurseCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.nurseCount").type(JsonFieldType.NUMBER)
                                         .description("간호사 수"),
-                                fieldWithPath("facilityStaffResponse.assistantNurseCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.assistantNurseCount").type(JsonFieldType.NUMBER)
                                         .description("간호조무사 수"),
-                                fieldWithPath("facilityStaffResponse.dentalHygienistCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.dentalHygienistCount").type(JsonFieldType.NUMBER)
                                         .description("치위생사 수"),
-                                fieldWithPath("facilityStaffResponse.physicalTherapistCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.physicalTherapistCount").type(JsonFieldType.NUMBER)
                                         .description("물리치료사 수"),
-                                fieldWithPath("facilityStaffResponse.occupationalTherapistCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.occupationalTherapistCount").type(JsonFieldType.NUMBER)
                                         .description("작업치료사 수"),
-                                fieldWithPath("facilityStaffResponse.caregiverLevel1Count").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.caregiverLevel1Count").type(JsonFieldType.NUMBER)
                                         .description("요양보호사 1등급 수"),
-                                fieldWithPath("facilityStaffResponse.caregiverLevel2Count").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.caregiverLevel2Count").type(JsonFieldType.NUMBER)
                                         .description("요양보호사 2등급 수"),
-                                fieldWithPath("facilityStaffResponse.caregiverDeferredCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.caregiverDeferredCount").type(JsonFieldType.NUMBER)
                                         .description("요양보호사 미정 등급 수"),
-                                fieldWithPath("facilityStaffResponse.officeWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.officeWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("사무원 수"),
-                                fieldWithPath("facilityStaffResponse.dietitianCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.dietitianCount").type(JsonFieldType.NUMBER)
                                         .description("영양사 수"),
-                                fieldWithPath("facilityStaffResponse.cookCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.cookCount").type(JsonFieldType.NUMBER)
                                         .description("조리원 수"),
-                                fieldWithPath("facilityStaffResponse.hygieneWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.hygieneWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("위생원 수"),
-                                fieldWithPath("facilityStaffResponse.maintenanceWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.maintenanceWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("관리인 수"),
-                                fieldWithPath("facilityStaffResponse.assistantWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.assistantWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("보조원 수"),
-                                fieldWithPath("facilityStaffResponse.otherWorkerCount").type(JsonFieldType.NUMBER)
+                                fieldWithPath("facilityStaffInnerResponse.otherWorkerCount").type(JsonFieldType.NUMBER)
                                         .description("기타 직원 수"),
 
                                 // FacilityPhotoResponse List
-                                fieldWithPath("photoResponses.[].id").type(JsonFieldType.NUMBER)
+                                fieldWithPath("photoResponses[].id").type(JsonFieldType.NUMBER)
                                         .description("시설 사진 아이디"),
-                                fieldWithPath("photoResponses.[].institutionSymbol").type(JsonFieldType.STRING)
+                                fieldWithPath("photoResponses[].institutionSymbol").type(JsonFieldType.STRING)
                                         .description("시설 사진 기관 코드"),
-                                fieldWithPath("photoResponses.[].type").type(JsonFieldType.STRING)
+                                fieldWithPath("photoResponses[].type").type(JsonFieldType.STRING)
                                         .description("시설 사진 유형"),
-                                fieldWithPath("photoResponses.[].name").type(JsonFieldType.STRING)
+                                fieldWithPath("photoResponses[].name").type(JsonFieldType.STRING)
                                         .description("시설 사진명"),
-                                fieldWithPath("photoResponses.[].imageUrl").type(JsonFieldType.STRING)
+                                fieldWithPath("photoResponses[].imageUrl").type(JsonFieldType.STRING)
                                         .description("시설 사진 URL"),
-                                fieldWithPath("photoResponses.[].description").type(JsonFieldType.STRING)
+                                fieldWithPath("photoResponses[].description").type(JsonFieldType.STRING)
                                         .description("시설 사진 설명"),
 
                                 // FacilityProgramResponse List
@@ -344,12 +335,31 @@ class FacilityControllerDocsSpec extends Specification {
                                 fieldWithPath("facilityProgramResponses.[].type").type(JsonFieldType.STRING)
                                         .description("시설 프로그램 유형"),
                                 fieldWithPath("facilityProgramResponses.[].name").type(JsonFieldType.STRING)
-                                        .description("시설 프로그램명")
+                                        .description("시설 프로그램명"),
+
+                                // Meta Data
+                                fieldWithPath("averageScore").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 평점"),
+                                fieldWithPath("totalCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 수"),
+                                fieldWithPath("onePointCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 - 1점 개수"),
+                                fieldWithPath("twoPointCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 - 2점 개수"),
+                                fieldWithPath("threePointCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 - 3점 개수"),
+                                fieldWithPath("fourPointCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 - 4점 개수"),
+                                fieldWithPath("fivePointCount").type(JsonFieldType.NUMBER)
+                                        .description("리뷰 - 5점 개수"),
+                                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
+                                        .description("본인 좋아요 여부")
                         )
                 )
                 )
 
         then:
+
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
             MockMvcResultMatchers.jsonPath('$.id').value(expectedResponse.id())
@@ -364,49 +374,58 @@ class FacilityControllerDocsSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.currentTotal').value(expectedResponse.currentTotal())
             MockMvcResultMatchers.jsonPath('$.currentMale').value(expectedResponse.currentMale())
             MockMvcResultMatchers.jsonPath('$.currentFemale').value(expectedResponse.currentFemale())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.facilityDetailId').value(expectedResponse.facilityInfoResponse().facilityDetailId())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.singleRoomCount').value(expectedResponse.facilityInfoResponse().singleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.doubleRoomCount').value(expectedResponse.facilityInfoResponse().doubleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.tripleRoomCount').value(expectedResponse.facilityInfoResponse().tripleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.quadRoomCount').value(expectedResponse.facilityInfoResponse().quadRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.officeCount').value(expectedResponse.facilityInfoResponse().officeCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.medicalNurseRoomCount').value(expectedResponse.facilityInfoResponse().medicalNurseRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.dailyLivingTrainingRoomCount').value(expectedResponse.facilityInfoResponse().dailyLivingTrainingRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.programRoomCount').value(expectedResponse.facilityInfoResponse().programRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.bathroomCount').value(expectedResponse.facilityInfoResponse().bathroomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.washBathRoomCount').value(expectedResponse.facilityInfoResponse().washBathRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.laundryRoomCount').value(expectedResponse.facilityInfoResponse().laundryRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.facilityStaffInformationId').value(expectedResponse.facilityStaffResponse().facilityStaffInformationId())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.directorCount').value(expectedResponse.facilityStaffResponse().directorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.headOfOfficeCount').value(expectedResponse.facilityStaffResponse().headOfOfficeCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.socialWorkerCount').value(expectedResponse.facilityStaffResponse().socialWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.residentDoctorCount').value(expectedResponse.facilityStaffResponse().residentDoctorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.visitingDoctorCount').value(expectedResponse.facilityStaffResponse().visitingDoctorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.nurseCount').value(expectedResponse.facilityStaffResponse().nurseCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.assistantNurseCount').value(expectedResponse.facilityStaffResponse().assistantNurseCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.dentalHygienistCount').value(expectedResponse.facilityStaffResponse().dentalHygienistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.physicalTherapistCount').value(expectedResponse.facilityStaffResponse().physicalTherapistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.occupationalTherapistCount').value(expectedResponse.facilityStaffResponse().occupationalTherapistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverLevel1Count').value(expectedResponse.facilityStaffResponse().caregiverLevel1Count())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverLevel2Count').value(expectedResponse.facilityStaffResponse().caregiverLevel2Count())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverDeferredCount').value(expectedResponse.facilityStaffResponse().caregiverDeferredCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.officeWorkerCount').value(expectedResponse.facilityStaffResponse().officeWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.dietitianCount').value(expectedResponse.facilityStaffResponse().dietitianCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.cookCount').value(expectedResponse.facilityStaffResponse().cookCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.hygieneWorkerCount').value(expectedResponse.facilityStaffResponse().hygieneWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.maintenanceWorkerCount').value(expectedResponse.facilityStaffResponse().maintenanceWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.assistantWorkerCount').value(expectedResponse.facilityStaffResponse().assistantWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.otherWorkerCount').value(expectedResponse.facilityStaffResponse().otherWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].id').value(expectedResponse.photoResponses().get(0).id())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].institutionSymbol').value(expectedResponse.photoResponses().get(0).institutionSymbol())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].type').value(expectedResponse.photoResponses().get(0).type())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].name').value(expectedResponse.photoResponses().get(0).name())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].imageUrl').value(expectedResponse.photoResponses().get(0).imageUrl())
-            MockMvcResultMatchers.jsonPath('$.photoResponses.[0].description').value(expectedResponse.photoResponses().get(0).description())
-            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].id').value(expectedResponse.facilityProgramResponses().get(0).id())
-            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].institutionSymbol').value(expectedResponse.facilityProgramResponses().get(0).institutionSymbol())
-            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].type').value(expectedResponse.facilityProgramResponses().get(0).type())
-            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].name').value(expectedResponse.facilityProgramResponses().get(0).name())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.facilityDetailId').value(expectedResponse.facilityInfoInnerResponse().facilityDetailId())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.singleRoomCount').value(expectedResponse.facilityInfoInnerResponse().singleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.doubleRoomCount').value(expectedResponse.facilityInfoInnerResponse().doubleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.tripleRoomCount').value(expectedResponse.facilityInfoInnerResponse().tripleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.quadRoomCount').value(expectedResponse.facilityInfoInnerResponse().quadRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.officeCount').value(expectedResponse.facilityInfoInnerResponse().officeCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.medicalNurseRoomCount').value(expectedResponse.facilityInfoInnerResponse().medicalNurseRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.dailyLivingTrainingRoomCount').value(expectedResponse.facilityInfoInnerResponse().dailyLivingTrainingRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.programRoomCount').value(expectedResponse.facilityInfoInnerResponse().programRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.kitchenDiningRoomCount').value(expectedResponse.facilityInfoInnerResponse().kitchenDiningRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.bathroomCount').value(expectedResponse.facilityInfoInnerResponse().bathroomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.washBathRoomCount').value(expectedResponse.facilityInfoInnerResponse().washBathRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.laundryRoomCount').value(expectedResponse.facilityInfoInnerResponse().laundryRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.facilityStaffInformationId').value(expectedResponse.facilityStaffInnerResponse().facilityStaffInformationId())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.directorCount').value(expectedResponse.facilityStaffInnerResponse().directorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.headOfOfficeCount').value(expectedResponse.facilityStaffInnerResponse().headOfOfficeCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.socialWorkerCount').value(expectedResponse.facilityStaffInnerResponse().socialWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.residentDoctorCount').value(expectedResponse.facilityStaffInnerResponse().residentDoctorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.visitingDoctorCount').value(expectedResponse.facilityStaffInnerResponse().visitingDoctorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.nurseCount').value(expectedResponse.facilityStaffInnerResponse().nurseCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.assistantNurseCount').value(expectedResponse.facilityStaffInnerResponse().assistantNurseCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.dentalHygienistCount').value(expectedResponse.facilityStaffInnerResponse().dentalHygienistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.physicalTherapistCount').value(expectedResponse.facilityStaffInnerResponse().physicalTherapistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.occupationalTherapistCount').value(expectedResponse.facilityStaffInnerResponse().occupationalTherapistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverLevel1Count').value(expectedResponse.facilityStaffInnerResponse().caregiverLevel1Count())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverLevel2Count').value(expectedResponse.facilityStaffInnerResponse().caregiverLevel2Count())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverDeferredCount').value(expectedResponse.facilityStaffInnerResponse().caregiverDeferredCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.officeWorkerCount').value(expectedResponse.facilityStaffInnerResponse().officeWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.dietitianCount').value(expectedResponse.facilityStaffInnerResponse().dietitianCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.cookCount').value(expectedResponse.facilityStaffInnerResponse().cookCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.hygieneWorkerCount').value(expectedResponse.facilityStaffInnerResponse().hygieneWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.maintenanceWorkerCount').value(expectedResponse.facilityStaffInnerResponse().maintenanceWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.assistantWorkerCount').value(expectedResponse.facilityStaffInnerResponse().assistantWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.otherWorkerCount').value(expectedResponse.facilityStaffInnerResponse().otherWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].id').value(expectedResponse.photoResponses().get(0).id())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].institutionSymbol').value(expectedResponse.photoResponses().get(0).institutionSymbol())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].type').value(expectedResponse.photoResponses().get(0).type())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].name').value(expectedResponse.photoResponses().get(0).name())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].imageUrl').value(expectedResponse.photoResponses().get(0).imageUrl())
+            MockMvcResultMatchers.jsonPath('$.photoResponses[0].description').value(expectedResponse.photoResponses().get(0).description())
+            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses[0].id').value(expectedResponse.facilityProgramResponses().get(0).id())
+            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses[0].institutionSymbol').value(expectedResponse.facilityProgramResponses().get(0).institutionSymbol())
+            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses[0].type').value(expectedResponse.facilityProgramResponses().get(0).type())
+            MockMvcResultMatchers.jsonPath('$.facilityProgramResponses[0].name').value(expectedResponse.facilityProgramResponses().get(0).name())
+            MockMvcResultMatchers.jsonPath('$.averageScore').value(expectedResponse.averageScore())
+            MockMvcResultMatchers.jsonPath('$.totalCount').value(expectedResponse.totalCount())
+            MockMvcResultMatchers.jsonPath('$.onePointCount').value(expectedResponse.onePointCount())
+            MockMvcResultMatchers.jsonPath('$.twoPointCount').value(expectedResponse.twoPointCount())
+            MockMvcResultMatchers.jsonPath('$.threePointCount').value(expectedResponse.threePointCount())
+            MockMvcResultMatchers.jsonPath('$.fourPointCount').value(expectedResponse.fourPointCount())
+            MockMvcResultMatchers.jsonPath('$.fivePointCount').value(expectedResponse.fivePointCount())
+            MockMvcResultMatchers.jsonPath('$.isLiked').value(expectedResponse.isLiked())
 
         }
     }

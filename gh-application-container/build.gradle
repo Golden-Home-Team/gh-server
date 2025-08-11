@@ -53,8 +53,10 @@ dependencies {
     implementation(project(":gh-domain:gh-file:gh-file-internal-api"))
 
     implementation(project(":gh-domain:gh-review:gh-review-api"))
+    implementation(project(":gh-domain:gh-review:gh-review-internal-api"))
 
     implementation(project(":gh-domain:gh-like:gh-like-api"))
+    implementation(project(":gh-domain:gh-like:gh-like-internal-api"))
 
     implementation(project(":gh-domain:gh-view:gh-view-api"))
 

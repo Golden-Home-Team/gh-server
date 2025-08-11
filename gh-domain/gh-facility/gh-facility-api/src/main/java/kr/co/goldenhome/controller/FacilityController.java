@@ -1,9 +1,11 @@
 package kr.co.goldenhome.controller;
 
+import auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
 import kr.co.goldenhome.service.FacilityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class FacilityController {
     }
 
     @GetMapping("/{facilityId}")
-    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId) {
-        return facilityService.read(facilityId);
+    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return facilityService.read(facilityId, userPrincipal.userId());
     }
 }

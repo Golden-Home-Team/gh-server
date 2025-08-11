@@ -1,7 +1,9 @@
 package kr.co.goldenhome.service
 
-import kr.co.goldenhome.dto.FacilityDetailResponse
-import kr.co.goldenhome.dto.FacilityResponse
+import kr.co.goldenhome.LikeApi
+import kr.co.goldenhome.ReviewApi
+import kr.co.goldenhome.ReviewMetaData
+import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
@@ -12,9 +14,12 @@ class FacilityServiceSpec extends Specification {
     FacilityService facilityService
     FacilitySearcher facilitySearcher = Mock()
     FacilityReader facilityReader = Mock()
+    ReviewApi reviewApi = Mock()
+    LikeApi likeApi = Mock()
+
 
     def setup() {
-        facilityService = new FacilityService(facilitySearcher, facilityReader)
+        facilityService = new FacilityService(facilitySearcher, facilityReader, reviewApi, likeApi)
     }
 
     def "search - facilitySearcher 를 호출한다"() {
@@ -46,16 +51,29 @@ class FacilityServiceSpec extends Specification {
         }
     }
 
-    def "read - facilityReader 를 호출한다"() {
+    def "read - facilityReader, reviewApi, likeApi 를 호출한다"() {
         given:
         def givenFacilityId = 1L
+        def givenUserId = 1L
         when:
-        facilityService.read(givenFacilityId)
+        facilityService.read(givenFacilityId, givenUserId)
         then:
         1 * facilityReader.read(*_) >> {
             Long facilityId ->
                 facilityId == givenFacilityId
-                Mock(FacilityDetailResponse)
+                Mock(FacilityDetailServiceResponse)
         }
+        1 * reviewApi.getReviewMetaData(*_) >> {
+            Long facilityId ->
+                facilityId == givenFacilityId
+                Mock(ReviewMetaData)
+        }
+        1 * likeApi.isLiked(*_) >> {
+            Long facilityId, Long userId ->
+                facilityId == givenFacilityId
+                userId == givenUserId
+                true
+        }
+
     }
 }

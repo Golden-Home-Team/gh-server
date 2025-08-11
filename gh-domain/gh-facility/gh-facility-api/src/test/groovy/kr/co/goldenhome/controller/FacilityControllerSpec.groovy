@@ -2,10 +2,12 @@ package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.dto.FacilityDetailResponse
+import kr.co.goldenhome.dto.FacilityDetailServiceResponse
+import kr.co.goldenhome.dto.FacilityInfoInnerResponse
 import kr.co.goldenhome.dto.FacilityPhotoResponse
 import kr.co.goldenhome.dto.FacilityProgramResponse
 import kr.co.goldenhome.dto.FacilityResponse
-import kr.co.goldenhome.entity.FacilityStaffInformation
+import kr.co.goldenhome.dto.FacilityStaffInnerResponse
 import kr.co.goldenhome.service.FacilityService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
 
@@ -67,7 +70,7 @@ class FacilityControllerSpec extends Specification {
                         .param("withinYears", givenWithinYears as String)
                         .param("page", givenPage as String)
                         .param("size", givenSize as String)
-        )
+        ).andDo(MockMvcResultHandlers.print())
 
         then:
         response.andExpect {
@@ -89,6 +92,7 @@ class FacilityControllerSpec extends Specification {
     def "시설 조회"() {
         given:
         def givenFacilityId = 1L
+        def givenUserId = 1L
         def expectedResponse = new FacilityDetailResponse(
                 50L,
                 "24713000311",
@@ -102,7 +106,7 @@ class FacilityControllerSpec extends Specification {
                 22,
                 8,
                 14,
-                new FacilityDetailResponse.FacilityInfoResponse(
+                new FacilityInfoInnerResponse(
                         50L,
                         "0",
                         "0",
@@ -117,7 +121,7 @@ class FacilityControllerSpec extends Specification {
                         "0",
                         "0"
                 ),
-                new FacilityDetailResponse.FacilityStaffResponse(
+                new FacilityStaffInnerResponse(
                         40L,
                         0,
                         0,
@@ -153,13 +157,18 @@ class FacilityControllerSpec extends Specification {
                         "24713000311",
                         "기타",
                         "노래방"
-                ))
+                )),
+                5.0,
+                1,
+                0,0,0,0,1,
+                true
         )
 
 
-        facilityService.read(givenFacilityId) >> expectedResponse
+        facilityService.read(*_) >> expectedResponse
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/facilities/{facilityId}", givenFacilityId))
+                .andDo(MockMvcResultHandlers.print())
 
         then:
         response.andExpect {
@@ -176,39 +185,39 @@ class FacilityControllerSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.currentTotal').value(expectedResponse.currentTotal())
             MockMvcResultMatchers.jsonPath('$.currentMale').value(expectedResponse.currentMale())
             MockMvcResultMatchers.jsonPath('$.currentFemale').value(expectedResponse.currentFemale())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.facilityDetailId').value(expectedResponse.facilityInfoResponse().facilityDetailId())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.singleRoomCount').value(expectedResponse.facilityInfoResponse().singleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.doubleRoomCount').value(expectedResponse.facilityInfoResponse().doubleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.tripleRoomCount').value(expectedResponse.facilityInfoResponse().tripleRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.quadRoomCount').value(expectedResponse.facilityInfoResponse().quadRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.officeCount').value(expectedResponse.facilityInfoResponse().officeCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.medicalNurseRoomCount').value(expectedResponse.facilityInfoResponse().medicalNurseRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.dailyLivingTrainingRoomCount').value(expectedResponse.facilityInfoResponse().dailyLivingTrainingRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.programRoomCount').value(expectedResponse.facilityInfoResponse().programRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.bathroomCount').value(expectedResponse.facilityInfoResponse().bathroomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.washBathRoomCount').value(expectedResponse.facilityInfoResponse().washBathRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityInfoResponse.laundryRoomCount').value(expectedResponse.facilityInfoResponse().laundryRoomCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.facilityStaffInformationId').value(expectedResponse.facilityStaffResponse().facilityStaffInformationId())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.directorCount').value(expectedResponse.facilityStaffResponse().directorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.headOfOfficeCount').value(expectedResponse.facilityStaffResponse().headOfOfficeCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.socialWorkerCount').value(expectedResponse.facilityStaffResponse().socialWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.residentDoctorCount').value(expectedResponse.facilityStaffResponse().residentDoctorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.visitingDoctorCount').value(expectedResponse.facilityStaffResponse().visitingDoctorCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.nurseCount').value(expectedResponse.facilityStaffResponse().nurseCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.assistantNurseCount').value(expectedResponse.facilityStaffResponse().assistantNurseCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.dentalHygienistCount').value(expectedResponse.facilityStaffResponse().dentalHygienistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.physicalTherapistCount').value(expectedResponse.facilityStaffResponse().physicalTherapistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.occupationalTherapistCount').value(expectedResponse.facilityStaffResponse().occupationalTherapistCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverLevel1Count').value(expectedResponse.facilityStaffResponse().caregiverLevel1Count())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverLevel2Count').value(expectedResponse.facilityStaffResponse().caregiverLevel2Count())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.caregiverDeferredCount').value(expectedResponse.facilityStaffResponse().caregiverDeferredCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.officeWorkerCount').value(expectedResponse.facilityStaffResponse().officeWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.dietitianCount').value(expectedResponse.facilityStaffResponse().dietitianCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.cookCount').value(expectedResponse.facilityStaffResponse().cookCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.hygieneWorkerCount').value(expectedResponse.facilityStaffResponse().hygieneWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.maintenanceWorkerCount').value(expectedResponse.facilityStaffResponse().maintenanceWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.assistantWorkerCount').value(expectedResponse.facilityStaffResponse().assistantWorkerCount())
-            MockMvcResultMatchers.jsonPath('$.facilityStaffResponse.otherWorkerCount').value(expectedResponse.facilityStaffResponse().otherWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.facilityDetailId').value(expectedResponse.facilityInfoInnerResponse().facilityDetailId())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.singleRoomCount').value(expectedResponse.facilityInfoInnerResponse().singleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.doubleRoomCount').value(expectedResponse.facilityInfoInnerResponse().doubleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.tripleRoomCount').value(expectedResponse.facilityInfoInnerResponse().tripleRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.quadRoomCount').value(expectedResponse.facilityInfoInnerResponse().quadRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.officeCount').value(expectedResponse.facilityInfoInnerResponse().officeCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.medicalNurseRoomCount').value(expectedResponse.facilityInfoInnerResponse().medicalNurseRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.dailyLivingTrainingRoomCount').value(expectedResponse.facilityInfoInnerResponse().dailyLivingTrainingRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.programRoomCount').value(expectedResponse.facilityInfoInnerResponse().programRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.bathroomCount').value(expectedResponse.facilityInfoInnerResponse().bathroomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.washBathRoomCount').value(expectedResponse.facilityInfoInnerResponse().washBathRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityInfoInnerResponse.laundryRoomCount').value(expectedResponse.facilityInfoInnerResponse().laundryRoomCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.facilityStaffInformationId').value(expectedResponse.facilityStaffInnerResponse().facilityStaffInformationId())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.directorCount').value(expectedResponse.facilityStaffInnerResponse().directorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.headOfOfficeCount').value(expectedResponse.facilityStaffInnerResponse().headOfOfficeCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.socialWorkerCount').value(expectedResponse.facilityStaffInnerResponse().socialWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.residentDoctorCount').value(expectedResponse.facilityStaffInnerResponse().residentDoctorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.visitingDoctorCount').value(expectedResponse.facilityStaffInnerResponse().visitingDoctorCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.nurseCount').value(expectedResponse.facilityStaffInnerResponse().nurseCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.assistantNurseCount').value(expectedResponse.facilityStaffInnerResponse().assistantNurseCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.dentalHygienistCount').value(expectedResponse.facilityStaffInnerResponse().dentalHygienistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.physicalTherapistCount').value(expectedResponse.facilityStaffInnerResponse().physicalTherapistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.occupationalTherapistCount').value(expectedResponse.facilityStaffInnerResponse().occupationalTherapistCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverLevel1Count').value(expectedResponse.facilityStaffInnerResponse().caregiverLevel1Count())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverLevel2Count').value(expectedResponse.facilityStaffInnerResponse().caregiverLevel2Count())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.caregiverDeferredCount').value(expectedResponse.facilityStaffInnerResponse().caregiverDeferredCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.officeWorkerCount').value(expectedResponse.facilityStaffInnerResponse().officeWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.dietitianCount').value(expectedResponse.facilityStaffInnerResponse().dietitianCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.cookCount').value(expectedResponse.facilityStaffInnerResponse().cookCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.hygieneWorkerCount').value(expectedResponse.facilityStaffInnerResponse().hygieneWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.maintenanceWorkerCount').value(expectedResponse.facilityStaffInnerResponse().maintenanceWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.assistantWorkerCount').value(expectedResponse.facilityStaffInnerResponse().assistantWorkerCount())
+            MockMvcResultMatchers.jsonPath('$.facilityStaffInnerResponse.otherWorkerCount').value(expectedResponse.facilityStaffInnerResponse().otherWorkerCount())
             MockMvcResultMatchers.jsonPath('$.photoResponses.[0].id').value(expectedResponse.photoResponses().get(0).id())
             MockMvcResultMatchers.jsonPath('$.photoResponses.[0].institutionSymbol').value(expectedResponse.photoResponses().get(0).institutionSymbol())
             MockMvcResultMatchers.jsonPath('$.photoResponses.[0].type').value(expectedResponse.photoResponses().get(0).type())
@@ -219,6 +228,14 @@ class FacilityControllerSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].institutionSymbol').value(expectedResponse.facilityProgramResponses().get(0).institutionSymbol())
             MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].type').value(expectedResponse.facilityProgramResponses().get(0).type())
             MockMvcResultMatchers.jsonPath('$.facilityProgramResponses.[0].name').value(expectedResponse.facilityProgramResponses().get(0).name())
+            MockMvcResultMatchers.jsonPath('$.averageScore').value(expectedResponse.averageScore())
+            MockMvcResultMatchers.jsonPath('$.totalCount').value(expectedResponse.totalCount())
+            MockMvcResultMatchers.jsonPath('$.onePointCount').value(expectedResponse.onePointCount())
+            MockMvcResultMatchers.jsonPath('$.twoPointCount').value(expectedResponse.twoPointCount())
+            MockMvcResultMatchers.jsonPath('$.threePointCount').value(expectedResponse.threePointCount())
+            MockMvcResultMatchers.jsonPath('$.fourPointCount').value(expectedResponse.fourPointCount())
+            MockMvcResultMatchers.jsonPath('$.fivePointCount').value(expectedResponse.fivePointCount())
+            MockMvcResultMatchers.jsonPath('$.isLiked').value(expectedResponse.isLiked())
 
         }
     }

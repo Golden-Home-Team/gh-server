@@ -1,2 +1,0 @@
-
-TRUNCATE TABLE elderly_facilities RESTART IDENTITY;

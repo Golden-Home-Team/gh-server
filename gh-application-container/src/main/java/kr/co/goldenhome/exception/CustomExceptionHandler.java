@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -81,6 +82,13 @@ public class CustomExceptionHandler {
         log.error("DataIntegrityViolationException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(400, "해당 데이터는 사용자당 한개만 할당됩니다."));
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    protected ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
+        log.error("AuthorizationDeniedException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(401, "해당 요청은 관리자혹은 슈퍼 관리자만 가능합니다."));
     }
 
 

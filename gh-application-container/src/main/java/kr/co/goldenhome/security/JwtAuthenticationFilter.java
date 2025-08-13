@@ -92,9 +92,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (user.getUserRole() == UserRole.USER) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        } else {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
+        } else if (user.getUserRole() == UserRole.FACILITY_ADMIN) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_FACILITY_ADMIN"));
+        } else authorities.add(new SimpleGrantedAuthority("ROLE_SUPER_ADMIN"));
         return authorities;
     }
 

@@ -64,8 +64,8 @@ class SignupManagerSpec extends Specification {
                 assert user.loginId == givenSignup.loginId()
                 assert user.email == givenSignup.email()
                 assert user.password == "encodedPassword"
-                assert user.userRole == UserRole.USER
-                assert user.userStatus == UserStatus.ACTIVE
+                assert user.role == UserRole.USER
+                assert user.status == UserStatus.ACTIVE
         }
     }
 

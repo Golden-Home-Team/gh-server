@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":gh-domain:gh-view:gh-view-api"))
 
     implementation(project(":gh-domain:gh-community:gh-community-api"))
+    implementation(project(":gh-domain:gh-community:gh-community-core"))
 
     implementation(project(":gh-common"))
 

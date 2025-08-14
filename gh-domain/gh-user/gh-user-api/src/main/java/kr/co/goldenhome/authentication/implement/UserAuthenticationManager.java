@@ -27,7 +27,7 @@ public class UserAuthenticationManager {
 
     public User authenticate(String loginId, String password) {
         User user = userRepository.findByLoginId(loginId).orElseThrow(() -> new CustomException(ErrorCode.LOGIN_FAILED, "UserAuthenticationManager.authenticate()"));
-        if (user.getUserStatus() != UserStatus.ACTIVE) throw new CustomException(ErrorCode.FORBIDDEN_USER, "UserAuthenticationManager.authenticate()");
+        if (user.getStatus() != UserStatus.ACTIVE) throw new CustomException(ErrorCode.FORBIDDEN_USER, "UserAuthenticationManager.authenticate()");
         if (!passwordProcessor.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.LOGIN_FAILED, "AuthenticationManager.authenticate");
         }

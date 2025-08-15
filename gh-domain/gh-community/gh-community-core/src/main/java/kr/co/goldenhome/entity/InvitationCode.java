@@ -50,7 +50,6 @@ public class InvitationCode {
                 .code(code)
                 .facilityId(facilityId)
                 .issuedByUserId(issuedByUserId)
-                .usedByUserId(issuedByUserId)
                 .status(InvitationCodeStatus.ACTIVE)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusDays(1))

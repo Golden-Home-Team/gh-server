@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CommunityService {
+public class CommunityEntryService {
 
     private final CommunityUserRepository communityUserRepository;
     private final InvitationCodeRepository invitationCodeRepository;

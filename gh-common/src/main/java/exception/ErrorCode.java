@@ -22,6 +22,7 @@ public enum ErrorCode {
     FORBIDDEN_USER(403, "비활성화된 사용자입니다."),
     NOT_FOUND(404, "존재하지 않는 리소스입니다."),
     RESUME_NOT_FOUND(404, "이력서 제출전에 작성해야합니다."),
+    USER_NOT_FOUND(404, "존재하지 않는 유저"),
     EMAIL_NOT_FOUND(404, "해당 이메일로 가입한 계정이 존재하지 않습니다."),
     LOGIN_ID_NOT_FOUND(404, "아이디가 존재하지 않습니다."),
     FACILITY_NOT_FOUND(404, "존재하지 않는 시설입니다"),

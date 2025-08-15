@@ -1,6 +1,10 @@
 package kr.co.goldenhome.security;
 
 import auth.UserPrincipal;
+import exception.CustomException;
+import exception.ErrorCode;
+import kr.co.goldenhome.entity.CommunityUser;
+import kr.co.goldenhome.enums.CommunityUserRole;
 import kr.co.goldenhome.repository.CommunityUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,5 +25,16 @@ public class CommunitySecurityManager {
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Long userId = principal.userId();
         return communityUserRepository.findByFacilityIdAndUserId(facilityId, userId).isPresent();
+    }
+
+    public boolean isCommunityAdmin(Long facilityId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            return false;
+        }
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long userId = principal.userId();
+        CommunityUser communityUser = communityUserRepository.findByFacilityIdAndUserId(facilityId, userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "CommunitySecurityManager.isCommunityAdmin"));
+        return communityUser.getRole() == CommunityUserRole.MANAGER;
     }
 }

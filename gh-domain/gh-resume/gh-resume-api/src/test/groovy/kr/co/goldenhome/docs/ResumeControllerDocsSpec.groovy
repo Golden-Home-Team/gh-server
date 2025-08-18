@@ -198,7 +198,7 @@ class ResumeControllerDocsSpec extends Specification{
         )
 
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.patch("/api/resumes")
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/resumes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("resume-modify",

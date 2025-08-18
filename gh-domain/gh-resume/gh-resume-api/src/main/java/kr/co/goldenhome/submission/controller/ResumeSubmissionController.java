@@ -38,7 +38,7 @@ public class ResumeSubmissionController {
         return resumeSubmissionService.read(id, userPrincipal.userId());
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public CommonResponse modify(@RequestBody ResumeSubmissionModifyRequest request, @PathVariable("id") Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         resumeSubmissionService.modify(request, id, userPrincipal.userId());
         return CommonResponse.ok();

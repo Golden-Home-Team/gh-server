@@ -6,47 +6,51 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Getter
 @Table(
-        name = "community_notices",
+        name = "daily_diets",
         indexes = {
-                @Index(name = "idx_community_notices_facility_id", columnList = "facility_id")
+                @Index(name = "idx_daily_diets_facility_id", columnList = "facility_id")
         }
 )
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommunityNotice {
+public class DailyDiet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long facilityId;
-    private String title;
     private String content;
+    private LocalDate recordDate;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @Builder
-    private CommunityNotice(Long id, Long facilityId, String title, String content, LocalDateTime createdAt) {
+    private DailyDiet(Long id, Long facilityId, String content, LocalDate recordDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.facilityId = facilityId;
-        this.title = title;
         this.content = content;
+        this.recordDate = recordDate;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public static CommunityNotice create(String title, String content, Long facilityId) {
-        return CommunityNotice.builder()
-                .title(title)
+    public static DailyDiet create(Long facilityId, String content,  LocalDate recordDate) {
+        return DailyDiet.builder()
                 .facilityId(facilityId)
                 .content(content)
+                .recordDate(recordDate)
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
-    public void update(String title, String content) {
-        this.title = title;
+    public void update(String content) {
         this.content = content;
+        this.updatedAt = LocalDateTime.now();
     }
 }

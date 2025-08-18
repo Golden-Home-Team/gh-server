@@ -28,7 +28,7 @@ public class CommunityEntryController {
     @Value("${GOLDEN_HOME_SERVER_URL}")
     private String goldenHomeServerUrl;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN') or @communitySecurityManager.isCommunityAdmin(#facilityId)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN') or @communitySecurityManager.isManager(#facilityId)")
     @PostMapping("/{facilityId}/admin")
     public InvitationLinkResponse generateInvitation(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         String code = communityEntryService.generateInvitationCode(facilityId, userPrincipal.userId());

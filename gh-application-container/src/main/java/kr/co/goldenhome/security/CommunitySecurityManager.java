@@ -27,7 +27,7 @@ public class CommunitySecurityManager {
         return communityUserRepository.findByFacilityIdAndUserId(facilityId, userId).isPresent();
     }
 
-    public boolean isCommunityAdmin(Long facilityId) {
+    public boolean isManager(Long facilityId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getPrincipal() == null) {
             return false;

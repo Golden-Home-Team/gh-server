@@ -28,7 +28,7 @@ public class ResumeController {
         return resumeService.read(userPrincipal.userId());
     }
 
-    @PatchMapping
+    @PutMapping
     public CommonResponse modify(@RequestBody ResumeModifyRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         resumeService.modify(request, userPrincipal.userId());
         return CommonResponse.ok();

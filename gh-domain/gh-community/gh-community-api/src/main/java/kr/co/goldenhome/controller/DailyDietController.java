@@ -4,7 +4,7 @@ import dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.DailyDietRequest;
 import kr.co.goldenhome.dto.DailyDietResponse;
-import kr.co.goldenhome.dto.DailyDietThumbnailResponse;
+import kr.co.goldenhome.dto.DailyDietMainResponse;
 import kr.co.goldenhome.dto.DailyDietUpdateRequest;
 import kr.co.goldenhome.service.DailyDietService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class DailyDietController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN') or @communitySecurityManager.isMember(#facilityId)")
     @GetMapping("/{facilityId}/daily-diet/main")
-    public DailyDietThumbnailResponse readOnMain(@PathVariable("facilityId") Long facilityId) {
+    public DailyDietMainResponse readOnMain(@PathVariable("facilityId") Long facilityId) {
         return dailyDietService.readOnMain(facilityId);
     }
 

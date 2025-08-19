@@ -1,7 +1,7 @@
 package kr.co.goldenhome.dto;
 
-public record DailyDietImageInfo(
-        String dailyDietType,
+public record DailyShotImageInfoRequest(
+        String dailyShotType,
         String formattedImageName
 ) {
 }

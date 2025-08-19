@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DailyDietService {
 
-
     private final DailyDietAppender dailyDietAppender;
     private final DailyDietUpdater dailyDietUpdater;
     private final DailyDietReader dailyDietReader;
@@ -25,19 +24,19 @@ public class DailyDietService {
     @Transactional
     public void write(DailyDietRequest request, Long facilityId) {
         Long dailyDietId = dailyDietAppender.save(facilityId, request.content(), request.recordDate());
-        dailyDietImageAppender.saveAll(dailyDietId, request.dailyDietImageInfos());
+        dailyDietImageAppender.saveAll(dailyDietId, request.dailyDietImageInfoRequests());
     }
 
     @Transactional
     public void update(DailyDietUpdateRequest request, Long dailyDietId) {
         dailyDietUpdater.update(dailyDietId, request.content());
-        dailyDietImageUpdater.update(request.dailyDietImageInfos(), dailyDietId);
+        dailyDietImageUpdater.update(request.dailyDietImageInfoRequests(), dailyDietId);
     }
 
-    public DailyDietThumbnailResponse readOnMain(Long facilityId) {
+    public DailyDietMainResponse readOnMain(Long facilityId) {
         Long dailyDietId = dailyDietReader.getLatest(facilityId);
         DailyDietImageResponse dailyDietImageResponse = dailyDietImageReader.getLatest(dailyDietId);
-        return new DailyDietThumbnailResponse(dailyDietId, dailyDietImageResponse.id(), dailyDietImageResponse.dailyDietType(), dailyDietImageResponse.imageUrl());
+        return new DailyDietMainResponse(dailyDietId, dailyDietImageResponse.id(), dailyDietImageResponse.dailyDietType(), dailyDietImageResponse.imageUrl());
     }
 
     public DailyDietResponse read(Long dailyDietId) {

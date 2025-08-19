@@ -21,15 +21,15 @@ public class DailyDietImageApiImpl implements DailyDietImageApi {
     private String awsBaseUrl;
 
     @Override
-    public void saveAll(Long dailyDietId, List<ImageInfo> imageInfos) {
-        for (ImageInfo imageInfo : imageInfos) {
+    public void saveAll(Long dailyDietId, List<DailyDietImageInfo> dailyDietImageInfoList) {
+        for (DailyDietImageInfo dailyDietImageInfo : dailyDietImageInfoList) {
             try {
-                DailyDietType.valueOf(imageInfo.dailyDietType());
+                DailyDietType.valueOf(dailyDietImageInfo.dailyDietType());
             } catch (IllegalArgumentException e) {
                 throw new CustomException(ErrorCode.INVALID_ENUM, "DailyDietImageApiImpl.saveAll");
             }
         }
-        List<DailyDietImage> dailyDietImages = imageInfos.stream().map(imageInfo -> DailyDietImage.create(dailyDietId, DailyDietType.valueOf(imageInfo.dailyDietType()), imageInfo.formattedImageName(), awsBaseUrl + imageInfo.formattedImageName())).toList();
+        List<DailyDietImage> dailyDietImages = dailyDietImageInfoList.stream().map(imageInfo -> DailyDietImage.create(dailyDietId, DailyDietType.valueOf(imageInfo.dailyDietType()), imageInfo.formattedImageName(), awsBaseUrl + imageInfo.formattedImageName())).toList();
         dailyDietImageRepository.saveAll(dailyDietImages);
     }
 

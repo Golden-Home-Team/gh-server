@@ -28,7 +28,8 @@ public enum ErrorCode {
     NOTICE_NOT_FOUND(404, "해당 공지가 존재하지 않습니다."),
     LOGIN_ID_NOT_FOUND(404, "아이디가 존재하지 않습니다."),
     FACILITY_NOT_FOUND(404, "존재하지 않는 시설입니다"),
-    DAILY_DIET_NOT_FOUND(404, "존재하지 않는 오늘의식단입니다"),
+    DAILY_DIET_NOT_FOUND(404, "존재하지 않는 오늘의 식단입니다"),
+    DAILY_SHOT_NOT_FOUND(404, "존재하지 않는 오늘의 한 컷입니다"),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다.");
     private final int httpStatus;

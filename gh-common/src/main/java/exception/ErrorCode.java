@@ -20,11 +20,16 @@ public enum ErrorCode {
     SOCIAL_LOGIN_FAILED(401, "소셜 로그인에 실패했습니다."),
     FORBIDDEN(403, "권한이 없습니다."),
     FORBIDDEN_USER(403, "비활성화된 사용자입니다."),
+    UPDATE_FORBIDDEN(403, "해당 리소스를 수정할 권한이 없습니다."),
     NOT_FOUND(404, "존재하지 않는 리소스입니다."),
     RESUME_NOT_FOUND(404, "이력서 제출전에 작성해야합니다."),
+    USER_NOT_FOUND(404, "존재하지 않는 유저"),
     EMAIL_NOT_FOUND(404, "해당 이메일로 가입한 계정이 존재하지 않습니다."),
+    NOTICE_NOT_FOUND(404, "해당 공지가 존재하지 않습니다."),
     LOGIN_ID_NOT_FOUND(404, "아이디가 존재하지 않습니다."),
     FACILITY_NOT_FOUND(404, "존재하지 않는 시설입니다"),
+    DAILY_DIET_NOT_FOUND(404, "존재하지 않는 오늘의 식단입니다"),
+    DAILY_SHOT_NOT_FOUND(404, "존재하지 않는 오늘의 한 컷입니다"),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다.");
     private final int httpStatus;

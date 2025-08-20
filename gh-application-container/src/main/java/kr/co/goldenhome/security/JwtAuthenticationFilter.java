@@ -27,7 +27,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -90,11 +89,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (user.getUserRole() == UserRole.USER) {
+        if (user.getRole() == UserRole.USER) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        } else {
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
+        } else authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return authorities;
     }
 

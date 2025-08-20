@@ -159,7 +159,7 @@ class ResumeSubmissionControllerSpec extends Specification{
         )
 
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.patch("/api/resumes-submission")
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/resumes-submission")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
 

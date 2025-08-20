@@ -33,7 +33,7 @@ class UserAuthenticationManagerSpec extends Specification {
         given:
         def givenLoginId = "gucoding1234"
         def givenPassword = "1234"
-        def expectedUser = User.builder().password("1234").userStatus(UserStatus.ACTIVE).build()
+        def expectedUser = User.builder().password("1234").status(UserStatus.ACTIVE).build()
 
         when:
         userAuthenticationManager.authenticate(givenLoginId, givenPassword)
@@ -73,8 +73,8 @@ class UserAuthenticationManagerSpec extends Specification {
         where:
         description           | findByLoginIdResult                        | invokePasswordMatches | matchesResult | expectedErrorCode
         "존재하지 않는 사용자" | Optional.empty()                           | false                 | false         | ErrorCode.LOGIN_FAILED
-        "비밀번호 불일치"     | Optional.of(User.builder().password("encodedPw").userStatus(UserStatus.ACTIVE).build()) | true                  | false         | ErrorCode.LOGIN_FAILED
-        "비활성화된 사용자"   | Optional.of(User.builder().password("encodedPw").userStatus(UserStatus.DELETED).build()) | false             | false         | ErrorCode.FORBIDDEN_USER
+        "비밀번호 불일치"     | Optional.of(User.builder().password("encodedPw").status(UserStatus.ACTIVE).build()) | true                  | false         | ErrorCode.LOGIN_FAILED
+        "비활성화된 사용자"   | Optional.of(User.builder().password("encodedPw").status(UserStatus.DELETED).build()) | false             | false         | ErrorCode.FORBIDDEN_USER
     }
 
 

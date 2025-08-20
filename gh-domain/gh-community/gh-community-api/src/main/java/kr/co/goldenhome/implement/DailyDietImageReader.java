@@ -17,11 +17,11 @@ public class DailyDietImageReader {
     public DailyDietImageResponse getLatest(Long dailyDietId) {
         DailyDietImageApiResponse apiResponse = dailyDietImageApi.getLatest(dailyDietId);
         if (apiResponse == null) return DailyDietImageResponse.empty();
-        return new DailyDietImageResponse(apiResponse.id(), apiResponse.dailyDietType(), apiResponse.formattedName(), apiResponse.imageUrl(), apiResponse.createdAt());
+        return new DailyDietImageResponse(apiResponse.id(), apiResponse.dailyDietType(), apiResponse.imageUrl(), apiResponse.createdAt());
     }
 
     public List<DailyDietImageResponse> get(Long dailyDietId) {
         return dailyDietImageApi.get(dailyDietId)
-                .stream().map(apiResponse -> new DailyDietImageResponse(apiResponse.id(), apiResponse.dailyDietType(), apiResponse.formattedName(), apiResponse.imageUrl(), apiResponse.createdAt())).toList();
+                .stream().map(apiResponse -> new DailyDietImageResponse(apiResponse.id(), apiResponse.dailyDietType(), apiResponse.imageUrl(), apiResponse.createdAt())).toList();
     }
 }

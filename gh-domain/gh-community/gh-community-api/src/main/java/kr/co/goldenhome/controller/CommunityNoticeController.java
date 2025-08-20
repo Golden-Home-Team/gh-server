@@ -24,7 +24,7 @@ public class CommunityNoticeController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN') or @communitySecurityManager.isManager(#facilityId)")
     @PostMapping("/{facilityId}/notice")
-    public CommonResponse create(@Valid @RequestBody CommunityNoticeRequest request, @PathVariable("facilityId") Long facilityId) {
+    public CommonResponse write(@Valid @RequestBody CommunityNoticeRequest request, @PathVariable("facilityId") Long facilityId) {
         communityNoticeService.create(request, facilityId);
         return CommonResponse.ok();
     }

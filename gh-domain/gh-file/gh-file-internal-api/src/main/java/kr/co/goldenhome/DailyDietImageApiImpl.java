@@ -29,7 +29,7 @@ public class DailyDietImageApiImpl implements DailyDietImageApi {
                 throw new CustomException(ErrorCode.INVALID_ENUM, "DailyDietImageApiImpl.saveAll");
             }
         }
-        List<DailyDietImage> dailyDietImages = dailyDietImageInfoList.stream().map(imageInfo -> DailyDietImage.create(dailyDietId, DailyDietType.valueOf(imageInfo.dailyDietType()), imageInfo.formattedImageName(), awsBaseUrl + imageInfo.formattedImageName())).toList();
+        List<DailyDietImage> dailyDietImages = dailyDietImageInfoList.stream().map(imageInfo -> DailyDietImage.create(dailyDietId, DailyDietType.valueOf(imageInfo.dailyDietType()), awsBaseUrl + imageInfo.formattedImageName())).toList();
         dailyDietImageRepository.saveAll(dailyDietImages);
     }
 
@@ -41,12 +41,12 @@ public class DailyDietImageApiImpl implements DailyDietImageApi {
     @Override
     public DailyDietImageApiResponse getLatest(Long dailyDietId) {
         Optional<DailyDietImage> dailyDietImageOptional = dailyDietImageRepository.findTopByDailyDietIdOrderByCreatedAtDesc(dailyDietId);
-        return dailyDietImageOptional.map(dailyDietImage -> new DailyDietImageApiResponse(dailyDietImage.getId(),dailyDietImage.getDailyDietType().name(), dailyDietImage.getFormattedName(), dailyDietImage.getImageUrl(), dailyDietImage.getCreatedAt())).orElse(null);
+        return dailyDietImageOptional.map(dailyDietImage -> new DailyDietImageApiResponse(dailyDietImage.getId(),dailyDietImage.getDailyDietType().name(), dailyDietImage.getImageUrl(), dailyDietImage.getCreatedAt())).orElse(null);
     }
 
     @Override
     public List<DailyDietImageApiResponse> get(Long dailyDietId) {
        return dailyDietImageRepository.findByDailyDietId(dailyDietId)
-                .stream().map(dailyDietImage -> new DailyDietImageApiResponse(dailyDietImage.getId(),dailyDietImage.getDailyDietType().name(), dailyDietImage.getFormattedName(), dailyDietImage.getImageUrl(), dailyDietImage.getCreatedAt())).toList();
+                .stream().map(dailyDietImage -> new DailyDietImageApiResponse(dailyDietImage.getId(),dailyDietImage.getDailyDietType().name(), dailyDietImage.getImageUrl(), dailyDietImage.getCreatedAt())).toList();
     }
 }

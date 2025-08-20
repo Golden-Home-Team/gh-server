@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record DailyShotUpdateRequest(String content,
-                                     @NotNull LocalDate recordDate,
                                      List<DailyShotImageInfoRequest> dailyShotImageInfoRequests) {
 
 }

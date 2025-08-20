@@ -94,7 +94,19 @@ allprojects {
                 'profile-modify-email': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email',
                 'profile-modify-password': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password',
                 'facility-like': 'gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-like',
-                'facility-unlike': 'gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-unlike'
+                'facility-unlike': 'gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-unlike',
+                'community-entry-generate-invitationLink': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-entry-generate-invitationLink',
+                'community-entry-enter': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-entry-enter',
+                'community-notice-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-notice-read',
+                'community-notice-write': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-notice-write',
+                'community-notice-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-notice-update',
+                'community-notice-readAll': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-notice-readAll',
+                'daily-diet-write': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-diet-write',
+                'daily-diet-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-diet-read',
+                'daily-diet-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-diet-update',
+                'daily-shot-write': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-write',
+                'daily-shot-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-update',
+                'daily-shot-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-read'
 
 
 

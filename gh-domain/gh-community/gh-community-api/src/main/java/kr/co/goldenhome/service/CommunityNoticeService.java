@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,10 @@ public class CommunityNoticeService {
 
     public CommunityNotice read(Long noticeId) {
         return communityNoticeRepository.findById(noticeId).orElseThrow(()-> new CustomException(ErrorCode.NOTICE_NOT_FOUND, "CommunityNoticeService.read"));
+    }
+
+    public Optional<CommunityNotice> readLatest(Long facilityId) {
+        return communityNoticeRepository.findTopByFacilityIdOrderByCreatedAtDesc(facilityId);
     }
 
     public List<CommunityNotice> readAll(Long facilityId, Long lastId, Long pageSize) {

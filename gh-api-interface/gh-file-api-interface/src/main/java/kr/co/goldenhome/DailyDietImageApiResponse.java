@@ -2,6 +2,6 @@ package kr.co.goldenhome;
 
 import java.time.LocalDateTime;
 
-public record DailyDietImageApiResponse(Long id, String dailyDietType, String formattedName, String imageUrl, LocalDateTime createdAt) {
+public record DailyDietImageApiResponse(Long id, String dailyDietType, String imageUrl, LocalDateTime createdAt) {
 
 }

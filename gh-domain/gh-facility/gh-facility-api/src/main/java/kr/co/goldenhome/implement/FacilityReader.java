@@ -37,6 +37,6 @@ public class FacilityReader {
     }
 
     public List<Facility> getByIds(List<Long> facilityIds) {
-        return null;
+        return facilityRepository.findByIdIn(facilityIds);
     }
 }

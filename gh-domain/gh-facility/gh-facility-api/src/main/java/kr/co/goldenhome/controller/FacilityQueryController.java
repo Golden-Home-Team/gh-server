@@ -1,4 +1,4 @@
-package kr.co.goldenhome.controller;
+    package kr.co.goldenhome.controller;
 
 import auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
@@ -36,8 +36,8 @@ public class FacilityQueryController {
         return facilityQueryService.read(facilityId, userPrincipal.userId());
     }
 
-    @GetMapping
+    @GetMapping("/like")
     public List<FacilityResponse> getLikedFacilities(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return null;
+        return facilityQueryService.getLikedFacilities(userPrincipal.userId());
     }
 }

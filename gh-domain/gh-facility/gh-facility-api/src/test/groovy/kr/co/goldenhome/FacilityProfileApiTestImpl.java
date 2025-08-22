@@ -8,4 +8,9 @@ public class FacilityProfileApiTestImpl implements FacilityProfileApi {
     public void save(Long facilityId, String formattedImageName) {
 
     }
+
+    @Override
+    public String get(Long facilityId) {
+        return "";
+    }
 }

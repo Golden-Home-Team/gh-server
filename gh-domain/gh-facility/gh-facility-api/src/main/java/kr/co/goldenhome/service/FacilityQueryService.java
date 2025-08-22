@@ -6,6 +6,7 @@ import kr.co.goldenhome.ReviewMetaData;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
+import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.entity.FacilityDocument;
 import kr.co.goldenhome.implement.FacilityReader;
 import kr.co.goldenhome.implement.FacilitySearcher;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FacilityService {
+public class FacilityQueryService {
 
     private final FacilitySearcher facilitySearcher;
     private final FacilityReader facilityReader;
@@ -33,5 +34,11 @@ public class FacilityService {
         ReviewMetaData reviewMetaData = reviewApi.getReviewMetaData(facilityId);
         boolean isLiked = likeApi.isLiked(facilityId, userId);
         return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked);
+    }
+
+    public List<FacilityResponse> getLikedFacilities(Long userId) {
+        List<Long> facilityIds = likeApi.getLikedFacilityIds(userId);
+        List<Facility> facilities = facilityReader.getByIds(facilityIds);
+        return null;
     }
 }

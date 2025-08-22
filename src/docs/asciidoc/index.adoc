@@ -10,6 +10,7 @@ ifndef::snippets[]
 :token-refresh: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh
 :facility-read: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
 :facility-search: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-search
+:facility-profile-upload: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-profile-upload
 :resume-write: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write
 :resume-read: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read
 :resume-modify: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-modify
@@ -247,6 +248,16 @@ include::{facility-search}/query-parameters.adoc[]
 === HTTP Response
 include::{facility-search}/http-response.adoc[]
 include::{facility-search}/response-fields.adoc[]
+
+== 시설 프로필 등록
+=== HTTP Request
+include::{facility-profile-upload}/http-request.adoc[]
+include::{facility-profile-upload}/request-fields.adoc[]
+include::{facility-profile-upload}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{facility-profile-upload}/http-response.adoc[]
+include::{facility-profile-upload}/response-fields.adoc[]
 
 == 시설 좋아요
 === HTTP Request

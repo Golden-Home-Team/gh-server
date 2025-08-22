@@ -73,6 +73,7 @@ allprojects {
                 'token-refresh': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh',
                 'facility-read': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read',
                 'facility-search': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-search',
+                'facility-profile-upload': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-profile-upload',
                 'resume-write':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write',
                 'resume-read':'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read',
                 'resume-modify': 'gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-modify',

@@ -9,9 +9,9 @@ import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
 import spock.lang.Specification
 
-class FacilityServiceSpec extends Specification {
+class FacilityQueryServiceSpec extends Specification {
 
-    FacilityService facilityService
+    FacilityQueryService facilityService
     FacilitySearcher facilitySearcher = Mock()
     FacilityReader facilityReader = Mock()
     ReviewApi reviewApi = Mock()
@@ -19,7 +19,7 @@ class FacilityServiceSpec extends Specification {
 
 
     def setup() {
-        facilityService = new FacilityService(facilitySearcher, facilityReader, reviewApi, likeApi)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, reviewApi, likeApi)
     }
 
     def "search - facilitySearcher 를 호출한다"() {

@@ -2,13 +2,12 @@ package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.dto.FacilityDetailResponse
-import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.dto.FacilityInfoInnerResponse
 import kr.co.goldenhome.dto.FacilityPhotoResponse
 import kr.co.goldenhome.dto.FacilityProgramResponse
 import kr.co.goldenhome.dto.FacilityResponse
 import kr.co.goldenhome.dto.FacilityStaffInnerResponse
-import kr.co.goldenhome.service.FacilityService
+import kr.co.goldenhome.service.FacilityQueryService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,7 +22,7 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class FacilityControllerSpec extends Specification {
+class FacilityQueryControllerSpec extends Specification {
 
     @Autowired
     MockMvc mockMvc
@@ -32,7 +31,7 @@ class FacilityControllerSpec extends Specification {
     ObjectMapper objectMapper
 
     @SpringBean
-    FacilityService facilityService = Mock()
+    FacilityQueryService facilityService = Mock()
 
     def "시설 검색"() {
         given:

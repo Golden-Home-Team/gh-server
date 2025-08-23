@@ -13,6 +13,7 @@ dependencies {
 
     implementation(project(":gh-api-interface:gh-review-api-interface"))
     implementation(project(":gh-api-interface:gh-like-api-interface"))
+    implementation(project(":gh-api-interface:gh-file-api-interface"))
 
 }
 

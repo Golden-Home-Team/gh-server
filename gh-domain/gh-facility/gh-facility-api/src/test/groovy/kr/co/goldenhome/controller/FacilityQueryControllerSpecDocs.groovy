@@ -1,14 +1,13 @@
-package kr.co.goldenhome.docs
+package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.dto.FacilityDetailResponse
-import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.dto.FacilityInfoInnerResponse
 import kr.co.goldenhome.dto.FacilityPhotoResponse
 import kr.co.goldenhome.dto.FacilityProgramResponse
 import kr.co.goldenhome.dto.FacilityResponse
 import kr.co.goldenhome.dto.FacilityStaffInnerResponse
-import kr.co.goldenhome.service.FacilityService
+import kr.co.goldenhome.service.FacilityQueryService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -35,7 +34,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-class FacilityControllerDocsSpec extends Specification {
+class FacilityQueryControllerSpecDocs extends Specification {
 
     @Autowired
     MockMvc mockMvc
@@ -44,7 +43,7 @@ class FacilityControllerDocsSpec extends Specification {
     ObjectMapper objectMapper
 
     @SpringBean
-    FacilityService facilityService = Mock()
+    FacilityQueryService facilityService = Mock()
 
     def "시설 검색"() {
         given:
@@ -57,7 +56,7 @@ class FacilityControllerDocsSpec extends Specification {
         def givenPage = 1
         def givenSize = 20
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://"))
 
         facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize)
         >> expectedResponse
@@ -107,7 +106,10 @@ class FacilityControllerDocsSpec extends Specification {
                         fieldWithPath("[].capacity").type(JsonFieldType.NUMBER)
                                 .description("정원"),
                         fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
-                                .description("현원 - 계")
+                                .description("현원 - 계"),
+                        fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
+                                .description("시설 프로필 이미지")
+
                 )
         ))
 
@@ -124,6 +126,7 @@ class FacilityControllerDocsSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$[0].grade').value(expectedResponse.get(0).grade())
             MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
             MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
+            MockMvcResultMatchers.jsonPath('$[0].profileUrl').value(expectedResponse.get(0).profileUrl())
 
         }
 
@@ -132,7 +135,6 @@ class FacilityControllerDocsSpec extends Specification {
     def "시설 조회"() {
         given:
         def givenFacilityId = 1L
-        def givenUserId = 1L
         def expectedResponse = new FacilityDetailResponse(
                 50L,
                 "24713000311",
@@ -428,5 +430,66 @@ class FacilityControllerDocsSpec extends Specification {
             MockMvcResultMatchers.jsonPath('$.isLiked').value(expectedResponse.isLiked())
 
         }
+    }
+
+    def "좋아요한 시설 목록 조회"() {
+        given:
+
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://"))
+
+        facilityService.getLikedFacilities(*_)
+                >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/facilities/like")
+        ).andDo(document("facility-read-liked",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                        fieldWithPath("[]").type(JsonFieldType.ARRAY)
+                                .description("시설 목록"),
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER)
+                                .description("시설 아이디"),
+                        fieldWithPath("[].institutionSymbol").type(JsonFieldType.STRING)
+                                .description("기관 코드"),
+                        fieldWithPath("[].facilityType").type(JsonFieldType.STRING)
+                                .description("시설 종류"),
+                        fieldWithPath("[].name").type(JsonFieldType.STRING)
+                                .description("시설명"),
+                        fieldWithPath("[].address").type(JsonFieldType.STRING)
+                                .description("소재지"),
+                        fieldWithPath("[].establishmentYear").type(JsonFieldType.NUMBER)
+                                .description("시설연도"),
+                        fieldWithPath("[].grade").type(JsonFieldType.STRING)
+                                .description("시설 등급"),
+
+                        fieldWithPath("[].capacity").type(JsonFieldType.NUMBER)
+                                .description("정원"),
+                        fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
+                                .description("현원 - 계"),
+                        fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
+                                .description("시설 프로필 이미지")
+
+                )
+        ))
+
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$[0].id').value(expectedResponse.get(0).id())
+            MockMvcResultMatchers.jsonPath('$[0].institutionSymbol').value(expectedResponse.get(0).institutionSymbol())
+            MockMvcResultMatchers.jsonPath('$[0].facilityType').value(expectedResponse.get(0).facilityType())
+            MockMvcResultMatchers.jsonPath('$[0].name').value(expectedResponse.get(0).name())
+            MockMvcResultMatchers.jsonPath('$[0].address').value(expectedResponse.get(0).address())
+            MockMvcResultMatchers.jsonPath('$[0].establishmentYear').value(expectedResponse.get(0).establishmentYear())
+            MockMvcResultMatchers.jsonPath('$[0].grade').value(expectedResponse.get(0).grade())
+            MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
+            MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
+            MockMvcResultMatchers.jsonPath('$[0].profileUrl').value(expectedResponse.get(0).profileUrl())
+
+        }
+
     }
 }

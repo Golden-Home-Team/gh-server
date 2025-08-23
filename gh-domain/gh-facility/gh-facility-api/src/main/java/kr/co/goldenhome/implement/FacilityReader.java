@@ -6,6 +6,7 @@ import kr.co.goldenhome.dto.FacilityCombinedDto;
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse;
 import kr.co.goldenhome.dto.FacilityPhotoResponse;
 import kr.co.goldenhome.dto.FacilityProgramResponse;
+import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.repository.FacilityPhotoRepository;
 import kr.co.goldenhome.repository.FacilityProgramRepository;
 import kr.co.goldenhome.repository.FacilityRepository;
@@ -33,5 +34,9 @@ public class FacilityReader {
                 .stream().map(FacilityProgramResponse::from).toList();
         return FacilityDetailServiceResponse.of(facilityCombinedDto, facilityPhotoResponses, facilityProgramResponses);
 
+    }
+
+    public List<Facility> getByIds(List<Long> facilityIds) {
+        return facilityRepository.findByIdIn(facilityIds);
     }
 }

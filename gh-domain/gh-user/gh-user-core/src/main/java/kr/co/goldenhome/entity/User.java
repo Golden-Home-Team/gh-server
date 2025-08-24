@@ -8,9 +8,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
+
+@SQLRestriction("user_status <> 'DELETED'")
 @Table(name = "users")
 @Entity
 @Getter

@@ -67,7 +67,7 @@ class DailyDietControllerSpecDocs extends Specification {
                                 parameterWithName("facilityId").description("시설 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("content").description("제목").type(JsonFieldType.STRING),
+                                fieldWithPath("content").description("내용").type(JsonFieldType.STRING),
                                 fieldWithPath("recordDate").description("기록일 e.g. 2025-08-19").type(JsonFieldType.STRING),
                                 fieldWithPath("dailyDietImageInfoRequests").description("이미지 정보 리스트").type(JsonFieldType.ARRAY),
                                 fieldWithPath("dailyDietImageInfoRequests[].dailyDietType").description("MORNING, AFTERNOON, EVENING, MONTHLY").type(JsonFieldType.STRING),

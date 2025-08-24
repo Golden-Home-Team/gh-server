@@ -2,6 +2,7 @@ package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.dto.DailyMedicationRequest
+import kr.co.goldenhome.dto.DailyMedicationUpdateRequest
 import kr.co.goldenhome.service.DailyMedicationService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -67,6 +68,42 @@ class DailyMedicationControllerSpecDocs extends Specification {
                         ),
                         requestFields(
                                 fieldWithPath("recordDate").description("기록일 e.g. 2025-08-19").type(JsonFieldType.STRING),
+                                fieldWithPath("morningContent").description("내용(아침)").type(JsonFieldType.STRING),
+                                fieldWithPath("afternoonContent").description("내용(점심)").type(JsonFieldType.STRING),
+                                fieldWithPath("nightContent").description("내용(저녁)").type(JsonFieldType.STRING)
+                        ),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                        .description("성공여부")
+                        )
+                ))
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+            MockMvcResultMatchers.jsonPath('$.success').value(true)
+        }
+
+    }
+
+    def "오늘의 복약 수정"() {
+        given:
+        def givenFacilityId = 1L
+        def givenDailyMedicationId = 2L
+        def givenRequest = new DailyMedicationUpdateRequest( "아침 1회 복용", "특이사항 없음", "저녁 2회 복용")
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/communities/{facilityId}/daily-medication/{dailyMedicationId}", givenFacilityId, givenDailyMedicationId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(givenRequest))
+        )
+                .andDo(document("daily-medication-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("facilityId").description("시설 아이디"),
+                                parameterWithName("dailyMedicationId").description("오늘의 복약 아이디")
+                        ),
+                        requestFields(
                                 fieldWithPath("morningContent").description("내용(아침)").type(JsonFieldType.STRING),
                                 fieldWithPath("afternoonContent").description("내용(점심)").type(JsonFieldType.STRING),
                                 fieldWithPath("nightContent").description("내용(저녁)").type(JsonFieldType.STRING)

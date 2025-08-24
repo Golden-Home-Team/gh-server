@@ -16,7 +16,7 @@ public class DailyShotReader {
     }
 
     public DailyShot getLatestByFacilityIdAndDayOfWeek(Long facilityId, int dayOffWeek) {
-        return dailyShotRepository.getByFacilityIdAndDayOfWeek(facilityId, dayOffWeek);
+        return dailyShotRepository.getLatestByFacilityIdAndDayOfWeek(facilityId, dayOffWeek);
     }
 
 

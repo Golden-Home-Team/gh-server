@@ -46,6 +46,7 @@ ifndef::snippets[]
 :daily-shot-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-read
 :daily-shot-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-write
 :daily-shot-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-update
+:daily-medication-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-write
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -497,3 +498,12 @@ include::{daily-shot-read}/path-parameters.adoc[]
 == HTTP Response
 include::{daily-shot-read}/http-response.adoc[]
 include::{daily-shot-read}/response-fields.adoc[]
+
+== 오늘의 복약 작성
+=== HTTP Request
+include::{daily-medication-write}/http-request.adoc[]
+include::{daily-medication-write}/request-fields.adoc[]
+
+=== HTTP Response
+include::{daily-medication-write}/http-response.adoc[]
+include::{daily-medication-write}/response-fields.adoc[]

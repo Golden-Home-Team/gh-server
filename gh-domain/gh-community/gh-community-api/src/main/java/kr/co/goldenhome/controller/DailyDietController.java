@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-// todo API 문서
 @RestController
 @RequestMapping("/api/communities")
 @RequiredArgsConstructor

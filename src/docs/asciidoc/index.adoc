@@ -48,6 +48,7 @@ ifndef::snippets[]
 :daily-shot-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-update
 :daily-medication-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-write
 :daily-medication-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-update
+:daily-medication-readByDayOfWeek: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-readByDayOfWeek
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -517,3 +518,13 @@ include::{daily-medication-update}/request-fields.adoc[]
 === HTTP Response
 include::{daily-medication-update}/http-response.adoc[]
 include::{daily-medication-update}/response-fields.adoc[]
+
+== 오늘의 복약 - 요일 단위로 읽기
+=== HTTP Request
+include::{daily-medication-readByDayOfWeek}/http-request.adoc[]
+include::{daily-medication-readByDayOfWeek}/request-fields.adoc[]
+include::{daily-medication-readByDayOfWeek}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{daily-medication-readByDayOfWeek}/http-response.adoc[]
+include::{daily-medication-readByDayOfWeek}/response-fields.adoc[]

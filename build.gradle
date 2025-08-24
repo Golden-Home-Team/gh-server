@@ -110,7 +110,8 @@ allprojects {
                 'daily-shot-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-update',
                 'daily-shot-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-shot-read',
                 'daily-medication-write': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-write',
-                'daily-medication-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-update'
+                'daily-medication-update': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-update',
+                'daily-medication-readByDayOfWeek': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-readByDayOfWeek'
 
 
 

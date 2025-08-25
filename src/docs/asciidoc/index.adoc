@@ -52,6 +52,9 @@ ifndef::snippets[]
 :daily-rehab-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-write
 :daily-rehab-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-update
 :daily-rehab-readByDayOfWeek: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-readByDayOfWeek
+:community-schedule-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-write
+:community-schedule-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-update
+:community-schedule-readByMonth: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-readByMonth
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -525,7 +528,6 @@ include::{daily-medication-update}/response-fields.adoc[]
 == 오늘의 복약 - 요일 단위로 읽기
 === HTTP Request
 include::{daily-medication-readByDayOfWeek}/http-request.adoc[]
-include::{daily-medication-readByDayOfWeek}/request-fields.adoc[]
 include::{daily-medication-readByDayOfWeek}/query-parameters.adoc[]
 
 === HTTP Response
@@ -561,3 +563,33 @@ include::{daily-rehab-readByDayOfWeek}/query-parameters.adoc[]
 === HTTP Response
 include::{daily-rehab-readByDayOfWeek}/http-response.adoc[]
 include::{daily-rehab-readByDayOfWeek}/response-fields.adoc[]
+
+== 커뮤니티 일정 작성
+=== HTTP Request
+include::{community-schedule-write}/http-request.adoc[]
+include::{community-schedule-write}/path-parameters.adoc[]
+include::{community-schedule-write}/request-fields.adoc[]
+
+=== HTTP Response
+include::{community-schedule-write}/http-response.adoc[]
+include::{community-schedule-write}/response-fields.adoc[]
+
+== 커뮤니티 일정 수정
+=== HTTP Request
+include::{community-schedule-update}/http-request.adoc[]
+include::{community-schedule-update}/path-parameters.adoc[]
+include::{community-schedule-update}/request-fields.adoc[]
+
+=== HTTP Response
+include::{community-schedule-update}/http-response.adoc[]
+include::{community-schedule-update}/response-fields.adoc[]
+
+== 커뮤니티 일정 - 월별로 읽기
+=== HTTP Request
+include::{community-schedule-readByMonth}/http-request.adoc[]
+include::{community-schedule-readByMonth}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{community-schedule-readByMonth}/http-response.adoc[]
+include::{community-schedule-readByMonth}/response-fields.adoc[]
+

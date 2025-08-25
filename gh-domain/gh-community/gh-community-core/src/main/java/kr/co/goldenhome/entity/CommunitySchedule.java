@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Table(
-        name = "daily_rehabilitations",
+        name = "community_schedules",
         indexes = {
-                @Index(name = "idx_daily_rehabilitations_facility_id_record_date", columnList = "facility_id, record_date")
+                @Index(name = "idx_community_schedules_facility_id_record_date", columnList = "facility_id, record_date")
         },
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"record_date"})
@@ -20,32 +20,32 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DailyRehabilitation {
+public class CommunitySchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long facilityId;
     private LocalDate recordDate;
-    private String treatment;
+    private String content;
 
     @Builder
-    private DailyRehabilitation(Long id, Long facilityId, LocalDate recordDate, String treatment) {
+    private CommunitySchedule(Long id, Long facilityId, LocalDate recordDate, String content) {
         this.id = id;
         this.facilityId = facilityId;
         this.recordDate = recordDate;
-        this.treatment = treatment;
+        this.content = content;
     }
 
-    public static DailyRehabilitation create(Long facilityId, LocalDate recordDate, String treatment) {
-        return DailyRehabilitation.builder()
+    public static CommunitySchedule create(Long facilityId, LocalDate recordDate, String content) {
+        return CommunitySchedule.builder()
                 .facilityId(facilityId)
                 .recordDate(recordDate)
-                .treatment(treatment)
+                .content(content)
                 .build();
     }
 
-    public void update(String treatment) {
-        this.treatment = treatment;
+    public void update(String content) {
+        this.content = content;
     }
 }

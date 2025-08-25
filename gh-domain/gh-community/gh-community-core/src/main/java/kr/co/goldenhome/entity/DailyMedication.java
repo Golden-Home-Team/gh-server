@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(
         name = "daily_medications",
         indexes = {
-                @Index(name = "idx_daily_medications_facility_id", columnList = "facility_id")
+                @Index(name = "idx_daily_medications_facility_id_record_date", columnList = "facility_id, record_date")
         },
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"record_date"})

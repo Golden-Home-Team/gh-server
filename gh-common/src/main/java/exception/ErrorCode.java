@@ -15,7 +15,7 @@ public enum ErrorCode {
     INVALID_LOGIN_ID(400, "로그인 아이디가 다릅니다."),
     INVALID_RESET_PASSWORD_TOKEN(400, "유효하지 않은 비밀번호 재설정 토큰입니다."),
     INVALID_REQUEST(400, "Request 필드값이 유효하지 않습니다."),
-    LOGIN_FAILED(401, "아이디 혹은 비밀번호가 틀립니다."),
+    LOGIN_FAILED(401, "아이디 혹은 비밀번호가 틀리거나 유효하지 않은 사용자입니다."),
     UNAUTHORIZED_TOKEN(401, "유효하지 않은 토큰입니다."),
     SOCIAL_LOGIN_FAILED(401, "소셜 로그인에 실패했습니다."),
     FORBIDDEN(403, "권한이 없습니다."),
@@ -31,6 +31,7 @@ public enum ErrorCode {
     DAILY_DIET_NOT_FOUND(404, "존재하지 않는 오늘의 식단입니다"),
     DAILY_SHOT_NOT_FOUND(404, "존재하지 않는 오늘의 한 컷입니다"),
     DAILY_MEDICATION_NOT_FOUND(404, "존재하지 않는 오늘의 복약입니다"),
+    DAILY_REHAB_NOT_FOUND(404, "존재하지 않는 오늘의 재활입니다"),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다.");
     private final int httpStatus;

@@ -24,8 +24,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields

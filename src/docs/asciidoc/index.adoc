@@ -49,6 +49,9 @@ ifndef::snippets[]
 :daily-medication-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-write
 :daily-medication-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-update
 :daily-medication-readByDayOfWeek: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-medication-readByDayOfWeek
+:daily-rehab-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-write
+:daily-rehab-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-update
+:daily-rehab-readByDayOfWeek: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/daily-rehab-readByDayOfWeek
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -528,3 +531,33 @@ include::{daily-medication-readByDayOfWeek}/query-parameters.adoc[]
 === HTTP Response
 include::{daily-medication-readByDayOfWeek}/http-response.adoc[]
 include::{daily-medication-readByDayOfWeek}/response-fields.adoc[]
+
+== 오늘의 재활 작성
+=== HTTP Request
+include::{daily-rehab-write}/http-request.adoc[]
+include::{daily-rehab-write}/request-fields.adoc[]
+include::{daily-rehab-write}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{daily-rehab-write}/http-response.adoc[]
+include::{daily-rehab-write}/response-fields.adoc[]
+
+== 오늘의 재활 수정
+=== HTTP Request
+include::{daily-rehab-update}/http-request.adoc[]
+include::{daily-rehab-update}/request-fields.adoc[]
+include::{daily-rehab-update}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{daily-rehab-update}/http-response.adoc[]
+include::{daily-rehab-update}/response-fields.adoc[]
+
+== 오늘의 재활 - 요일별로 읽기
+=== HTTP Request
+include::{daily-rehab-readByDayOfWeek}/http-request.adoc[]
+include::{daily-rehab-readByDayOfWeek}/path-parameters.adoc[]
+include::{daily-rehab-readByDayOfWeek}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{daily-rehab-readByDayOfWeek}/http-response.adoc[]
+include::{daily-rehab-readByDayOfWeek}/response-fields.adoc[]

@@ -55,6 +55,9 @@ ifndef::snippets[]
 :community-schedule-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-write
 :community-schedule-update: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-update
 :community-schedule-readByMonth: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-schedule-readByMonth
+:community-inquiry-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-write
+:community-inquiry-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-read
+:community-inquiry-readAll: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-readAll
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -593,3 +596,31 @@ include::{community-schedule-readByMonth}/path-parameters.adoc[]
 include::{community-schedule-readByMonth}/http-response.adoc[]
 include::{community-schedule-readByMonth}/response-fields.adoc[]
 
+
+== 커뮤니티 요청사항 작성
+=== HTTP Request
+include::{community-inquiry-write}/http-request.adoc[]
+include::{community-inquiry-write}/request-fields.adoc[]
+
+=== HTTP Response
+include::{community-inquiry-write}/http-response.adoc[]
+include::{community-inquiry-write}/response-fields.adoc[]
+
+== 커뮤니티 요청사항 조회
+=== HTTP Request
+include::{community-inquiry-read}/http-request.adoc[]
+include::{community-inquiry-read}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{community-inquiry-read}/http-response.adoc[]
+include::{community-inquiry-read}/response-fields.adoc[]
+
+== 커뮤니티 요청사항 목록조회
+=== HTTP Request
+include::{community-inquiry-readAll}/http-request.adoc[]
+include::{community-inquiry-readAll}/path-parameters.adoc[]
+include::{community-inquiry-readAll}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{community-inquiry-readAll}/http-response.adoc[]
+include::{community-inquiry-readAll}/response-fields.adoc[]

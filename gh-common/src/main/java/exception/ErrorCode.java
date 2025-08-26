@@ -21,6 +21,7 @@ public enum ErrorCode {
     FORBIDDEN(403, "권한이 없습니다."),
     FORBIDDEN_USER(403, "비활성화된 사용자입니다."),
     UPDATE_FORBIDDEN(403, "해당 리소스를 수정할 권한이 없습니다."),
+    READ_FORBIDDEN(403, "해당 리소스를 조회할 권한이 없습니다."),
     NOT_FOUND(404, "존재하지 않는 리소스입니다."),
     RESUME_NOT_FOUND(404, "이력서 제출전에 작성해야합니다."),
     USER_NOT_FOUND(404, "존재하지 않는 유저"),
@@ -33,6 +34,7 @@ public enum ErrorCode {
     DAILY_MEDICATION_NOT_FOUND(404, "존재하지 않는 오늘의 복약입니다"),
     DAILY_REHAB_NOT_FOUND(404, "존재하지 않는 오늘의 재활입니다"),
     SCHEDULE_NOT_FOUND(404, "해당 일정이 존재하지 않습니다."),
+    INQUIRY_NOT_FOUND(404, "해당 요청사항이 존재하지 않습니다."),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다.");
     private final int httpStatus;

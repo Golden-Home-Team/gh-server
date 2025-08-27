@@ -58,6 +58,8 @@ ifndef::snippets[]
 :community-inquiry-write: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-write
 :community-inquiry-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-read
 :community-inquiry-readAll: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-readAll
+:community-user-check: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-user-check
+:community-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -624,3 +626,21 @@ include::{community-inquiry-readAll}/query-parameters.adoc[]
 === HTTP Response
 include::{community-inquiry-readAll}/http-response.adoc[]
 include::{community-inquiry-readAll}/response-fields.adoc[]
+
+== 커뮤니티 유저 확인
+=== HTTP Request
+include::{community-user-check}/http-request.adoc[]
+include::{community-user-check}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{community-user-check}/http-response.adoc[]
+include::{community-user-check}/response-fields.adoc[]
+
+== 커뮤니티 메인화면 조회
+=== HTTP Request
+include::{community-read}/http-request.adoc[]
+include::{community-read}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{community-read}/http-response.adoc[]
+include::{community-read}/response-fields.adoc[]

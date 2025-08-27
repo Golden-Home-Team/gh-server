@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 
 public interface DailyMedicationRepository extends JpaRepository<DailyMedication, Long> {
+
+    Optional<DailyMedication> findTopByFacilityIdOrderByCreatedAtDesc(Long facilityId);
 
     @Query(
             value = "select * from daily_medications " +

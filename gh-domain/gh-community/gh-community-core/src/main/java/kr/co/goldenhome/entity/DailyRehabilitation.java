@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Table(
         name = "daily_rehabilitations",
@@ -28,13 +29,15 @@ public class DailyRehabilitation {
     private Long facilityId;
     private LocalDate recordDate;
     private String treatment;
+    private LocalDateTime createdAt;
 
     @Builder
-    private DailyRehabilitation(Long id, Long facilityId, LocalDate recordDate, String treatment) {
+    private DailyRehabilitation(Long id, Long facilityId, LocalDate recordDate, String treatment, LocalDateTime createdAt) {
         this.id = id;
         this.facilityId = facilityId;
         this.recordDate = recordDate;
         this.treatment = treatment;
+        this.createdAt = createdAt;
     }
 
     public static DailyRehabilitation create(Long facilityId, LocalDate recordDate, String treatment) {
@@ -42,6 +45,7 @@ public class DailyRehabilitation {
                 .facilityId(facilityId)
                 .recordDate(recordDate)
                 .treatment(treatment)
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 

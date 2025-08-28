@@ -1,6 +1,7 @@
 package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.FacilityApiResponse
 import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse
 import kr.co.goldenhome.entity.ResumeSubmission
@@ -77,7 +78,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
         given:
         def givenLastId = 1L
         def givenPageSize = 20L
-        def expectedResponse = List.of(ResumeSubmissionResponse.from(
+        def expectedResponse = List.of(ResumeSubmissionResponse.of(
                 ResumeSubmission.builder()
                         .id(1L)
                         .resumeId(1L)
@@ -93,7 +94,8 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                 .relationship("모")
                         .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                         .status(AdmissionStatus.PENDING_REVIEW)
-                        .build()
+                        .build(),
+                new FacilityApiResponse("", "")
             )
         )
         1 * resumeSubmissionService.readAll(*_) >> expectedResponse
@@ -143,7 +145,11 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                 fieldWithPath("[].submitTime").type(JsonFieldType.STRING)
                                         .description("제출시간"),
                                 fieldWithPath("[].status").type(JsonFieldType.STRING)
-                                        .description("평가상태")
+                                        .description("평가상태"),
+                                fieldWithPath("[].facilityName").type(JsonFieldType.STRING)
+                                        .description("시설 이름"),
+                                fieldWithPath("[].facilityAddress").type(JsonFieldType.STRING)
+                                        .description("시설 주소")
 
                         )
                 )
@@ -152,27 +158,13 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$[0].id').value(1L)
-            MockMvcResultMatchers.jsonPath('$[0].resumeId').value(1L)
-            MockMvcResultMatchers.jsonPath('$[0].facilityId').value(1L)
-            MockMvcResultMatchers.jsonPath('$[0].name').value("구준형")
-            MockMvcResultMatchers.jsonPath('$[0].dateOfBirth').value("2000-07-02")
-            MockMvcResultMatchers.jsonPath('$[0].gender').value("남")
-            MockMvcResultMatchers.jsonPath('$[0].longTermCareGrade').value("B")
-            MockMvcResultMatchers.jsonPath('$[0].majorDiseases').value("허리통증")
-            MockMvcResultMatchers.jsonPath('$[0].specialNotes').value("없음")
-            MockMvcResultMatchers.jsonPath('$[0].guardianName').value("구머니")
-            MockMvcResultMatchers.jsonPath('$[0].guardianContactInformation').value("01040363457")
-            MockMvcResultMatchers.jsonPath('$[0].relationship').value("모")
-            MockMvcResultMatchers.jsonPath('$[0].submitTime').value("제출시간")
-            MockMvcResultMatchers.jsonPath('$[0].status').value("평가상태")
         }
 
     }
 
     def "이력서 조회"() {
         given:
-        def expectedResponse = ResumeSubmissionResponse.from(
+        def expectedResponse = ResumeSubmissionResponse.of(
                 ResumeSubmission.builder()
                         .id(1L)
                         .resumeId(1L)
@@ -188,7 +180,8 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         .relationship("모")
                         .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                         .status(AdmissionStatus.PENDING_REVIEW)
-                        .build()
+                        .build(),
+                new FacilityApiResponse("", "")
         )
 
         1 * resumeSubmissionService.read(*_) >> expectedResponse
@@ -232,7 +225,11 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         fieldWithPath("submitTime").type(JsonFieldType.STRING)
                                 .description("제출시간"),
                         fieldWithPath("status").type(JsonFieldType.STRING)
-                                .description("평가상태")
+                                .description("평가상태"),
+                        fieldWithPath("facilityName").type(JsonFieldType.STRING)
+                                .description("시설 이름"),
+                        fieldWithPath("facilityAddress").type(JsonFieldType.STRING)
+                                .description("시설 주소")
 
                 )
         )

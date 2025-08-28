@@ -1,7 +1,8 @@
 package kr.co.goldenhome.service
 
+import kr.co.goldenhome.FacilityApi
+import kr.co.goldenhome.FacilityApiResponse
 import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest
-import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse
 import kr.co.goldenhome.entity.ResumeSubmission
 import kr.co.goldenhome.submission.implement.ResumeSubmissionModifier
 import kr.co.goldenhome.submission.implement.ResumeSubmissionReader
@@ -17,10 +18,11 @@ class ResumeSubmissionServiceSpec extends Specification {
     ResumeSubmissionReader resumeSubmissionReader = Mock()
     ResumeSubmitter resumeSubmitter = Mock()
     ResumeSubmissionModifier resumeSubmissionModifier = Mock()
+    FacilityApi facilityApi = Mock()
 
 
     def setup() {
-        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionReader, resumeSubmitter, resumeSubmissionModifier)
+        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionReader, resumeSubmitter, resumeSubmissionModifier, facilityApi)
     }
 
     def 'submit - resumeSubmitter 를 호출한다'() {
@@ -39,11 +41,12 @@ class ResumeSubmissionServiceSpec extends Specification {
         }
     }
 
-    def "read - resumeSubmissionReader 를 호출한다"() {
+    def "read - resumeSubmissionReader, facilityApi 를 호출한다"() {
         given:
         def givenResumeSubmissionId = 1L
         def givenUserId = 1L
-        def expectedResponse = ResumeSubmissionResponse.from(ResumeSubmission.builder().build())
+        def givenResumeSubmission = ResumeSubmission.builder().id(givenResumeSubmissionId).facilityId(3L).build()
+        def givenFacilityResponse = new FacilityApiResponse("", "")
 
         when:
         resumeSubmissionService.read(givenResumeSubmissionId, givenUserId)
@@ -53,11 +56,12 @@ class ResumeSubmissionServiceSpec extends Specification {
             Long resumeSubmissionId, Long userId ->
                 resumeSubmissionId == givenResumeSubmissionId
                 userId == givenUserId
-                expectedResponse
+                givenResumeSubmission
         }
+        1 * facilityApi.get(givenResumeSubmission.facilityId) >> givenFacilityResponse
     }
 
-    def "readAll - resumeSubmissionReader 를 호출한다"() {
+    def "readAll - resumeSubmissionReader, facilityApi 를 호출한다"() {
         given:
         def givenUserId = 1L
         def givenLastId = 1L
@@ -72,8 +76,10 @@ class ResumeSubmissionServiceSpec extends Specification {
                 userId == givenUserId
                 lastId == givenLastId
                 pageSize == givenPageSize
-                List.of(ResumeSubmission.builder().build())
+                List.of(ResumeSubmission.builder().facilityId(1L).build())
         }
+        1 * facilityApi.get(1L) >> new FacilityApiResponse("", "")
+
     }
 
     def "modify - resumeSubmissionModifier 를 호출한다"() {

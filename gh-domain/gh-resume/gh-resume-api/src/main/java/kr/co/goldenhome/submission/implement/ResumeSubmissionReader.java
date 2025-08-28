@@ -16,10 +16,10 @@ public class ResumeSubmissionReader {
 
     private final ResumeSubmissionRepository resumeSubmissionRepository;
 
-    public ResumeSubmissionResponse read(Long resumeSubmissionId, Long userId) {
+    public ResumeSubmission read(Long resumeSubmissionId, Long userId) {
         ResumeSubmission resumeSubmission = resumeSubmissionRepository.findById(resumeSubmissionId).orElseThrow(() -> new CustomException(ErrorCode.RESUME_NOT_FOUND, "ResumeSubmissionService.read"));
         if(!resumeSubmission.isOwnedBy(userId)) throw new CustomException(ErrorCode.FORBIDDEN, "ResumeSubmissionService.read");
-        return ResumeSubmissionResponse.from(resumeSubmission);
+        return resumeSubmission;
     }
 
     public List<ResumeSubmission> readAll(Long userId, Long lastId, Long pageSize) {

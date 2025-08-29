@@ -54,7 +54,8 @@ public class SqliteJobConfig {
                                Step detailFacilityStep,
                                Step photoStep,
                                Step programStep,
-                               Step staffInfoStep
+                               Step staffInfoStep,
+                               Step gradeStep
 
     ) {
         return new JobBuilder("sqliteToCsvJob", jobRepository)
@@ -65,6 +66,7 @@ public class SqliteJobConfig {
                 .next(photoStep)
                 .next(programStep)
                 .next(staffInfoStep)
+                .next(gradeStep)
                 .build();
     }
 
@@ -98,7 +100,7 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider sqliteFacilityQueryProvider() throws Exception {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("MIN(`index`) as `index`, id, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, grade, capacity, current_male, current_female, current_total, staff_total");
+        queryProvider.setSelectClause("MIN(`index`) as `index`, id, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, capacity, current_male, current_female, current_total, staff_total");
         queryProvider.setFromClause("from faclilty"); // 오타 아니고 맞음: faclilty
         queryProvider.setGroupClause("GROUP BY id");
         queryProvider.setSortKeys(Collections.singletonMap("id", Order.ASCENDING));
@@ -122,7 +124,7 @@ public class SqliteJobConfig {
         String[] fieldNames = new String[]{
                 "id",
                 "institutionSymbol", "facilityType", "name", "address", "phoneNumber", "email",
-                "homepage", "establishmentDate", "districtName", "grade", "capacity",
+                "homepage", "establishmentDate", "districtName", "capacity",
                 "currentMale", "currentFemale", "currentTotal", "staffTotal"
         };
         fieldExtractor.setNames(fieldNames);
@@ -201,7 +203,7 @@ public class SqliteJobConfig {
             ItemWriter<FacilityDetail> facilityDetailItemWriter
     ) {
         return new StepBuilder("detailFacilityStep", jobRepository)
-                .<SqliteDetailFacility, FacilityDetail>chunk(500, sqliteTransactionManager) // SQLite 트랜잭션 매니저 사용
+                .<SqliteDetailFacility, FacilityDetail>chunk(500, sqliteTransactionManager)
                 .reader(detailFacilityReader)
                 .processor(sqliteDetailFacilityToFacilityDetailItemProcessor)
                 .writer(facilityDetailItemWriter)
@@ -222,7 +224,7 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider detailFacilityQueryProvider() throws Exception {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("Min(`index`) as `index`, facility_id, singleRoomCount, doubleRoomCount, tripleRoomCount, quadRoomCount, officeCount, medicalNurseRoomCount, dailyLivingTrainingRoomCount, programRoomCount, kitchenDiningRoomCount, bathroomCount, washBathRoomCount, laundryRoomCount");
+        queryProvider.setSelectClause("id, facility_id, singleRoomCount, doubleRoomCount, tripleRoomCount, quadRoomCount, specialBedroomCount, officeCount, medicalNurseRoomCount, dailyLivingTrainingRoomCount, programRoomCount, kitchenDiningRoomCount, bathroomCount, washBathRoomCount, laundryRoomCount");
         queryProvider.setFromClause("from detail_facility");
         queryProvider.setGroupClause("group by facility_id");
         queryProvider.setSortKeys(Collections.singletonMap("facility_id", Order.ASCENDING));
@@ -242,7 +244,7 @@ public class SqliteJobConfig {
         BeanWrapperFieldExtractor<FacilityDetail> fieldExtractor = new BeanWrapperFieldExtractor<>();
         String[] fieldNames = new String[]{
                 "id",
-                "institutionSymbol", "singleRoomCount", "doubleRoomCount", "tripleRoomCount", "quadRoomCount", "officeCount",
+                "institutionSymbol", "singleRoomCount", "doubleRoomCount", "tripleRoomCount", "quadRoomCount", "specialBedroomCount", "officeCount",
                 "medicalNurseRoomCount", "dailyLivingTrainingRoomCount", "programRoomCount", "kitchenDiningRoomCount", "bathroomCount",
                 "washBathRoomCount", "laundryRoomCount"
         };
@@ -300,10 +302,10 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider sqlitePhotoQueryProvider() {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("MIN(`index`) as `index`, type, name, image_url, description, facility_id");
+        queryProvider.setSelectClause("id, type, name, image_url, description, facility_id");
         queryProvider.setFromClause("from photo");
         queryProvider.setGroupClause("GROUP BY type, name, image_url, description, facility_id");
-        queryProvider.setSortKeys(Collections.singletonMap("type", Order.ASCENDING));
+        queryProvider.setSortKeys(Collections.singletonMap("id", Order.ASCENDING));
         return queryProvider;
     }
 
@@ -376,10 +378,10 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider sqliteProgramQueryProvider() {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("Min(`index`) as `index`, type, name, capacity, time, place, facility_id");
+        queryProvider.setSelectClause("id, type, name, capacity, time, place, facility_id");
         queryProvider.setFromClause("from program");
         queryProvider.setGroupClause("GROUP BY type, name, capacity, time, place, facility_id");
-        queryProvider.setSortKeys(Collections.singletonMap("type", Order.ASCENDING));
+        queryProvider.setSortKeys(Collections.singletonMap("id", Order.ASCENDING));
         return queryProvider;
     }
 
@@ -451,7 +453,7 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider sqliteStaffInfoQueryProvider() {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("Min(`index`) as `index`, directorCount, headOfOfficeCount, socialWorkerCount, residentDoctorCount, visitingDoctorCount, facility_id, nurseCount, assistantNurseCount, dentalHygienistCount, physicalTherapistCount, occupationalTherapistCount, caregiverLevel1Count, caregiverLevel2Count, caregiverDeferredCount, officeWorkerCount, dietitianCount, cookCount, hygieneWorkerCount, maintenanceWorkerCount, assistantWorkerCount, otherWorkerCount, staff_total");
+        queryProvider.setSelectClause("id, directorCount, headOfOfficeCount, socialWorkerCount, residentDoctorCount, visitingDoctorCount, facility_id, nurseCount, assistantNurseCount, dentalHygienistCount, physicalTherapistCount, occupationalTherapistCount, caregiverLevel1Count, caregiverLevel2Count, caregiverDeferredCount, officeWorkerCount, dietitianCount, cookCount, hygieneWorkerCount, maintenanceWorkerCount, assistantWorkerCount, otherWorkerCount, staff_total");
         queryProvider.setFromClause("from staff_info");
         queryProvider.setGroupClause("group by facility_id");
         queryProvider.setSortKeys(Collections.singletonMap("facility_id", Order.ASCENDING));
@@ -498,5 +500,82 @@ public class SqliteJobConfig {
 
         return writer;
     }
+
+    @Bean
+    public Step gradeStep(
+            ItemReader<SqliteGrade> sqliteGradeItemReader,
+            ItemProcessor<SqliteGrade, FacilityGrade> sqliteGradeToFacilityGradeItemProcessor,
+            ItemWriter<FacilityGrade> facilityGradeItemWriter
+    ) {
+        return new StepBuilder("gradeStep", jobRepository)
+                .<SqliteGrade, FacilityGrade>chunk(500, sqliteTransactionManager)
+                .reader(sqliteGradeItemReader)
+                .processor(sqliteGradeToFacilityGradeItemProcessor)
+                .writer(facilityGradeItemWriter)
+                .build();
+    }
+
+    @Bean
+    public ItemReader<SqliteGrade> sqliteGradeItemReader(SqlitePagingQueryProvider sqliteGradeQueryProvider) {
+        return new JdbcPagingItemReaderBuilder<SqliteGrade>()
+                .name("sqliteGradeItemReader")
+                .dataSource(sqliteDataSource)
+                .queryProvider(sqliteGradeQueryProvider)
+                .rowMapper(new BeanPropertyRowMapper<>(SqliteGrade.class))
+                .pageSize(1000)
+                .build();
+    }
+
+    @Bean
+    public SqlitePagingQueryProvider sqliteGradeQueryProvider() {
+        SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
+        queryProvider.setSelectClause("facility_id, evaluationDate, grade, totalScore, management, environmentSafety, rights, process, result");
+        queryProvider.setFromClause("from grade");
+        queryProvider.setGroupClause("group by facility_id");
+        queryProvider.setSortKeys(Collections.singletonMap("facility_id", Order.ASCENDING));
+        return queryProvider;
+    }
+
+    @Bean
+    public ItemProcessor<SqliteGrade, FacilityGrade> sqliteGradeToFacilityGradeItemProcessor() {
+        return FacilityGrade::from;
+    }
+
+    @Bean
+    public ItemWriter<FacilityGrade> facilityGradeItemWriter() {
+        FlatFileItemWriter<FacilityGrade> writer = new FlatFileItemWriter<>();
+        writer.setResource(new FileSystemResource("output/facility_grade.csv"));
+        writer.setAppendAllowed(false);
+
+        BeanWrapperFieldExtractor<FacilityGrade> fieldExtractor = new BeanWrapperFieldExtractor<>();
+        String[] fieldNames = new String[]{
+                "id",
+                "institutionSymbol", "evaluationDate", "grade", "totalScore", "management", "environmentSafety", "rights", "process", "result"
+        };
+        fieldExtractor.setNames(fieldNames);
+
+        QuotingDelimitedLineAggregator<FacilityGrade> lineAggregator = new QuotingDelimitedLineAggregator<>();
+        lineAggregator.setDelimiter(",");
+        lineAggregator.setFieldExtractor(fieldExtractor);
+
+        writer.setLineAggregator(lineAggregator);
+
+        writer.setHeaderCallback(writer1 -> {
+            String headerLine = Arrays.stream(fieldNames)
+                    .map(name -> {
+                        if (name.contains(",") || name.contains("\"") || name.contains("\n") || name.contains("\r")) {
+                            String escapedName = name.replace("\"", "\"\"");
+                            return "\"" + escapedName + "\"";
+                        }
+                        return name;
+                    })
+                    .collect(Collectors.joining(","));
+            writer1.write(headerLine);
+        });
+
+        return writer;
+    }
+
+
 
 }

@@ -28,6 +28,7 @@ public class FacilityDocument {
     private String address;
     @Field(type = FieldType.Integer)
     private Integer establishmentYear;
+    @Setter
     @Field(type = FieldType.Keyword)
     private String grade;
     @Field(type = FieldType.Integer)
@@ -71,7 +72,6 @@ public class FacilityDocument {
                 .name(facility.getName())
                 .address(facility.getAddress())
                 .establishmentYear(facility.getEstablishmentDate())
-                .grade(facility.getGrade())
                 .capacity(facility.getCapacity())
                 .currentTotal(facility.getCurrentTotal())
                 .viewCount(0)

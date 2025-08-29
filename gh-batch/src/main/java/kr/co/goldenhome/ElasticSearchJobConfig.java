@@ -72,7 +72,7 @@ public class ElasticSearchJobConfig {
         SqlPagingQueryProviderFactoryBean queryProvider = new SqlPagingQueryProviderFactoryBean();
         queryProvider.setDataSource(dataSource);
         queryProvider.setSelectClause("SELECT id, institution_symbol, facility_type, name, address, phone_number, email, " +
-                "homepage, establishment_date, district_name, grade, capacity, " +
+                "homepage, establishment_date, district_name, capacity, " +
                 "current_male, current_female, current_total, staff_total");
         queryProvider.setFromClause("FROM facilities");
         queryProvider.setSortKey("id");

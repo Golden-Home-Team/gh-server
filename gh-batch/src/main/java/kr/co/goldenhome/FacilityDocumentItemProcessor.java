@@ -2,7 +2,9 @@ package kr.co.goldenhome;
 
 import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.entity.FacilityDocument;
+import kr.co.goldenhome.entity.FacilityGrade;
 import kr.co.goldenhome.entity.FacilityPhoto;
+import kr.co.goldenhome.repository.FacilityGradeRepository;
 import kr.co.goldenhome.repository.FacilityPhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemProcessor;
@@ -15,6 +17,7 @@ import java.util.List;
 public class FacilityDocumentItemProcessor implements ItemProcessor<Facility, FacilityDocument> {
 
     private final FacilityPhotoRepository facilityPhotoRepository;
+    private final FacilityGradeRepository facilityGradeRepository;
 
     @Override
     public FacilityDocument process(Facility facility) throws Exception {
@@ -24,6 +27,9 @@ public class FacilityDocumentItemProcessor implements ItemProcessor<Facility, Fa
                 .map(FacilityPhoto::getImageUrl) // 각 FacilityPhoto 객체에서 imageUrl만 추출
                 .toList();
         document.setImageUrls(imageUrls);
+        FacilityGrade facilityGrade = facilityGradeRepository.findTopByInstitutionSymbolOrderByEvaluationDateDesc(facility.getInstitutionSymbol());
+        if (facilityGrade != null) document.setGrade(facilityGrade.getGrade());
         return document;
+
     }
 }

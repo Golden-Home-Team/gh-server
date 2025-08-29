@@ -13,6 +13,7 @@ public class SqliteDetailFacility {
     private String doubleRoomCount;
     private String tripleRoomCount;
     private String quadRoomCount;
+    private String specialBedroomCount;
     private String officeCount;
     private String medicalNurseRoomCount;
     private String dailyLivingTrainingRoomCount;

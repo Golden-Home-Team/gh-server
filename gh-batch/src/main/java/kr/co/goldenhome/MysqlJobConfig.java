@@ -36,7 +36,8 @@ public class MysqlJobConfig {
                               Step facilityDetailCsvToMysqlStep,
                               Step facilityPhotoCsvToMysqlStep,
                               Step facilityProgramCsvToMysqlStep,
-                              Step facilityStaffInformationCsvToMysqlStep
+                              Step facilityStaffInformationCsvToMysqlStep,
+                              Step facilityGradeCsvToMysqlStep
     ) {
         return new JobBuilder("csvToMysqlJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
@@ -46,6 +47,7 @@ public class MysqlJobConfig {
                 .next(facilityPhotoCsvToMysqlStep)
                 .next(facilityProgramCsvToMysqlStep)
                 .next(facilityStaffInformationCsvToMysqlStep)
+                .next(facilityGradeCsvToMysqlStep)
                 .build();
     }
 
@@ -68,9 +70,9 @@ public class MysqlJobConfig {
         // CSV 파일의 컬럼 이름과 순서를 정의합니다. Facility 엔티티의 필드명과 일치해야 합니다.
         String[] fieldNames = new String[]{
                 "id",
-                "institutionSymbol", // CSV에 ID 컬럼이 있다면 추가. Facility 엔티티에 ID 필드가 없다면 제거.
+                "institutionSymbol",
                 "facilityType", "name", "address", "phoneNumber", "email",
-                "homepage", "establishmentDate", "districtName", "grade", "capacity",
+                "homepage", "establishmentDate", "districtName", "capacity",
                 "currentMale", "currentFemale", "currentTotal", "staffTotal"
         };
 
@@ -100,9 +102,9 @@ public class MysqlJobConfig {
         return new JdbcBatchItemWriterBuilder<Facility>()
                 .dataSource(dataSource)
                 .sql("INSERT INTO facilities ( " +
-                        "    institution_symbol, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, grade, capacity, current_male, current_female, current_total, staff_total" +
+                        "    institution_symbol, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, capacity, current_male, current_female, current_total, staff_total" +
                         ") VALUES (" +
-                        "    :institutionSymbol, :facilityType, :name, :address, :phoneNumber, :email, :homepage, :establishmentDate, :districtName, :grade, :capacity, :currentMale, :currentFemale, :currentTotal, :staffTotal" +
+                        "    :institutionSymbol, :facilityType, :name, :address, :phoneNumber, :email, :homepage, :establishmentDate, :districtName, :capacity, :currentMale, :currentFemale, :currentTotal, :staffTotal" +
                         ")")
                 .beanMapped()
                 .build();
@@ -127,7 +129,7 @@ public class MysqlJobConfig {
         // CSV 파일의 컬럼 이름과 순서를 정의합니다. Facility 엔티티의 필드명과 일치해야 합니다.
         String[] fieldNames = new String[]{
                 "id",
-                "institutionSymbol", "singleRoomCount", "doubleRoomCount", "tripleRoomCount", "quadRoomCount", "officeCount",
+                "institutionSymbol", "singleRoomCount", "doubleRoomCount", "tripleRoomCount", "quadRoomCount", "specialBedroomCount", "officeCount",
                 "medicalNurseRoomCount", "dailyLivingTrainingRoomCount", "programRoomCount", "kitchenDiningRoomCount", "bathroomCount",
                 "washBathRoomCount", "laundryRoomCount"
         };
@@ -150,9 +152,9 @@ public class MysqlJobConfig {
         return new JdbcBatchItemWriterBuilder<FacilityDetail>()
                 .dataSource(dataSource)
                 .sql("INSERT INTO facility_details ( " +
-                        "    institution_symbol, single_room_count, double_room_count, triple_room_count, quad_room_count, office_count, medical_nurse_room_count, daily_living_training_room_count, program_room_count, kitchen_dining_room_count, bathroom_count, wash_bath_room_count, laundry_room_count" +
+                        "    institution_symbol, single_room_count, double_room_count, triple_room_count, quad_room_count, special_bedroom_count, office_count, medical_nurse_room_count, daily_living_training_room_count, program_room_count, kitchen_dining_room_count, bathroom_count, wash_bath_room_count, laundry_room_count" +
                         ") VALUES (" +
-                        "    :institutionSymbol, :singleRoomCount, :doubleRoomCount, :tripleRoomCount, :quadRoomCount, :officeCount, :medicalNurseRoomCount, :dailyLivingTrainingRoomCount, :programRoomCount, :kitchenDiningRoomCount, :bathroomCount, :washBathRoomCount, :laundryRoomCount" +
+                        "    :institutionSymbol, :singleRoomCount, :doubleRoomCount, :tripleRoomCount, :quadRoomCount, :specialBedroomCount, :officeCount, :medicalNurseRoomCount, :dailyLivingTrainingRoomCount, :programRoomCount, :kitchenDiningRoomCount, :bathroomCount, :washBathRoomCount, :laundryRoomCount" +
                         ")")
                 .beanMapped()
                 .build();
@@ -286,6 +288,50 @@ public class MysqlJobConfig {
                         "    institution_symbol, director_count, head_of_office_count, social_worker_count, resident_doctor_count, visiting_doctor_count, nurse_count, assistant_nurse_count, dental_hygienist_count, physical_therapist_count, occupational_therapist_count, caregiver_level1_count, caregiver_level2_count, caregiver_deferred_count, office_worker_count, dietitian_count, cook_count, hygiene_worker_count, maintenance_worker_count, assistant_worker_count, other_worker_count, staff_total" +
                         ") VALUES (" +
                         "    :institutionSymbol, :directorCount, :headOfOfficeCount, :socialWorkerCount, :residentDoctorCount, :visitingDoctorCount, :nurseCount, :assistantNurseCount, :dentalHygienistCount, :physicalTherapistCount, :occupationalTherapistCount, :caregiverLevel1Count, :caregiverLevel2Count, :caregiverDeferredCount, :officeWorkerCount, :dietitianCount, :cookCount, :hygieneWorkerCount, :maintenanceWorkerCount, :assistantWorkerCount, :otherWorkerCount, :staffTotal" +
+                        ")")
+                .beanMapped()
+                .build();
+    }
+
+    @Bean
+    public Step facilityGradeCsvToMysqlStep(
+            ItemReader<FacilityGrade> facilityGradeItemReader,
+            ItemWriter<FacilityGrade> facilityGradeItemWriter
+    ) {
+        return new StepBuilder("facilityGradeCsvToMysqlStep", jobRepository)
+                .<FacilityGrade, FacilityGrade>chunk(500, platformTransactionManager) // MySQL 트랜잭션 매니저 사용
+                .reader(facilityGradeItemReader)
+                .writer(facilityGradeItemWriter)
+                .build();
+    }
+
+    @Bean
+    public ItemReader<FacilityGrade> facilityGradeItemReader() {
+        String[] fieldNames = new String[]{
+                "id",
+                "institutionSymbol", "evaluationDate", "grade", "totalScore", "management", "environmentSafety", "rights", "process", "result"
+        };
+
+        return new FlatFileItemReaderBuilder<FacilityGrade>()
+                .name("facilityGradeItemReader")
+                .resource(new FileSystemResource("output/facility_grade.csv"))
+                .delimited()
+                .names(fieldNames)
+                .linesToSkip(1)
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
+                    setTargetType(FacilityGrade.class);
+                }})
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<FacilityGrade> facilityGradeItemWriter() {
+        return new JdbcBatchItemWriterBuilder<FacilityGrade>()
+                .dataSource(dataSource)
+                .sql("INSERT INTO facility_grades ( " +
+                        "    institution_symbol, evaluation_date, grade, total_score, management, environment_safety, rights, process, result" +
+                        ") VALUES (" +
+                        "    :institutionSymbol, :evaluationDate, :grade, :totalScore, :management, :environmentSafety, :rights, :process, :result" +
                         ")")
                 .beanMapped()
                 .build();

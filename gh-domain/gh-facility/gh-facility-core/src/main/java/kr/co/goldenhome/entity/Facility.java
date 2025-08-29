@@ -7,10 +7,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Table(name = "facilities",
-indexes = {
-        @Index(name = "idx_facilities_institution_symbol", columnList = "institution_symbol")
-})
+@Table(name = "facilities")
 @Entity
 @Getter
 @Setter
@@ -24,12 +21,12 @@ public class Facility {
     private String facilityType;
     private String name;
     private String address;
+    private String grade; // 지우기 FacilityRepositoryImpl
     private String phoneNumber;
     private String email;
     private String homepage;
     private Integer establishmentDate; 
     private String districtName;
-    private String grade;
     private Integer capacity;
     private Integer currentMale;
     private Integer currentFemale;
@@ -37,18 +34,18 @@ public class Facility {
     private String staffTotal;
 
     @Builder
-    private Facility(Long id, String institutionSymbol, String facilityType, String name, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, String grade, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal) {
+    private Facility(Long id, String institutionSymbol, String facilityType, String name, String grade, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.facilityType = facilityType;
         this.name = name;
         this.address = address;
+        this.grade = grade;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.homepage = homepage;
         this.establishmentDate = establishmentDate;
         this.districtName = districtName;
-        this.grade = grade;
         this.capacity = capacity;
         this.currentMale = currentMale;
         this.currentFemale = currentFemale;
@@ -73,7 +70,6 @@ public class Facility {
                 .homepage(sqliteFacility.getHomepage())
                 .establishmentDate(sqliteFacility.getEstablishmentDate())
                 .districtName(sqliteFacility.getDistrictName())
-                .grade(sqliteFacility.getGrade())
                 .capacity(facilityCapacity == null ? null : Integer.valueOf(facilityCapacity))
                 .currentMale(facilityMale == null ? null : Integer.valueOf(facilityMale))
                 .currentFemale(facilityFemale == null ? null : Integer.valueOf(facilityFemale))

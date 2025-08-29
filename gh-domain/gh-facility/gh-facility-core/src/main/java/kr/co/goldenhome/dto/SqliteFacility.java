@@ -17,7 +17,6 @@ public class SqliteFacility {
     private String homepage;
     private Integer establishmentDate;
     private String districtName;
-    private String grade;
     private String capacity;
     private String currentMale;
     private String currentFemale;

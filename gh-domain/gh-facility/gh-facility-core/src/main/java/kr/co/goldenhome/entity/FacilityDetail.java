@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "facility_details",
-        indexes = {
-                @Index(name = "idx_facility_details_institution_symbol", columnList = "institution_symbol")
-        })
+@Table(name = "facility_details")
 @Entity
 @Getter
 @Setter
@@ -25,6 +22,7 @@ public class FacilityDetail {
     private String doubleRoomCount;
     private String tripleRoomCount;
     private String quadRoomCount;
+    private String specialBedroomCount;
     private String officeCount;
     private String medicalNurseRoomCount;
     private String dailyLivingTrainingRoomCount;
@@ -35,13 +33,14 @@ public class FacilityDetail {
     private String laundryRoomCount;
 
     @Builder
-    private FacilityDetail(Long id, String institutionSymbol, String singleRoomCount, String doubleRoomCount, String tripleRoomCount, String quadRoomCount, String officeCount, String medicalNurseRoomCount, String dailyLivingTrainingRoomCount, String programRoomCount, String kitchenDiningRoomCount, String bathroomCount, String washBathRoomCount, String laundryRoomCount) {
+    private FacilityDetail(Long id, String institutionSymbol, String singleRoomCount, String doubleRoomCount, String tripleRoomCount, String quadRoomCount, String specialBedroomCount, String officeCount, String medicalNurseRoomCount, String dailyLivingTrainingRoomCount, String programRoomCount, String kitchenDiningRoomCount, String bathroomCount, String washBathRoomCount, String laundryRoomCount) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.singleRoomCount = singleRoomCount;
         this.doubleRoomCount = doubleRoomCount;
         this.tripleRoomCount = tripleRoomCount;
         this.quadRoomCount = quadRoomCount;
+        this.specialBedroomCount = specialBedroomCount;
         this.officeCount = officeCount;
         this.medicalNurseRoomCount = medicalNurseRoomCount;
         this.dailyLivingTrainingRoomCount = dailyLivingTrainingRoomCount;
@@ -60,6 +59,7 @@ public class FacilityDetail {
                 .doubleRoomCount(sqliteDetailFacility.getDoubleRoomCount())
                 .tripleRoomCount(sqliteDetailFacility.getTripleRoomCount())
                 .quadRoomCount(sqliteDetailFacility.getQuadRoomCount())
+                .specialBedroomCount(sqliteDetailFacility.getSpecialBedroomCount())
                 .officeCount(sqliteDetailFacility.getOfficeCount())
                 .medicalNurseRoomCount(sqliteDetailFacility.getMedicalNurseRoomCount())
                 .dailyLivingTrainingRoomCount(sqliteDetailFacility.getDailyLivingTrainingRoomCount())

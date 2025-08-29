@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "facility_staff_information",
-        indexes = {
-                @Index(name = "idx_facility_staff_information_institution_symbol", columnList = "institution_symbol")
-        })
+@Table(name = "facility_staff_information")
 @Entity
 @Getter
 @Setter

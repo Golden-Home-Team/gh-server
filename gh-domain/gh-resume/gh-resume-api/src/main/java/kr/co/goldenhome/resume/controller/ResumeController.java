@@ -1,7 +1,7 @@
 package kr.co.goldenhome.resume.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.resume.dto.ResumeCreateRequest;
 import kr.co.goldenhome.resume.dto.ResumeModifyRequest;
 import kr.co.goldenhome.resume.dto.ResumeResponse;

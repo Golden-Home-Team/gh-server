@@ -1,8 +1,6 @@
 package kr.co.goldenhome.exception;
 
-import exception.CustomException;
-import exception.ErrorCode;
-import exception.ExternalApiException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -89,6 +87,13 @@ public class CustomExceptionHandler {
         log.error("AuthorizationDeniedException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResponse(401, "해당 요청은 관리자혹은 슈퍼 관리자만 가능합니다."));
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    protected ResponseEntity<ErrorResponse> handleJsonProcessingException(JsonProcessingException e) {
+        log.error("JsonProcessingException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(401, "JSON 파싱 중 에러 발생"));
     }
 
 

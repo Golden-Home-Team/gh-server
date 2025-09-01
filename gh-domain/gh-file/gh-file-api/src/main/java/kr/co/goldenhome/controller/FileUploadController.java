@@ -6,7 +6,7 @@ import kr.co.goldenhome.dto.FileUploadResponse;
 import kr.co.goldenhome.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import validator.FileValidator;
+import kr.co.goldenhome.validator.FileValidator;
 
 import java.util.List;
 

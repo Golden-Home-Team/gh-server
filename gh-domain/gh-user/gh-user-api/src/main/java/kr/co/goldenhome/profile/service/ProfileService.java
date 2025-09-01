@@ -1,7 +1,7 @@
 package kr.co.goldenhome.profile.service;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.ProfileImageApi;
 import kr.co.goldenhome.ProfileImageApiResponse;
 import kr.co.goldenhome.entity.User;

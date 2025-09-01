@@ -1,7 +1,7 @@
 package kr.co.goldenhome.service;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.dto.CommunityNoticeRequest;
 import kr.co.goldenhome.dto.CommunityNoticeUpdateRequest;
 import kr.co.goldenhome.entity.CommunityNotice;

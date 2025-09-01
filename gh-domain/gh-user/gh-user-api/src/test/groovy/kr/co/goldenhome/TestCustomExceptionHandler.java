@@ -1,6 +1,6 @@
 package kr.co.goldenhome;
 
-import exception.CustomException;
+import kr.co.goldenhome.exception.CustomException;
 import groovy.util.logging.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

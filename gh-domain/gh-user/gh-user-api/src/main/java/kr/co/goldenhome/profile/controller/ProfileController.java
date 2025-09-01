@@ -1,7 +1,7 @@
 package kr.co.goldenhome.profile.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.profile.dto.*;
 import kr.co.goldenhome.profile.service.ProfileService;

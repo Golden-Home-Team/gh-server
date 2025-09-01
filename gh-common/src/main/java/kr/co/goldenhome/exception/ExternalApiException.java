@@ -1,4 +1,4 @@
-package exception;
+package kr.co.goldenhome.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

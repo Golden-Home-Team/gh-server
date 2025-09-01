@@ -1,6 +1,6 @@
 package kr.co.goldenhome.authentication.controller;
 
-import exception.ExternalApiException;
+import kr.co.goldenhome.exception.ExternalApiException;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
@@ -10,7 +10,7 @@ import kr.co.goldenhome.authentication.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import validator.EnumValidator;
+import kr.co.goldenhome.validator.EnumValidator;
 
 @RestController
 @RequiredArgsConstructor

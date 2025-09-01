@@ -1,6 +1,6 @@
 package kr.co.goldenhome.authentication.service
 
-import exception.CustomException
+import kr.co.goldenhome.exception.CustomException
 import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse

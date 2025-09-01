@@ -3,10 +3,7 @@ package kr.co.goldenhome.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.goldenhome.dto.FacilityCombinedDto;
-import kr.co.goldenhome.entity.Facility;
-import kr.co.goldenhome.entity.QFacility;
-import kr.co.goldenhome.entity.QFacilityDetail;
-import kr.co.goldenhome.entity.QFacilityStaffInformation;
+import kr.co.goldenhome.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +21,7 @@ public class FacilityRepositoryImpl implements FacilityRepository {
         QFacility facility = QFacility.facility;
         QFacilityDetail facilityDetail = QFacilityDetail.facilityDetail;
         QFacilityStaffInformation facilityStaffInformation = QFacilityStaffInformation.facilityStaffInformation;
+        QFacilityGrade facilityGrade = QFacilityGrade.facilityGrade;
         return jpaQueryFactory
                 .select(Projections.constructor(
                         FacilityCombinedDto.class,
@@ -34,7 +32,7 @@ public class FacilityRepositoryImpl implements FacilityRepository {
                         facility.address,
                         facility.phoneNumber,
                         facility.establishmentDate,
-                        facility.grade,
+                        facilityGrade.grade,
                         facility.capacity,
                         facility.currentTotal,
                         facility.currentMale,
@@ -78,6 +76,7 @@ public class FacilityRepositoryImpl implements FacilityRepository {
                 .where(facility.id.eq(facilityId))
                 .join(facilityDetail).on(facility.institutionSymbol.eq(facilityDetail.institutionSymbol))
                 .join(facilityStaffInformation).on(facility.institutionSymbol.eq(facilityStaffInformation.institutionSymbol))
+                .join(facilityGrade).on(facility.institutionSymbol.eq(facilityGrade.institutionSymbol))
                 .fetchFirst();
 
     }

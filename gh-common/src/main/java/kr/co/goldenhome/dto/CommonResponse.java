@@ -1,4 +1,4 @@
-package dto;
+package kr.co.goldenhome.dto;
 
 public record CommonResponse(boolean success) {
 

@@ -1,7 +1,7 @@
 package kr.co.goldenhome.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.service.FacilityLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,4 +1,4 @@
-package implement;
+package kr.co.goldenhome.implement;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

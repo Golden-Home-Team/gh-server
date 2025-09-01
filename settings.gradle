@@ -4,6 +4,7 @@ include 'gh-application-container'
 include 'gh-common'
 include 'gh-batch'
 include 'gh-external-social'
+include 'gh-event'
 
 include 'gh-domain'
 include 'gh-domain:gh-user'

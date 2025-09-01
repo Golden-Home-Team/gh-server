@@ -1,6 +1,6 @@
 package kr.co.goldenhome.controller;
 
-import dto.CommonResponse;
+import kr.co.goldenhome.dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.DailyShotMainResponse;
 import kr.co.goldenhome.dto.DailyShotRequest;

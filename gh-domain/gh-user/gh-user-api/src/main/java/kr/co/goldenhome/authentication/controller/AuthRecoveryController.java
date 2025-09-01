@@ -1,6 +1,6 @@
 package kr.co.goldenhome.authentication.controller;
 
-import dto.CommonResponse;
+import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.authentication.dto.*;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.authentication.service.AuthRecoveryService;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import validator.EnumValidator;
+import kr.co.goldenhome.validator.EnumValidator;
 
 @RestController
 @RequiredArgsConstructor

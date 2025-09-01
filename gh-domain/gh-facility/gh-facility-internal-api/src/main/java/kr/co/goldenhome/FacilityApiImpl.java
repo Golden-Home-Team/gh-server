@@ -1,7 +1,7 @@
 package kr.co.goldenhome;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.repository.FacilityJpaRepository;
 import lombok.RequiredArgsConstructor;

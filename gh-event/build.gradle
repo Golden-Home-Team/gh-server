@@ -1,0 +1,14 @@
+dependencies {
+    api(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.4.0"))
+    api 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    api 'io.awspring.cloud:spring-cloud-aws-starter-sns'
+
+    implementation 'io.hypersistence:hypersistence-tsid:2.1.4'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    implementation(project(":gh-common"))
+
+
+}
+
+jar.enabled = true

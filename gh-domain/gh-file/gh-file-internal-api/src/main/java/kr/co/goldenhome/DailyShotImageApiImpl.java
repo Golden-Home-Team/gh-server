@@ -1,7 +1,7 @@
 package kr.co.goldenhome;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.DailyShotImage;
 import kr.co.goldenhome.enums.DailyShotType;
 import kr.co.goldenhome.repository.DailyShotImageRepository;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

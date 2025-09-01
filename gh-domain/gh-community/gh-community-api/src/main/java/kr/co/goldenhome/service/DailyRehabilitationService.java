@@ -1,7 +1,7 @@
 package kr.co.goldenhome.service;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.dto.DailyExerciseResponse;
 import kr.co.goldenhome.dto.DailyRehabilitationRequest;
 import kr.co.goldenhome.dto.DailyRehabilitationResponse;

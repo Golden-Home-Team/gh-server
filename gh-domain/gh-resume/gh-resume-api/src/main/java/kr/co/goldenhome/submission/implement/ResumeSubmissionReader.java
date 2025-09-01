@@ -1,10 +1,9 @@
 package kr.co.goldenhome.submission.implement;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.ResumeSubmission;
 import kr.co.goldenhome.repository.ResumeSubmissionRepository;
-import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

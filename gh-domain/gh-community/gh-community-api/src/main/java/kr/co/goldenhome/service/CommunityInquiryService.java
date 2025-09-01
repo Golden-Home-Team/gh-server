@@ -1,7 +1,7 @@
 package kr.co.goldenhome.service;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.dto.CommunityInquiryRequest;
 import kr.co.goldenhome.entity.CommunityInquiry;
 import kr.co.goldenhome.enums.CommunityInquiryType;

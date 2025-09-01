@@ -1,7 +1,7 @@
 package kr.co.goldenhome.resume.implement;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.Resume;
 import kr.co.goldenhome.repository.ResumeRepository;
 import kr.co.goldenhome.resume.dto.ResumeModifyRequest;

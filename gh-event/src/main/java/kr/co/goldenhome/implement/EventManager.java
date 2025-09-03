@@ -1,7 +1,7 @@
 package kr.co.goldenhome.implement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import kr.co.goldenhome.SNSEvent;
+import kr.co.goldenhome.model.SNSEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +21,8 @@ public abstract class EventManager<T extends SNSEvent> {
     @Value("${aws.event.sns.endpoint}")
     protected String snsTopicArn;
 
-    public abstract void saveLog(T event) throws JsonProcessingException;
-    public abstract void publish(T event) throws JsonProcessingException;
+    public abstract void saveLog(T event);
+    public abstract void publish(T event);
     public abstract List<T> getUnpublishedEvents();
     public abstract void markAsPublished(List<String> eventIds);
 

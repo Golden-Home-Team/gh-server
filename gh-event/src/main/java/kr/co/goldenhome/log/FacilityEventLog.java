@@ -1,4 +1,4 @@
-package kr.co.goldenhome.entity;
+package kr.co.goldenhome.log;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

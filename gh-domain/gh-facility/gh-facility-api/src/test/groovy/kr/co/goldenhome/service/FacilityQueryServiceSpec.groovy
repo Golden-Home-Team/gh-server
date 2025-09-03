@@ -10,7 +10,7 @@ import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
-import kr.co.goldenhome.implement.ViewEventManger
+import kr.co.goldenhome.FacilityEventManger
 import spock.lang.Specification
 
 class FacilityQueryServiceSpec extends Specification {
@@ -22,7 +22,7 @@ class FacilityQueryServiceSpec extends Specification {
     LikeApi likeApi = Mock()
     FacilityProfileApi facilityProfileApi = Mock()
     ViewApi viewApi = Mock()
-    ViewEventManger viewEventManger = Mock()
+    FacilityEventManger viewEventManger = Mock()
 
 
     def setup() {

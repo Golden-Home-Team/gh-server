@@ -33,7 +33,7 @@ public class FacilityQueryController {
     }
 
     @GetMapping("/{facilityId}")
-    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) throws JsonProcessingException {
+    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return facilityQueryService.read(facilityId, userPrincipal.userId());
     }
 

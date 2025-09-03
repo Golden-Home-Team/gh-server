@@ -1,6 +1,5 @@
-package kr.co.goldenhome.repository;
+package kr.co.goldenhome.log;
 
-import kr.co.goldenhome.entity.FacilityEventLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,6 +3,8 @@ package kr.co.goldenhome.implement;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.co.goldenhome.FacilityEvent;
 import kr.co.goldenhome.entity.FacilityEventLog;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.repository.FacilityEventLogRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import software.amazon.awssdk.services.sns.SnsAsyncClient;
-
 
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class ViewEventManger extends EventManager<FacilityEvent>{
     @Transactional
     @Override
     public void saveLog(FacilityEvent event) throws JsonProcessingException {
-        System.out.println("ViewEventManger.saveLog.eventId = " + event.getEventId());
         facilityEventLogRepository.save(FacilityEventLog.create(event.getEventId(), eventUtils.toJson(event)));
         applicationEventPublisher.publishEvent(event);
     }
@@ -41,21 +41,25 @@ public class ViewEventManger extends EventManager<FacilityEvent>{
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Override
     public void publish(FacilityEvent event) throws JsonProcessingException {
-        System.out.println("ViewEventManger.publish.eventId = " + event.getEventId());
         snsAsyncClient.publish(eventUtils.createPublishRequest(snsTopicArn, event))
                 .thenAcceptAsync(publishResponse -> {
-                    System.out.println("ViewEventManger.thenAcceptAsync.eventId = " + event.getEventId());
                     facilityEventLogRepository.publish(event.getEventId());
                 });
     }
 
     @Override
     public List<FacilityEvent> getUnpublishedEvents() {
-        return List.of();
+        return facilityEventLogRepository.getUnpublished().stream().map(facilityEventLog -> {
+            try {
+                return eventUtils.fromJson(facilityEventLog.getPayload());
+            } catch (JsonProcessingException e) {
+                throw new CustomException(ErrorCode.UNKNOWN_ERROR, "ViewEventManger.getUnpublishedEvents");
+            }
+        }).toList();
     }
 
     @Override
-    public void updateStatus(List<String> eventIds) {
-
+    public void markAsPublished(List<String> eventIds) {
+        facilityEventLogRepository.publish(eventIds);
     }
 }

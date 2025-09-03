@@ -1,19 +1,33 @@
 package kr.co.goldenhome.repository;
 
 import kr.co.goldenhome.entity.FacilityEventLog;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
-public interface FacilityEventLogRepository extends JpaRepository<FacilityEventLog, Long> {
-    @Modifying
-    @Query(
-            value = "update facility_event_logs " +
-                    "set is_published = true " +
-                    "where event_id = :eventId",
-            nativeQuery = true
-    )
-    void publish(@Param("eventId") String eventId);
+@Repository
+@RequiredArgsConstructor
+public class FacilityEventLogRepository {
+
+    private final FacilityEventLogJpaRepository jpaRepository;
+
+    public void save(FacilityEventLog facilityEventLog) {
+        jpaRepository.save(facilityEventLog);
+    }
+
+    @Transactional
+    public void publish(String eventId) {
+        jpaRepository.publish(eventId);
+    }
+
+    public List<FacilityEventLog> getUnpublished() {
+        return jpaRepository.findByIsPublishedFalse();
+    }
+
+    @Transactional
+    public void publish(List<String> eventIds) {
+        jpaRepository.publish(eventIds);
+    }
 }

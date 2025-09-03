@@ -8,7 +8,6 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testImplementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
-
     implementation(project(":gh-common"))
     implementation(project(":gh-event"))
 
@@ -17,6 +16,7 @@ dependencies {
     implementation(project(":gh-api-interface:gh-review-api-interface"))
     implementation(project(":gh-api-interface:gh-like-api-interface"))
     implementation(project(":gh-api-interface:gh-file-api-interface"))
+    implementation(project(":gh-api-interface:gh-view-api-interface"))
 
 }
 

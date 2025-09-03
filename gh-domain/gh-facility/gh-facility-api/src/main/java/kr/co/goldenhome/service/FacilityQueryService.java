@@ -24,6 +24,7 @@ public class FacilityQueryService {
     private final ReviewApi reviewApi;
     private final LikeApi likeApi;
     private final FacilityProfileApi facilityProfileApi;
+    private final ViewApi viewApi;
     private final ViewEventManger viewEventManger;
 
     public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size) {
@@ -35,12 +36,12 @@ public class FacilityQueryService {
     }
 
     public FacilityDetailResponse read(Long facilityId, Long userId) throws JsonProcessingException {
-        System.out.println("FacilityQueryService.read. facilityId: " + facilityId + ", userId: " + userId);
         FacilityDetailServiceResponse facilityDetailServiceResponse = facilityReader.read(facilityId);
         ReviewMetaData reviewMetaData = reviewApi.getReviewMetaData(facilityId);
         boolean isLiked = likeApi.isLiked(facilityId, userId);
+        Long viewCount = viewApi.increase(facilityId, userId);
         viewEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.VIEW));
-        return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked);
+        return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked, viewCount);
     }
 
     public List<FacilityResponse> getLikedFacilities(Long userId) {

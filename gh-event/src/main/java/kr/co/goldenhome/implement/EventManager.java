@@ -24,7 +24,7 @@ public abstract class EventManager<T extends SNSEvent> {
     public abstract void saveLog(T event) throws JsonProcessingException;
     public abstract void publish(T event) throws JsonProcessingException;
     public abstract List<T> getUnpublishedEvents();
-    public abstract void updateStatus(List<String> eventIds);
+    public abstract void markAsPublished(List<String> eventIds);
 
     @Scheduled(fixedDelay = 60000)
     public void republish() {
@@ -34,7 +34,7 @@ public abstract class EventManager<T extends SNSEvent> {
                 List<T> events = getUnpublishedEvents();
                 if (events.isEmpty()) hasEvents = false;
                 List<String> publishedEventId = republish(events).join();
-                updateStatus(publishedEventId);
+                markAsPublished(publishedEventId);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

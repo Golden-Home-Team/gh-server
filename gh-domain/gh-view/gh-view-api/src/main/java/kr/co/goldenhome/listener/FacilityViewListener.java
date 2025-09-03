@@ -15,11 +15,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.ScriptType;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -31,7 +28,7 @@ public class FacilityViewListener {
 
     @DeduplicateEvent
     @SqsListener("gh-facility-update-queue")
-    public void view(@Payload SqsMessage sqsMessage) throws JsonProcessingException {
+    public void updateElasticSearchViewCount(@Payload SqsMessage sqsMessage) throws JsonProcessingException {
         FacilityEvent facilityEvent = objectMapper.readValue(sqsMessage.Message(), FacilityEvent.class);
         if (facilityEvent.getEventId() == null) throw new CustomException(ErrorCode.INVALID_EVENT_PAYLOAD, "FacilityViewListener.view");
         UpdateQuery updateQuery = UpdateQuery.builder(facilityEvent.getFacilityId().toString())

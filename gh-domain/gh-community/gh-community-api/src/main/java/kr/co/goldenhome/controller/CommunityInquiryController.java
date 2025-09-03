@@ -1,7 +1,7 @@
 package kr.co.goldenhome.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.CommunityInquiryRequest;
 import kr.co.goldenhome.dto.CommunityInquiryResponse;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import validator.EnumValidator;
+import kr.co.goldenhome.validator.EnumValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;

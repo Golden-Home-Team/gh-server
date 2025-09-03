@@ -1,7 +1,7 @@
 package kr.co.goldenhome.submission.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest;
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse;
 import kr.co.goldenhome.submission.service.ResumeSubmissionService;

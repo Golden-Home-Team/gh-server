@@ -1,8 +1,8 @@
 package kr.co.goldenhome.security;
 
-import auth.UserPrincipal;
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.CommunityUser;
 import kr.co.goldenhome.enums.CommunityUserRole;
 import kr.co.goldenhome.repository.CommunityUserRepository;

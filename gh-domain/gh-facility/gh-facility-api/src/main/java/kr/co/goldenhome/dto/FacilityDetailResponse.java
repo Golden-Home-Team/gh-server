@@ -28,10 +28,11 @@ public record FacilityDetailResponse(
         int threePointCount,
         int fourPointCount,
         int fivePointCount,
-        boolean isLiked
+        boolean isLiked,
+        Long viewCount
 ) {
 
-    public static FacilityDetailResponse of(FacilityDetailServiceResponse facilityDetailServiceResponse, ReviewMetaData reviewMetaData, boolean isLiked) {
+    public static FacilityDetailResponse of(FacilityDetailServiceResponse facilityDetailServiceResponse, ReviewMetaData reviewMetaData, boolean isLiked, Long viewCount) {
         return new FacilityDetailResponse(
                 facilityDetailServiceResponse.id(),
                 facilityDetailServiceResponse.institutionSymbol(),
@@ -56,7 +57,8 @@ public record FacilityDetailResponse(
                 reviewMetaData.threePointCount(),
                 reviewMetaData.fourPointCount(),
                 reviewMetaData.fivePointCount(),
-                isLiked
+                isLiked,
+                viewCount
         );
     }
 }

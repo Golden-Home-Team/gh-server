@@ -12,6 +12,7 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     testImplementation 'com.h2database:h2'
+
     implementation(project(":gh-common"))
 }
 

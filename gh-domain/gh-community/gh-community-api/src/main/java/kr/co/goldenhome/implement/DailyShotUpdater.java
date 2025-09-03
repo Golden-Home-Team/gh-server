@@ -1,7 +1,7 @@
 package kr.co.goldenhome.implement;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.DailyShot;
 import kr.co.goldenhome.repository.DailyShotRepository;
 import lombok.RequiredArgsConstructor;

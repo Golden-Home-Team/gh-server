@@ -1,7 +1,7 @@
 package kr.co.goldenhome.controller;
 
-import auth.UserPrincipal;
-import dto.CommonResponse;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.ReviewRequest;
 import kr.co.goldenhome.dto.ReviewResponse;
@@ -9,7 +9,7 @@ import kr.co.goldenhome.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import implement.ScoreProcessor;
+import kr.co.goldenhome.implement.ScoreProcessor;
 
 import java.util.List;
 

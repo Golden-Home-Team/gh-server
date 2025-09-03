@@ -1,7 +1,7 @@
 package kr.co.goldenhome.account.service;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.infrastructure.TokenRepository;
 import kr.co.goldenhome.infrastructure.UserRepository;

@@ -1,6 +1,7 @@
     package kr.co.goldenhome.controller;
 
-import auth.UserPrincipal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
 import kr.co.goldenhome.service.FacilityQueryService;
@@ -32,7 +33,7 @@ public class FacilityQueryController {
     }
 
     @GetMapping("/{facilityId}")
-    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) throws JsonProcessingException {
         return facilityQueryService.read(facilityId, userPrincipal.userId());
     }
 

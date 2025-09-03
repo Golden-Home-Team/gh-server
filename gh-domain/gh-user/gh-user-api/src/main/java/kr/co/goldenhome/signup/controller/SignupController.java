@@ -1,6 +1,6 @@
 package kr.co.goldenhome.signup.controller;
 
-import dto.CommonResponse;
+import kr.co.goldenhome.dto.CommonResponse;
 
 import kr.co.goldenhome.signup.dto.SignupRequest;
 import kr.co.goldenhome.signup.service.SignupService;

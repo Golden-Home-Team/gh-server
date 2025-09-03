@@ -1,8 +1,9 @@
 package validator
 
-import exception.CustomException
-import exception.ErrorCode
+import kr.co.goldenhome.exception.CustomException
+import kr.co.goldenhome.exception.ErrorCode
 import kr.co.goldenhome.SocialPlatform
+import kr.co.goldenhome.validator.EnumValidator
 import spock.lang.Specification
 
 class EnumValidatorTest extends Specification {

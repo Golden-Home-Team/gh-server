@@ -1,7 +1,7 @@
 package kr.co.goldenhome.authentication.implement;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.SocialLoginException;
 import kr.co.goldenhome.SocialLoginManager;
 import kr.co.goldenhome.SocialPlatform;

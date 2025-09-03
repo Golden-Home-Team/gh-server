@@ -1,6 +1,6 @@
 package kr.co.goldenhome;
 
-import exception.CustomException;
+import kr.co.goldenhome.exception.CustomException;
 import org.springframework.http.ResponseEntity;
 
 

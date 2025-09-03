@@ -1,6 +1,5 @@
 package kr.co.goldenhome.exception;
 
-import exception.CustomException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;

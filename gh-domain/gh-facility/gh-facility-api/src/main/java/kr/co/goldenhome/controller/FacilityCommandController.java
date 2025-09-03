@@ -1,6 +1,6 @@
 package kr.co.goldenhome.controller;
 
-import dto.CommonResponse;
+import kr.co.goldenhome.dto.CommonResponse;
 import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.FacilityProfileRequest;
 import kr.co.goldenhome.service.FacilityCommandService;

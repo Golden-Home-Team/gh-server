@@ -1,7 +1,7 @@
 package kr.co.goldenhome.authentication.implement;
 
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse;
 import kr.co.goldenhome.entity.EmailVerification;
 import kr.co.goldenhome.entity.User;

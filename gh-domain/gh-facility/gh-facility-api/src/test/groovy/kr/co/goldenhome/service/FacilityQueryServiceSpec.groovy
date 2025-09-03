@@ -4,11 +4,13 @@ import kr.co.goldenhome.FacilityProfileApi
 import kr.co.goldenhome.LikeApi
 import kr.co.goldenhome.ReviewApi
 import kr.co.goldenhome.ReviewMetaData
+import kr.co.goldenhome.ViewApi
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
+import kr.co.goldenhome.implement.ViewEventManger
 import spock.lang.Specification
 
 class FacilityQueryServiceSpec extends Specification {
@@ -19,10 +21,12 @@ class FacilityQueryServiceSpec extends Specification {
     ReviewApi reviewApi = Mock()
     LikeApi likeApi = Mock()
     FacilityProfileApi facilityProfileApi = Mock()
+    ViewApi viewApi = Mock()
+    ViewEventManger viewEventManger = Mock()
 
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, reviewApi, likeApi, facilityProfileApi)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, reviewApi, likeApi, facilityProfileApi, viewApi, viewEventManger)
     }
 
     def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
@@ -59,7 +63,7 @@ class FacilityQueryServiceSpec extends Specification {
         2 * facilityProfileApi.get(*_)
     }
 
-    def "read - facilityReader, reviewApi, likeApi 를 호출한다"() {
+    def "read - facilityReader, reviewApi, likeApi, viewApi, viewEventManger 를 호출한다"() {
         given:
         def givenFacilityId = 1L
         def givenUserId = 1L
@@ -82,6 +86,8 @@ class FacilityQueryServiceSpec extends Specification {
                 userId == givenUserId
                 true
         }
+        1 * viewApi.increase(*_)
+        1 * viewEventManger.saveLog(_)
 
     }
 

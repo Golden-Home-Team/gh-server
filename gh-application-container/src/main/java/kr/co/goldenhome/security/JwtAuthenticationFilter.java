@@ -1,8 +1,8 @@
 package kr.co.goldenhome.security;
 
-import auth.UserPrincipal;
-import exception.CustomException;
-import exception.ErrorCode;
+import kr.co.goldenhome.auth.UserPrincipal;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;

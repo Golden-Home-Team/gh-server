@@ -11,26 +11,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FacilityLikeManager {
+public class ReviewManager {
 
     private final ElasticsearchOperations elasticsearchOperations;
 
     @DeduplicateEvent
-    public void processLikeEvent(FacilityEvent event) {
+    public void processReviewEvent(FacilityEvent event) {
         UpdateQuery updateQuery = UpdateQuery.builder(event.getFacilityId().toString())
-                .withScript("ctx._source.likeCount += 1")
+                .withScript("ctx._source.reviewCount += 1")
                 .withScriptType(ScriptType.INLINE)
                 .build();
         elasticsearchOperations.update(updateQuery, IndexCoordinates.of("facilities"));
     }
-
-    @DeduplicateEvent
-    public void processDislikeEvent(FacilityEvent event) {
-        UpdateQuery updateQuery = UpdateQuery.builder(event.getFacilityId().toString())
-                .withScript("ctx._source.likeCount -= 1")
-                .withScriptType(ScriptType.INLINE)
-                .build();
-        elasticsearchOperations.update(updateQuery, IndexCoordinates.of("facilities"));
-    }
-
 }

@@ -8,11 +8,9 @@ import kr.co.goldenhome.implement.FacilityLikeManager;
 import kr.co.goldenhome.model.FacilityEvent;
 import kr.co.goldenhome.model.FacilityEventType;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FacilityLikeListener {

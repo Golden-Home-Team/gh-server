@@ -4,7 +4,10 @@ spring:
     activate:
       on-profile: test
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    exclude:
+    - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration
+    - io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration
   application:
     name: golden-home-application
   datasource:
@@ -43,3 +46,20 @@ JWT_SECRET_KEY: "111=kPzQxR9dg0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1abc3uV4wX5yZ6aB7
 KAKAO_CLIENT_ID: "abc"
 KAKAO_CLIENT_SECRET: "def"
 KAKAO_REDIRECT_URI: "http://localhost:8080/api/auth/social/login/callback?provider_type=KAKAO"
+
+aws:
+  region: ap-northeast-2
+  s3:
+    credentials:
+      access-key: abc
+      secret-key: abc
+    bucket: goldenhome-bucket
+    base-url: a
+  event:
+    credentials:
+      access-key: a
+      secret-key: a
+    sns:
+      endpoint: a
+    sqs:
+      endpoint: a

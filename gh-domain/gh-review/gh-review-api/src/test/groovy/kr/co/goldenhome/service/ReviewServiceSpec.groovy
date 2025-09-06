@@ -1,7 +1,7 @@
 package kr.co.goldenhome.service
 
+import kr.co.goldenhome.FacilityEventManger
 import kr.co.goldenhome.ReviewImageApi
-import kr.co.goldenhome.ReviewImageApiResponse
 import kr.co.goldenhome.UserApi
 import kr.co.goldenhome.entity.Review
 import kr.co.goldenhome.implement.ReviewAppender
@@ -17,12 +17,13 @@ class ReviewServiceSpec extends Specification {
     ReviewReader reviewReader = Mock()
     UserApi userApi = Mock()
     ReviewImageApi reviewImageApi = Mock()
+    FacilityEventManger facilityEventManager = Mock()
 
     def setup() {
-        reviewService = new ReviewService(reviewAppender, reviewReader, userApi, reviewImageApi)
+        reviewService = new ReviewService(reviewAppender, reviewReader, userApi, reviewImageApi, facilityEventManager)
     }
 
-    def 'write - reviewAppender 를 호출한다'() {
+    def 'write - reviewAppender, facilityEventManager 를 호출한다'() {
         given:
         def givenContent = "시설이 괜찮아요"
         def givenScore = 5
@@ -42,6 +43,7 @@ class ReviewServiceSpec extends Specification {
                 facilityId == givenFacilityId
                 userId == givenUserId
         }
+        1 * facilityEventManager.saveLog(_)
     }
 
     def "readAll - reviewReader 를 호출하고 리스트 사이즈에 따라 userApi, reviewImageApi 를 호출한다"() {

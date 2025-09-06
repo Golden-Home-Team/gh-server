@@ -1,4 +1,4 @@
-package kr.co.goldenhome.docs
+package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ReviewImageApiResponse
@@ -22,9 +22,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields

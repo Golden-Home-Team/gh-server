@@ -21,7 +21,6 @@ public class Facility {
     private String facilityType;
     private String name;
     private String address;
-    private String grade; // 지우기 FacilityRepositoryImpl
     private String phoneNumber;
     private String email;
     private String homepage;
@@ -34,13 +33,12 @@ public class Facility {
     private String staffTotal;
 
     @Builder
-    private Facility(Long id, String institutionSymbol, String facilityType, String name, String grade, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal) {
+    private Facility(Long id, String institutionSymbol, String facilityType, String name, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.facilityType = facilityType;
         this.name = name;
         this.address = address;
-        this.grade = grade;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.homepage = homepage;

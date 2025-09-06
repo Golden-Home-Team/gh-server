@@ -22,7 +22,7 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
         );
     }
 
-    public static FacilityResponse from(Facility facility, String profileUrl) {
+    public static FacilityResponse from(Facility facility, String profileUrl, String grade) {
         return new FacilityResponse(
                 facility.getId(),
                 facility.getInstitutionSymbol(),
@@ -30,7 +30,7 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facility.getName(),
                 facility.getAddress(),
                 facility.getEstablishmentDate(),
-                facility.getGrade(),
+                grade,
                 facility.getCapacity(),
                 facility.getCurrentTotal(),
                 profileUrl

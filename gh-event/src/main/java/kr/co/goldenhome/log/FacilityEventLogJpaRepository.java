@@ -1,6 +1,5 @@
-package kr.co.goldenhome.repository;
+package kr.co.goldenhome.log;
 
-import kr.co.goldenhome.entity.FacilityEventLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package kr.co.goldenhome;
+package kr.co.goldenhome.model;
 
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;

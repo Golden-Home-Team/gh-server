@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.goldenhome.event.EventDeduplicationLog;
 import kr.co.goldenhome.event.EventDeduplicationLogRepository;
 import kr.co.goldenhome.event.SqsMessage;
+import kr.co.goldenhome.model.FacilityEvent;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -25,22 +26,9 @@ public class DeduplicateEventAspect {
     @Transactional
     @Around("@annotation(kr.co.goldenhome.DeduplicateEvent)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        String eventId = Arrays.stream(joinPoint.getArgs())
-                .filter(arg -> arg instanceof SqsMessage)
-                .map(arg -> (SqsMessage) arg)
-                .findFirst()
-                .map(sqsMessage -> {
-                    try {
-                        EventIdOnly eventIdOnly = objectMapper.readValue(sqsMessage.Message(), EventIdOnly.class);
-                        return eventIdOnly.eventId();
-                    } catch (JsonProcessingException e) {
-                        return null;
-                    }
-                })
-                .orElse(null);
-        if (eventId == null) {
-            return joinPoint.proceed();
-        }
+        Object[] args = joinPoint.getArgs();
+        FacilityEvent event = (FacilityEvent) args[0];
+        String eventId = event.getEventId();
         String id = eventId + "-" + joinPoint.getSignature().getName();
         if (eventDeduplicationLogRepository.existsById(id)) return null;
         Object result = joinPoint.proceed();

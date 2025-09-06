@@ -2,7 +2,7 @@ package kr.co.goldenhome.implement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.goldenhome.FacilityEvent;
+import kr.co.goldenhome.model.FacilityEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -6,7 +6,6 @@ import kr.co.goldenhome.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.goldenhome.authentication.implement.AuthenticationTokenManager;
@@ -41,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException {
         String accessToken = parseToken(request.getHeader("Authorization"));
         if (!StringUtils.hasText(accessToken)) {
             sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.");
@@ -72,8 +71,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/api/auth", "/api/users/signup"};
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String[] excludePath = {"/api/auth", "/api/users/signup", "/api/facilities"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith) ||
                 path.endsWith(".html");

@@ -1,14 +1,18 @@
 package kr.co.goldenhome.service
 
+import kr.co.goldenhome.enums.AdmissionTimeFrame
+import kr.co.goldenhome.enums.Gender
+import kr.co.goldenhome.enums.HealthInsurance
+import kr.co.goldenhome.enums.LongTermCareGrade
+import kr.co.goldenhome.enums.PhysicalCondition
+import kr.co.goldenhome.enums.Relationship
 import kr.co.goldenhome.resume.dto.ResumeCreateRequest
 import kr.co.goldenhome.resume.dto.ResumeModifyRequest
 import kr.co.goldenhome.entity.Resume
-import kr.co.goldenhome.repository.ResumeRepository
 import kr.co.goldenhome.resume.implement.ResumeModifier
 import kr.co.goldenhome.resume.implement.ResumeReader
 import kr.co.goldenhome.resume.implement.ResumeWriter
 import kr.co.goldenhome.resume.service.ResumeService
-import kr.co.goldenhome.submission.implement.ResumeSubmitter
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -30,14 +34,16 @@ class ResumeServiceSpec extends Specification {
         def givenRequest = new ResumeCreateRequest(
                 "구준형",
                 givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
+                Gender.MALE.name(),
+                PhysicalCondition.DEMENTIA.name(),
+                LongTermCareGrade.GRADE_1.name(),
+                HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
                 "구머니",
                 "01040363457",
-                "모",
-                "양로원"
+                Relationship.CHILD.name(),
+                "양로원",
+                AdmissionTimeFrame.IMMEDIATELY.name()
         )
         def givenUserId = 1L
 
@@ -74,14 +80,16 @@ class ResumeServiceSpec extends Specification {
         def givenRequest = new ResumeModifyRequest(
                 "구준형",
                 givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
+                Gender.MALE.name(),
+                PhysicalCondition.DEMENTIA.name(),
+                LongTermCareGrade.GRADE_1.name(),
+                HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
                 "구머니",
                 "01040363457",
-                "모",
-                "양로원"
+                Relationship.CHILD.name(),
+                "양로원",
+                AdmissionTimeFrame.IMMEDIATELY.name()
         )
         def givenUserId = 1L
 

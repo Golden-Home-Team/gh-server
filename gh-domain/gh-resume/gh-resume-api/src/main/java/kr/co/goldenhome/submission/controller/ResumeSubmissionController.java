@@ -2,7 +2,6 @@ package kr.co.goldenhome.submission.controller;
 
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.CommonResponse;
-import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest;
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse;
 import kr.co.goldenhome.submission.service.ResumeSubmissionService;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +36,5 @@ public class ResumeSubmissionController {
     public ResumeSubmissionResponse read(@PathVariable("id") Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return resumeSubmissionService.read(id, userPrincipal.userId());
     }
-
-    @PutMapping("/{id}")
-    public CommonResponse modify(@RequestBody ResumeSubmissionModifyRequest request, @PathVariable("id") Long id, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        resumeSubmissionService.modify(request, id, userPrincipal.userId());
-        return CommonResponse.ok();
-    }
-
 
 }

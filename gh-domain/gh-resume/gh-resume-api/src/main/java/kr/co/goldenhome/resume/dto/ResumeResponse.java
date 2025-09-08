@@ -1,6 +1,7 @@
 package kr.co.goldenhome.resume.dto;
 
 import kr.co.goldenhome.entity.Resume;
+import kr.co.goldenhome.enums.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,13 +11,14 @@ public record ResumeResponse(
          Long userId,
          String name,
          LocalDate dateOfBirth,
-         String gender,
-         String longTermCareGrade,
-         String majorDiseases,
+         Gender gender,
+         PhysicalCondition physicalCondition,
+         LongTermCareGrade longTermCareGrade,
+         HealthInsurance healthInsurance,
          String specialNotes,
          String guardianName,
          String guardianContactInformation,
-         String relationShip,
+         Relationship relationship,
          String facilityType,
          LocalDateTime updatedAt
 ) {
@@ -27,8 +29,9 @@ public record ResumeResponse(
                 resume.getName(),
                 resume.getDateOfBirth(),
                 resume.getGender(),
+                resume.getPhysicalCondition(),
                 resume.getLongTermCareGrade(),
-                resume.getMajorDiseases(),
+                resume.getHealthInsurance(),
                 resume.getSpecialNotes(),
                 resume.getGuardianName(),
                 resume.getGuardianContactInformation(),

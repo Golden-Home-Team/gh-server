@@ -1,6 +1,7 @@
 package kr.co.goldenhome.resume.implement;
 
 import kr.co.goldenhome.entity.Resume;
+import kr.co.goldenhome.enums.*;
 import kr.co.goldenhome.repository.ResumeRepository;
 import kr.co.goldenhome.resume.dto.ResumeCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,16 @@ public class ResumeWriter {
                         userId,
                         request.name(),
                         request.dateOfBirth(),
-                        request.gender(),
-                        request.longTermCareGrade(),
-                        request.majorDiseases(),
+                        Gender.valueOf(request.gender()),
+                        PhysicalCondition.valueOf(request.physicalCondition()),
+                        LongTermCareGrade.valueOf(request.longTermCareGrade()),
+                        HealthInsurance.valueOf(request.healthInsurance()),
                         request.specialNotes(),
                         request.guardianName(),
                         request.guardianContactInformation(),
-                        request.relationShip(),
-                        request.facilityType()
+                        Relationship.valueOf(request.relationship()),
+                        request.facilityType(),
+                        AdmissionTimeFrame.valueOf(request.admissionTimeFrame())
                 )
         );
     }

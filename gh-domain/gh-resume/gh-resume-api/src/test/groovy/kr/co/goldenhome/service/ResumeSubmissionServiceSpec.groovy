@@ -2,27 +2,22 @@ package kr.co.goldenhome.service
 
 import kr.co.goldenhome.FacilityApi
 import kr.co.goldenhome.FacilityApiResponse
-import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest
 import kr.co.goldenhome.entity.ResumeSubmission
-import kr.co.goldenhome.submission.implement.ResumeSubmissionModifier
 import kr.co.goldenhome.submission.implement.ResumeSubmissionReader
 import kr.co.goldenhome.submission.implement.ResumeSubmitter
 import kr.co.goldenhome.submission.service.ResumeSubmissionService
 import spock.lang.Specification
-
-import java.time.LocalDate
 
 class ResumeSubmissionServiceSpec extends Specification {
 
     ResumeSubmissionService resumeSubmissionService
     ResumeSubmissionReader resumeSubmissionReader = Mock()
     ResumeSubmitter resumeSubmitter = Mock()
-    ResumeSubmissionModifier resumeSubmissionModifier = Mock()
     FacilityApi facilityApi = Mock()
 
 
     def setup() {
-        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionReader, resumeSubmitter, resumeSubmissionModifier, facilityApi)
+        resumeSubmissionService = new ResumeSubmissionService(resumeSubmissionReader, resumeSubmitter, facilityApi)
     }
 
     def 'submit - resumeSubmitter 를 호출한다'() {
@@ -82,32 +77,4 @@ class ResumeSubmissionServiceSpec extends Specification {
 
     }
 
-    def "modify - resumeSubmissionModifier 를 호출한다"() {
-        given:
-        def givenDateOfBirth = LocalDate.of(2000, 7, 2)
-        def givenRequest = new ResumeSubmissionModifyRequest(
-                "구준형",
-                givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
-                "없음",
-                "구머니",
-                "01040363457",
-                "모"
-        )
-        def givenResumeSubmissionId = 1L
-        def givenUserId = 1L
-
-        when:
-        resumeSubmissionService.modify(givenRequest, givenResumeSubmissionId, givenUserId)
-
-        then:
-        1 * resumeSubmissionModifier.modify(*_) >> {
-            ResumeSubmissionModifyRequest request, Long resumeSubmissionId, Long userId ->
-                request == givenRequest
-                resumeSubmissionId == givenResumeSubmissionId
-                userId == givenUserId
-        }
-    }
 }

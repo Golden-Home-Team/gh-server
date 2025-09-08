@@ -34,7 +34,8 @@ public class FacilityQueryController {
 
     @GetMapping("/{facilityId}")
     public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return facilityQueryService.read(facilityId, userPrincipal.userId());
+        Long userId = (userPrincipal != null) ? userPrincipal.userId() : null;
+        return facilityQueryService.read(facilityId, userId);
     }
 
     @GetMapping("/like")

@@ -1,5 +1,6 @@
 package kr.co.goldenhome.resume.implement;
 
+import kr.co.goldenhome.enums.*;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.Resume;
@@ -18,6 +19,19 @@ public class ResumeModifier {
     @Transactional
     public void modify(ResumeModifyRequest request, Long userId) {
         Resume resume = resumeRepository.findByUserId(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "ResumeService.readBaseResume"));
-        resume.update(request.name(), request.dateOfBirth(), request.gender(), request.longTermCareGrade(), request.majorDiseases(), request.specialNotes(), request.guardianName(), request.guardianContactInformation(), request.relationShip(), request.facilityType());
+        resume.update(
+                request.name(),
+                request.dateOfBirth(),
+                Gender.valueOf(request.gender()),
+                PhysicalCondition.valueOf(request.physicalCondition()),
+                LongTermCareGrade.valueOf(request.longTermCareGrade()),
+                HealthInsurance.valueOf(request.healthInsurance()),
+                request.specialNotes(),
+                request.guardianName(),
+                request.guardianContactInformation(),
+                Relationship.valueOf(request.relationship()),
+                request.facilityType(),
+                AdmissionTimeFrame.valueOf(request.admissionTimeFrame())
+        );
     }
 }

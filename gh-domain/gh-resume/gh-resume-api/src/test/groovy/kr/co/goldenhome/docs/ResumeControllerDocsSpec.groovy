@@ -1,6 +1,12 @@
 package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.enums.AdmissionTimeFrame
+import kr.co.goldenhome.enums.Gender
+import kr.co.goldenhome.enums.HealthInsurance
+import kr.co.goldenhome.enums.LongTermCareGrade
+import kr.co.goldenhome.enums.PhysicalCondition
+import kr.co.goldenhome.enums.Relationship
 import kr.co.goldenhome.resume.dto.ResumeModifyRequest
 import kr.co.goldenhome.resume.dto.ResumeResponse
 import kr.co.goldenhome.resume.service.ResumeService
@@ -50,14 +56,16 @@ class ResumeControllerDocsSpec extends Specification{
         def request = new ResumeModifyRequest(
                 "구준형",
                 givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
+                Gender.MALE.name(),
+                PhysicalCondition.DEMENTIA.name(),
+                LongTermCareGrade.GRADE_1.name(),
+                HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
                 "구머니",
                 "01040363457",
-                "모",
-                "양로원"
+                Relationship.CHILD.name(),
+                "양로원",
+                AdmissionTimeFrame.IMMEDIATELY.name()
         )
 
         when:
@@ -73,11 +81,13 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("dateOfBirth").type(JsonFieldType.STRING)
                                         .description("생년월일 e.g. 2000-07-02"),
                                 fieldWithPath("gender").type(JsonFieldType.STRING)
-                                        .description("성별"),
+                                        .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
-                                        .description("장기요양등급"),
-                                fieldWithPath("majorDiseases").type(JsonFieldType.STRING)
-                                        .description("주요질병"),
+                                        .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
+                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                        .description("HYPERTENSION(고혈압), DIABETES(당뇨), DEMENTIA(치매), TRAUMA(외상 상태), ETC(기타), NONE"),
+                                fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
+                                        .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
                                 fieldWithPath("specialNotes").type(JsonFieldType.STRING)
                                         .description("특이사항"),
                                 fieldWithPath("guardianName").type(JsonFieldType.STRING)
@@ -86,10 +96,12 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("보호자 이름"),
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
-                                fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계"),
+                                fieldWithPath("relationship").type(JsonFieldType.STRING)
+                                        .description("CHILD, GRANDCHILD, SIBLING, ETC"),
                                 fieldWithPath("facilityType").type(JsonFieldType.STRING)
-                                        .description("시설 타입")
+                                        .description("시설 타입 e.g. 양로원"),
+                                fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
+                                        .description("IMMEDIATELY, WITHIN_1_MONTH, WITHIN_3_MONTHS, TO_BE_DETERMINED"),
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
@@ -112,13 +124,14 @@ class ResumeControllerDocsSpec extends Specification{
                 1L,
                 "구준형",
                 LocalDate.of(2000,7,2),
-                "남",
-                "B",
-                "허리통증",
+                Gender.MALE,
+                PhysicalCondition.DEMENTIA,
+                LongTermCareGrade.GRADE_2,
+                HealthInsurance.MEDICAL_AID_TYPE_1,
                 "없음",
                 "구머니",
                 "01040363457",
-                "모",
+                Relationship.CHILD,
                 "양로원",
                 LocalDateTime.of(2020, 10, 10, 10, 10)
         )
@@ -139,11 +152,13 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("dateOfBirth").type(JsonFieldType.STRING)
                                         .description("생년월일 e.g. 2000-07-02"),
                                 fieldWithPath("gender").type(JsonFieldType.STRING)
-                                        .description("성별"),
+                                        .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
-                                        .description("장기요양등급"),
-                                fieldWithPath("majorDiseases").type(JsonFieldType.STRING)
-                                        .description("주요질병"),
+                                        .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
+                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                        .description("HYPERTENSION, DIABETES, DEMENTIA, TRAUMA, ETC, NONE"),
+                                fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
+                                        .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
                                 fieldWithPath("specialNotes").type(JsonFieldType.STRING)
                                         .description("특이사항"),
                                 fieldWithPath("guardianName").type(JsonFieldType.STRING)
@@ -152,8 +167,8 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("보호자 이름"),
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
-                                fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계"),
+                                fieldWithPath("relationship").type(JsonFieldType.STRING)
+                                        .description("CHILD, GRANDCHILD, SIBLING, ETC"),
                                 fieldWithPath("facilityType").type(JsonFieldType.STRING)
                                         .description("시설 타입"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING)
@@ -164,19 +179,6 @@ class ResumeControllerDocsSpec extends Specification{
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$.id').value(1L)
-            MockMvcResultMatchers.jsonPath('$.userId').value(1L)
-            MockMvcResultMatchers.jsonPath('$.name').value("남")
-            MockMvcResultMatchers.jsonPath('$.dateOfBirth').value("2000-07-02")
-            MockMvcResultMatchers.jsonPath('$.gender').value("남")
-            MockMvcResultMatchers.jsonPath('$.longTermCareGrade').value("B")
-            MockMvcResultMatchers.jsonPath('$.majorDiseases').value("허리통증")
-            MockMvcResultMatchers.jsonPath('$.specialNotes').value("없음")
-            MockMvcResultMatchers.jsonPath('$.guardianName').value("구머니")
-            MockMvcResultMatchers.jsonPath('$.guardianContactInformation').value("01040363457")
-            MockMvcResultMatchers.jsonPath('$.relationShip').value("모")
-            MockMvcResultMatchers.jsonPath('$.facilityType').value("양로원")
-            MockMvcResultMatchers.jsonPath('$.updatedAt').value( LocalDateTime.of(2020, 10, 10, 10, 10))
         }
 
     }
@@ -187,14 +189,16 @@ class ResumeControllerDocsSpec extends Specification{
         def request = new ResumeModifyRequest(
                 "구준형",
                 givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
+                Gender.MALE.name(),
+                PhysicalCondition.DEMENTIA.name(),
+                LongTermCareGrade.GRADE_1.name(),
+                HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
                 "구머니",
                 "01040363457",
-                "모",
-                "양로원"
+                Relationship.CHILD.name(),
+                "양로원",
+                AdmissionTimeFrame.IMMEDIATELY.name()
         )
 
         when:
@@ -210,11 +214,13 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("dateOfBirth").type(JsonFieldType.STRING)
                                         .description("생년월일 e.g. 2000-07-02"),
                                 fieldWithPath("gender").type(JsonFieldType.STRING)
-                                        .description("성별"),
+                                        .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
-                                        .description("장기요양등급"),
-                                fieldWithPath("majorDiseases").type(JsonFieldType.STRING)
-                                        .description("주요질병"),
+                                        .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
+                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                        .description("HYPERTENSION, DIABETES, DEMENTIA, TRAUMA, ETC, NONE"),
+                                fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
+                                        .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
                                 fieldWithPath("specialNotes").type(JsonFieldType.STRING)
                                         .description("특이사항"),
                                 fieldWithPath("guardianName").type(JsonFieldType.STRING)
@@ -223,10 +229,12 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("보호자 이름"),
                                 fieldWithPath("guardianContactInformation").type(JsonFieldType.STRING)
                                         .description("보호자 연락처"),
-                                fieldWithPath("relationShip").type(JsonFieldType.STRING)
-                                        .description("보호자 관계"),
+                                fieldWithPath("relationship").type(JsonFieldType.STRING)
+                                        .description("CHILD, GRANDCHILD, SIBLING, ETC"),
                                 fieldWithPath("facilityType").type(JsonFieldType.STRING)
-                                        .description("시설 타입")
+                                        .description("시설 타입 e.g. 양로원"),
+                                fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
+                                        .description("IMMEDIATELY, WITHIN_1_MONTH, WITHIN_3_MONTHS, TO_BE_DETERMINED"),
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)

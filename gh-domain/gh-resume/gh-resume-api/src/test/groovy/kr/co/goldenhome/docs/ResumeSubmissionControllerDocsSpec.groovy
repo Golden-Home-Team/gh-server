@@ -2,7 +2,6 @@ package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.FacilityApiResponse
-import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse
 import kr.co.goldenhome.entity.ResumeSubmission
 import kr.co.goldenhome.enums.AdmissionStatus
@@ -252,45 +251,6 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
             MockMvcResultMatchers.jsonPath('$.relationship').value("모")
             MockMvcResultMatchers.jsonPath('$.submitTime').value("제출시간")
             MockMvcResultMatchers.jsonPath('$.status').value("평가상태")
-        }
-
-    }
-
-    def "이력서 수정"() {
-        given:
-        def givenDateOfBirth = LocalDate.of(2000, 7, 2)
-        def request = new ResumeSubmissionModifyRequest(
-                "구준형",
-                givenDateOfBirth,
-                "남",
-                "B",
-                "허리통증",
-                "없음",
-                "구머니",
-                "01040363457",
-                "모"
-        )
-
-        when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/resumes-submission/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andDo(document("resume-submission-modify",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("이력서제출 아이디")
-                        ),
-                        responseFields(
-                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
-                                        .description("성공여부")
-                        )
-                ))
-
-        then:
-        response.andExpect {
-            MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$.success').value("true")
         }
 
     }

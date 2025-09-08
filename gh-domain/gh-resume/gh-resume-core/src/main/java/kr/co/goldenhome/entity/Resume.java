@@ -1,6 +1,7 @@
 package kr.co.goldenhome.entity;
 
 import jakarta.persistence.*;
+import kr.co.goldenhome.enums.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,64 +24,78 @@ public class Resume {
     private Long userId;
     private String name;
     private LocalDate dateOfBirth;
-    private String gender;
-    private String longTermCareGrade;
-    private String majorDiseases;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    @Enumerated(EnumType.STRING)
+    private PhysicalCondition physicalCondition;
+    @Enumerated(EnumType.STRING)
+    private LongTermCareGrade longTermCareGrade;
+    @Enumerated(EnumType.STRING)
+    private HealthInsurance healthInsurance;
     private String specialNotes;
     private String guardianName;
     private String guardianContactInformation;
-    private String relationship;
+    @Enumerated(EnumType.STRING)
+    private Relationship relationship;
     private String facilityType;
+    @Enumerated(EnumType.STRING)
+    private AdmissionTimeFrame admissionTimeFrame;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @Builder
-    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, String specialNotes, String guardianName, String guardianContactInformation, String facilityType, PhysicalCondition physicalCondition, HealthInsurance healthInsurance, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
-        this.majorDiseases = majorDiseases;
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
-        this.relationship = relationship;
         this.facilityType = facilityType;
+        this.healthInsurance = healthInsurance;
+        this.relationship = relationship;
+        this.admissionTimeFrame = admissionTimeFrame;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public static Resume create(Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType) {
+    public static Resume create(Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, String facilityType, AdmissionTimeFrame admissionTimeFrame) {
         return Resume.builder()
                 .userId(userId)
                 .name(name)
                 .dateOfBirth(dateOfBirth)
                 .gender(gender)
+                .physicalCondition(physicalCondition)
                 .longTermCareGrade(longTermCareGrade)
-                .majorDiseases(majorDiseases)
+                .healthInsurance(healthInsurance)
                 .specialNotes(specialNotes)
                 .guardianName(guardianName)
                 .guardianContactInformation(guardianContactInformation)
                 .relationship(relationship)
                 .facilityType(facilityType)
+                .admissionTimeFrame(admissionTimeFrame)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
 
-    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, String facilityType) {
+    public void update(String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationShip, String facilityType, AdmissionTimeFrame admissionTimeFrame) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
-        this.majorDiseases = majorDiseases;
+        this.healthInsurance = healthInsurance;
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
-        this.relationship = relationship;
         this.facilityType = facilityType;
+        this.relationship = relationShip;
+        this.admissionTimeFrame = admissionTimeFrame;
         this.updatedAt = LocalDateTime.now();
     }
 }

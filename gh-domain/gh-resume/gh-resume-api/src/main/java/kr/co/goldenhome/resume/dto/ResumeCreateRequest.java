@@ -5,11 +5,13 @@ import java.time.LocalDate;
 public record ResumeCreateRequest(String name,
                                   LocalDate dateOfBirth,
                                   String gender,
+                                  String physicalCondition,
                                   String longTermCareGrade,
-                                  String majorDiseases,
+                                  String healthInsurance,
                                   String specialNotes,
                                   String guardianName,
                                   String guardianContactInformation,
-                                  String relationShip,
-                                  String facilityType) {
+                                  String relationship,
+                                  String facilityType,
+                                  String admissionTimeFrame) {
 }

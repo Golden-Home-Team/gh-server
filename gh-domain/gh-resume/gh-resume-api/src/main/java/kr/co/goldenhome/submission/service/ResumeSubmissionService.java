@@ -3,10 +3,8 @@ package kr.co.goldenhome.submission.service;
 
 import kr.co.goldenhome.FacilityApi;
 import kr.co.goldenhome.FacilityApiResponse;
-import kr.co.goldenhome.submission.dto.ResumeSubmissionModifyRequest;
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse;
 import kr.co.goldenhome.entity.ResumeSubmission;
-import kr.co.goldenhome.submission.implement.ResumeSubmissionModifier;
 
 import kr.co.goldenhome.submission.implement.ResumeSubmissionReader;
 import kr.co.goldenhome.submission.implement.ResumeSubmitter;
@@ -23,7 +21,6 @@ public class ResumeSubmissionService {
 
     private final ResumeSubmissionReader resumeSubmissionReader;
     private final ResumeSubmitter resumeSubmitter;
-    private final ResumeSubmissionModifier resumeSubmissionModifier;
     private final FacilityApi facilityApi;
 
     public void submit(Long facilityId, Long userId) {
@@ -40,10 +37,6 @@ public class ResumeSubmissionService {
         List<ResumeSubmission> resumeSubmissions = resumeSubmissionReader.readAll(userId, lastId, pageSize);
         Map<Long, FacilityApiResponse> facilityMap = getFacilityApiResponseMap(resumeSubmissions);
         return getResponses(resumeSubmissions, facilityMap);
-    }
-
-    public void modify(ResumeSubmissionModifyRequest request, Long resumeSubmissionId, Long userId) {
-        resumeSubmissionModifier.modify(request, resumeSubmissionId, userId);
     }
 
     private Map<Long, FacilityApiResponse> getFacilityApiResponseMap(List<ResumeSubmission> resumeSubmissions) {

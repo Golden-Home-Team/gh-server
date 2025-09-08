@@ -1,7 +1,7 @@
 package kr.co.goldenhome.entity;
 
 import jakarta.persistence.*;
-import kr.co.goldenhome.enums.AdmissionStatus;
+import kr.co.goldenhome.enums.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,19 +23,26 @@ public class ResumeSubmission {
     private Long userId;
     private String name;
     private LocalDate dateOfBirth;
-    private String gender;
-    private String longTermCareGrade;
-    private String majorDiseases;
+    private Gender gender;
+    @Enumerated(EnumType.STRING)
+    private PhysicalCondition physicalCondition;
+    @Enumerated(EnumType.STRING)
+    private LongTermCareGrade longTermCareGrade;
+    @Enumerated(EnumType.STRING)
+    private HealthInsurance healthInsurance;
     private String specialNotes;
     private String guardianName;
     private String guardianContactInformation;
-    private String relationship;
+    @Enumerated(EnumType.STRING)
+    private Relationship relationship;
+    @Enumerated(EnumType.STRING)
+    private AdmissionTimeFrame admissionTimeFrame;
     private LocalDateTime submitTime;
     @Enumerated(EnumType.STRING)
     private AdmissionStatus status;
 
     @Builder
-    private ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationship, LocalDateTime submitTime, AdmissionStatus status) {
+    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus status) {
         this.id = id;
         this.resumeId = resumeId;
         this.facilityId = facilityId;
@@ -43,12 +50,14 @@ public class ResumeSubmission {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
-        this.majorDiseases = majorDiseases;
+        this.healthInsurance = healthInsurance;
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
         this.guardianContactInformation = guardianContactInformation;
         this.relationship = relationship;
+        this.admissionTimeFrame = admissionTimeFrame;
         this.submitTime = submitTime;
         this.status = status;
     }
@@ -61,27 +70,17 @@ public class ResumeSubmission {
                 .name(resume.getName())
                 .dateOfBirth(resume.getDateOfBirth())
                 .gender(resume.getGender())
+                .physicalCondition(resume.getPhysicalCondition())
                 .longTermCareGrade(resume.getLongTermCareGrade())
-                .majorDiseases(resume.getMajorDiseases())
+                .healthInsurance(resume.getHealthInsurance())
                 .specialNotes(resume.getSpecialNotes())
                 .guardianName(resume.getGuardianName())
                 .guardianContactInformation(resume.getGuardianContactInformation())
                 .relationship(resume.getRelationship())
+                .admissionTimeFrame(resume.getAdmissionTimeFrame())
                 .submitTime(LocalDateTime.now())
                 .status(AdmissionStatus.PENDING_REVIEW)
                 .build();
-    }
-
-    public void update(String name, LocalDate dateOfBirth, String gender, String longTermCareGrade, String majorDiseases, String specialNotes, String guardianName, String guardianContactInformation, String relationShip) {
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
-        this.longTermCareGrade = longTermCareGrade;
-        this.majorDiseases = majorDiseases;
-        this.specialNotes = specialNotes;
-        this.guardianName = guardianName;
-        this.guardianContactInformation = guardianContactInformation;
-        this.relationship = relationShip;
     }
 
     public boolean isOwnedBy(Long userId) {

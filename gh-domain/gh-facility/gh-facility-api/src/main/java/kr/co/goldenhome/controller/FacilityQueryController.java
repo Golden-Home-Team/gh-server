@@ -1,6 +1,5 @@
     package kr.co.goldenhome.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityResponse;

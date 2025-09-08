@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException {
         String accessToken = parseToken(request.getHeader("Authorization"));
         if (!StringUtils.hasText(accessToken)) {
             sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.");

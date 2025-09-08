@@ -74,9 +74,9 @@ public class FacilityRepositoryImpl implements FacilityRepository {
                 ))
                 .from(facility)
                 .where(facility.id.eq(facilityId))
-                .join(facilityDetail).on(facility.institutionSymbol.eq(facilityDetail.institutionSymbol))
-                .join(facilityStaffInformation).on(facility.institutionSymbol.eq(facilityStaffInformation.institutionSymbol))
-                .join(facilityGrade).on(facility.institutionSymbol.eq(facilityGrade.institutionSymbol))
+                .leftJoin(facilityDetail).on(facility.institutionSymbol.eq(facilityDetail.institutionSymbol))
+                .leftJoin(facilityStaffInformation).on(facility.institutionSymbol.eq(facilityStaffInformation.institutionSymbol))
+                .leftJoin(facilityGrade).on(facility.institutionSymbol.eq(facilityGrade.institutionSymbol))
                 .fetchFirst();
 
     }

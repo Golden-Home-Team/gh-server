@@ -23,6 +23,7 @@ public class ResumeSubmission {
     private Long userId;
     private String name;
     private LocalDate dateOfBirth;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Enumerated(EnumType.STRING)
     private PhysicalCondition physicalCondition;
@@ -39,10 +40,10 @@ public class ResumeSubmission {
     private AdmissionTimeFrame admissionTimeFrame;
     private LocalDateTime submitTime;
     @Enumerated(EnumType.STRING)
-    private AdmissionStatus status;
+    private AdmissionStatus admissionStatus;
 
     @Builder
-    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus status) {
+    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus) {
         this.id = id;
         this.resumeId = resumeId;
         this.facilityId = facilityId;
@@ -59,7 +60,7 @@ public class ResumeSubmission {
         this.relationship = relationship;
         this.admissionTimeFrame = admissionTimeFrame;
         this.submitTime = submitTime;
-        this.status = status;
+        this.admissionStatus = admissionStatus;
     }
 
     public static ResumeSubmission create(Resume resume, Long facilityId) {
@@ -79,7 +80,7 @@ public class ResumeSubmission {
                 .relationship(resume.getRelationship())
                 .admissionTimeFrame(resume.getAdmissionTimeFrame())
                 .submitTime(LocalDateTime.now())
-                .status(AdmissionStatus.PENDING_REVIEW)
+                .admissionStatus(AdmissionStatus.PENDING_REVIEW)
                 .build();
     }
 

@@ -21,6 +21,6 @@ public class LikeApiImpl implements LikeApi {
     @Override
     public List<Long> getLikedFacilityIds(Long userId) {
         return facilityLikeRepository.findByUserId(userId)
-                .stream().map(FacilityLike::getId).toList();
+                .stream().map(FacilityLike::getFacilityId).toList();
     }
 }

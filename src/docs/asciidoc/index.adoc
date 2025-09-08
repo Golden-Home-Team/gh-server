@@ -356,16 +356,6 @@ include::{resume-submission-readAll}/http-request.adoc[]
 include::{resume-submission-readAll}/http-response.adoc[]
 include::{resume-submission-readAll}/response-fields.adoc[]
 
-== 이력서제출 수정
-=== HTTP Request
-include::{resume-submission-modify}/http-request.adoc[]
-include::{resume-submission-modify}/path-parameters.adoc[]
-
-=== HTTP Response
-include::{resume-submission-modify}/http-response.adoc[]
-include::{resume-submission-modify}/response-fields.adoc[]
-
-
 == File Upload API
 == Pre-Signed URL 요청
 === HTTP Request

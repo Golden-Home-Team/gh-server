@@ -2,8 +2,10 @@ package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ReviewImageApiResponse
+import kr.co.goldenhome.dto.MyReviewResponse
 import kr.co.goldenhome.dto.ReviewRequest
 import kr.co.goldenhome.dto.ReviewResponse
+import kr.co.goldenhome.entity.VisitPurpose
 import kr.co.goldenhome.service.ReviewService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import spock.lang.Specification
+
+import java.time.LocalDate
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
@@ -46,7 +50,7 @@ class ReviewControllerDocsSpec extends Specification {
 
     def "리뷰작성"() {
         given:
-        def request = new ReviewRequest("좋은 시설이야.", 5, List.of("image1"))
+        def request = new ReviewRequest("좋은 시설이야.", "너무멀어", VisitPurpose.COUNSELING.name(), LocalDate.of(2025,10,10),  5, List.of("image1"))
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/reviews/{facilityId}", 1L)
@@ -59,8 +63,14 @@ class ReviewControllerDocsSpec extends Specification {
                                 parameterWithName("facilityId").description("시설 아이디")
                         ),
                         requestFields(
-                                fieldWithPath("content").type(JsonFieldType.STRING)
-                                        .description("리뷰 댓글"),
+                                fieldWithPath("positive").type(JsonFieldType.STRING)
+                                        .description("리뷰 댓글 - 좋은점"),
+                                fieldWithPath("negative").type(JsonFieldType.STRING)
+                                        .description("리뷰 댓글 - 아쉬운점"),
+                                fieldWithPath("visitPurpose").type(JsonFieldType.STRING)
+                                        .description("COUNSELING(상담), TOUR(투어), PRE_ADMISSION_CHECK(입소 전 확인), OTHER(기타)"),
+                                fieldWithPath("visitedAt").type(JsonFieldType.STRING)
+                                        .description("방문일시 e.g.2025-10-10"),
                                 fieldWithPath("score").type(JsonFieldType.NUMBER)
                                         .description("리뷰 점수 : 최소1 ~ 최대5"),
                                 fieldWithPath("formattedImageNames").type(JsonFieldType.ARRAY)
@@ -83,7 +93,7 @@ class ReviewControllerDocsSpec extends Specification {
 
     def "리뷰목록조회"() {
         given:
-        def expectedResponse = List.of(new ReviewResponse(1L, "구준형", "좋은 시설이야", 5, List.of(new ReviewImageApiResponse(1L, "13e-je3-image1.jpg", "https://")), 1))
+        def expectedResponse = List.of(new ReviewResponse(1L, "구준형", "좋은 시설이야", "좀 멀어", 5, List.of(new ReviewImageApiResponse(1L, "13e-je3-image1.jpg", "https://")), 1))
         reviewService.readAll(*_) >> expectedResponse
 
         when:
@@ -113,8 +123,10 @@ class ReviewControllerDocsSpec extends Specification {
                                 .description("작성자 아이디"),
                         fieldWithPath("[].writerName").type(JsonFieldType.STRING)
                                 .description("작성자 로그인 아이디"),
-                        fieldWithPath("[].content").type(JsonFieldType.STRING)
-                                .description("댓글"),
+                        fieldWithPath("[].positive").type(JsonFieldType.STRING)
+                                .description("댓글 - 좋은점"),
+                        fieldWithPath("[].negative").type(JsonFieldType.STRING)
+                                .description("댓글 - 아쉬운점"),
                         fieldWithPath("[].score").type(JsonFieldType.NUMBER)
                                 .description("별점 1 ~ 5"),
                         fieldWithPath("[].reviewImageApiResponses[]").type(JsonFieldType.ARRAY)
@@ -135,15 +147,62 @@ class ReviewControllerDocsSpec extends Specification {
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$[0].writerId').value(expectedResponse.get(0).writerId())
-            MockMvcResultMatchers.jsonPath('$[0].writerName').value(expectedResponse.get(0).writerName())
-            MockMvcResultMatchers.jsonPath('$[0].content').value(expectedResponse.get(0).content())
-            MockMvcResultMatchers.jsonPath('$[0].score').value(expectedResponse.get(0).score())
-            MockMvcResultMatchers.jsonPath('$[0].reviewImageApiResponses[0].id').value(expectedResponse.get(0).reviewImageApiResponses().get(0).id())
-            MockMvcResultMatchers.jsonPath('$[0].reviewImageApiResponses[0].formattedName').value(expectedResponse.get(0).reviewImageApiResponses().get(0).formattedName())
-            MockMvcResultMatchers.jsonPath('$[0].reviewImageApiResponses[0].imageUrl').value(expectedResponse.get(0).reviewImageApiResponses().get(0).imageUrl())
-            MockMvcResultMatchers.jsonPath('$[0].monthsAgo').value(expectedResponse.get(0).monthsAgo())
+        }
+    }
 
+    def "나의리뷰조회"() {
+        given:
+        def expectedResponse = List.of(new MyReviewResponse(1L, "구준형", "좋은 시설이야", "좀 멀어", 5, List.of(new ReviewImageApiResponse(1L, "13e-je3-image1.jpg", "https://")), 1, 1L, "시설이름", "시설주소"))
+        reviewService.readMine(*_) >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/reviews/readAll")
+                .param("lastId", "1")
+                .param("pageSize", "20")
+        ).andDo(document("review-readMine",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                queryParameters(
+                        parameterWithName("lastId").description("마지막으로 조회한 리뷰 아이디"),
+                        parameterWithName("pageSize").description("페이지 사이즈 default 20"),
+                ),
+                responseFields(
+                        fieldWithPath("[]").type(JsonFieldType.ARRAY)
+                                .description("리뷰목록"),
+                        fieldWithPath("[].writerId").type(JsonFieldType.NUMBER)
+                                .description("작성자 아이디"),
+                        fieldWithPath("[].writerName").type(JsonFieldType.STRING)
+                                .description("작성자 로그인 아이디"),
+                        fieldWithPath("[].positive").type(JsonFieldType.STRING)
+                                .description("댓글 - 좋은점"),
+                        fieldWithPath("[].negative").type(JsonFieldType.STRING)
+                                .description("댓글 - 아쉬운점"),
+                        fieldWithPath("[].score").type(JsonFieldType.NUMBER)
+                                .description("별점 1 ~ 5"),
+                        fieldWithPath("[].reviewImageApiResponses[]").type(JsonFieldType.ARRAY)
+                                .description("리뷰이미지 정보 목록"),
+                        fieldWithPath("[].reviewImageApiResponses[].id").type(JsonFieldType.NUMBER)
+                                .description("리뷰이미지 아이디"),
+                        fieldWithPath("[].reviewImageApiResponses[].formattedName").type(JsonFieldType.STRING)
+                                .description("리뷰이미지이름 (포맷 및 인코딩 됨)"),
+                        fieldWithPath("[].reviewImageApiResponses[].imageUrl").type(JsonFieldType.STRING)
+                                .description("리뷰이미지 주소"),
+                        fieldWithPath("[].monthsAgo").type(JsonFieldType.NUMBER)
+                                .description("리뷰 작성 후 기간 (N개월 후)"),
+                        fieldWithPath("[].facilityId").type(JsonFieldType.NUMBER)
+                                .description("시설 아이디"),
+                        fieldWithPath("[].facilityName").type(JsonFieldType.STRING)
+                                .description("시설명"),
+                        fieldWithPath("[].facilityAddress").type(JsonFieldType.STRING)
+                                .description("시설 주소"),
+
+
+                )
+        ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
         }
     }
 }

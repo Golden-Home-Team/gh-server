@@ -22,6 +22,7 @@ ifndef::snippets[]
 :get-pre-signed-url-for-upload: ../../../gh-domain/gh-file/gh-file-api/build/generated-snippets/get-pre-signed-url-for-upload
 :review-write: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write
 :review-readAll: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll
+:review-readMine: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readMine
 :recovery-request: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-request
 :recovery-confirm: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm
 :password-change: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change
@@ -384,6 +385,14 @@ include::{review-readAll}/query-parameters.adoc[]
 === HTTP Response
 include::{review-readAll}/http-response.adoc[]
 include::{review-readAll}/response-fields.adoc[]
+
+== 나의 리뷰 조회
+=== HTTP Request
+include::{review-readMine}/http-request.adoc[]
+include::{review-readMine}/query-parameters.adoc[]
+=== HTTP Response
+include::{review-readMine}/http-response.adoc[]
+include::{review-readMine}/response-fields.adoc[]
 
 [[Community-API]]
 == Community API

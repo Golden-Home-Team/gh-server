@@ -159,4 +159,9 @@ public class CommunityQueryService {
         );
     }
 
+    public List<MyCommunityResponse> myJoinedCommunity(Long userId) {
+        return communityUserRepository.findByUserId(userId).stream()
+                .map(communityUser -> new MyCommunityResponse(communityUser.getFacilityId())).toList();
+    }
+
 }

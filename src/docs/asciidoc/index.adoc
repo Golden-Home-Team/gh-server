@@ -61,6 +61,7 @@ ifndef::snippets[]
 :community-inquiry-readAll: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-readAll
 :community-user-check: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-user-check
 :community-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read
+:community-mine: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -643,3 +644,11 @@ include::{community-read}/path-parameters.adoc[]
 === HTTP Response
 include::{community-read}/http-response.adoc[]
 include::{community-read}/response-fields.adoc[]
+
+== 내가 속한 커뮤니티 목록확인
+=== HTTP Request
+include::{community-mine}/http-request.adoc[]
+
+=== HTTP Response
+include::{community-mine}/http-response.adoc[]
+include::{community-mine}/response-fields.adoc[]

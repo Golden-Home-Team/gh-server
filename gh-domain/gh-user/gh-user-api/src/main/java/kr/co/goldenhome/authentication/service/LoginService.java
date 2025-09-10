@@ -1,11 +1,14 @@
 package kr.co.goldenhome.authentication.service;
 
+import io.jsonwebtoken.JwtException;
 import kr.co.goldenhome.SocialPlatform;
 import kr.co.goldenhome.authentication.dto.LoginRequest;
 import kr.co.goldenhome.authentication.dto.LoginResponse;
 import kr.co.goldenhome.authentication.implement.AuthenticationTokenManager;
 import kr.co.goldenhome.authentication.implement.UserAuthenticationManager;
 import kr.co.goldenhome.entity.User;
+import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,10 @@ public class LoginService {
     }
 
     public LoginResponse refresh(String refreshToken) {
-        return authenticationTokenManager.refresh(refreshToken);
+        try {
+            return authenticationTokenManager.refresh(refreshToken);
+        } catch (JwtException e) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "LoginService.refresh");
+        }
     }
 }

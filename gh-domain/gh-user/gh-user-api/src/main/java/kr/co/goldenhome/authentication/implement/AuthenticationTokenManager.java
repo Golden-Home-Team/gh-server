@@ -1,5 +1,6 @@
 package kr.co.goldenhome.authentication.implement;
 
+import io.jsonwebtoken.security.SignatureException;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
@@ -82,7 +83,7 @@ public class AuthenticationTokenManager {
         return refreshToken;
     }
 
-    private Claims getClaims(String token) {
+    private Claims getClaims(String token) throws SignatureException {
         return Jwts.parser()
                 .verifyWith(key)
                 .build()

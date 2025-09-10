@@ -1,5 +1,6 @@
 package kr.co.goldenhome.security;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.ServletException;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.exception.CustomException;
@@ -27,6 +28,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,8 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
             } catch (MalformedJwtException e) {
                 sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
-            } catch (CustomException e) {
-                sendErrorResponse(response, HttpStatus.valueOf(e.getErrorCode().getHttpStatus()), e.getErrorCode().getMessage());
+            } catch (JwtException e) {
+                sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "비정상적인 토큰입니다.");
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "인증 중 알 수 없는 오류가 발생했습니다.");

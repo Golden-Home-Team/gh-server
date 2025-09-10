@@ -50,4 +50,29 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByFacilityId(Long facilityId);
 
+    @Query(
+            value = "select * " +
+                    "from reviews " +
+                    "where writer_id = :userId " +
+                    "limit :limit",
+            nativeQuery = true
+    )
+    List<Review> readMine(
+            @Param("userId") Long userId,
+            @Param("limit") Long limit
+    );
+
+    @Query(
+            value = "select * " +
+                    "from reviews " +
+                    "where writer_id = :userId and id > :lastId " +
+                    "limit :limit",
+            nativeQuery = true
+    )
+    List<Review> readMine(
+            @Param("userId") Long userId,
+            @Param("lastId") Long lastId,
+            @Param("limit") Long limit
+    );
+
 }

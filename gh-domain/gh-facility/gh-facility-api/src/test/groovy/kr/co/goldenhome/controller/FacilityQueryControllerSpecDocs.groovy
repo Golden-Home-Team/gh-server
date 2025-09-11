@@ -78,7 +78,10 @@ class FacilityQueryControllerSpecDocs extends Specification {
                 queryParameters(
                         parameterWithName("name").description("시설명"),
                         parameterWithName("address").description("시설 주소"),
-                        parameterWithName("facilityType").description("시설종류 e.g. 주야간보호 내 치매전담 1실"),
+                        parameterWithName("facilityType").description(
+                                "실버타운, 양로원 -> 시설명으로 검색" +
+                                "요양원 -> 노인요양시설 + 노인요양공동생활가정 시설종류로 검색 " +
+                                "그 외 -> 시설종류 그대로 검색"),
                         parameterWithName("grade").description("시설등급 e.g. A,B..."),
                         parameterWithName("sort").description("정렬기준 (view, review, like, consultation) 아무것도 안보내면 유사도순입니다."),
                         parameterWithName("withinYears").description("설립연도 n년 이내 e.g. 1"),

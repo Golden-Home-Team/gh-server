@@ -3,6 +3,7 @@ package kr.co.goldenhome.service
 import kr.co.goldenhome.DailyDietImageApi
 import kr.co.goldenhome.DailyShotImageApi
 import kr.co.goldenhome.UserApi
+import kr.co.goldenhome.dto.MyCommunityResponse
 import kr.co.goldenhome.entity.CommunityUser
 import kr.co.goldenhome.entity.DailyRehabilitation
 import kr.co.goldenhome.entity.DailyShot
@@ -82,5 +83,20 @@ class CommunityQueryServiceSpec extends Specification {
         1 * communityUserRepository.getManager() >> givenCommunityUser
         1 * userApi.getUserName(givenCommunityUser.userId)
 
+    }
+
+    def "myJoinedCommunity - communityNoticeRepository 를 호출한다"() {
+        given:
+        def givenUserId = 1L
+
+        when:
+        communityQueryService.myJoinedCommunity(givenUserId)
+
+        then:
+        1 * communityUserRepository.findByUserId(_) >> {
+            Long userId ->
+                userId == givenUserId
+                List.of(CommunityUser.builder().facilityId(1L).build())
+        }
     }
 }

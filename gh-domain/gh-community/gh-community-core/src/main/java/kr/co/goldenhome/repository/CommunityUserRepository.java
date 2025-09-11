@@ -4,6 +4,7 @@ import kr.co.goldenhome.entity.CommunityUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommunityUserRepository extends JpaRepository<CommunityUser, Long> {
@@ -16,4 +17,6 @@ public interface CommunityUserRepository extends JpaRepository<CommunityUser, Lo
             nativeQuery = true
     )
     CommunityUser getManager();
+
+    List<CommunityUser> findByUserId(Long userId);
 }

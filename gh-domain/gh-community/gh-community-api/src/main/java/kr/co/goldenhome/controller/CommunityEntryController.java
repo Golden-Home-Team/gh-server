@@ -16,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-// todo API 문서
 @RestController
 @RequestMapping("/api/communities")
 @RequiredArgsConstructor

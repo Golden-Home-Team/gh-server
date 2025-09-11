@@ -123,7 +123,8 @@ allprojects {
                 'community-inquiry-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-read',
                 'community-inquiry-readAll': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-inquiry-readAll',
                 'community-user-check': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-user-check',
-                'community-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read'
+                'community-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read',
+                'community-mine': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine'
 
 
 

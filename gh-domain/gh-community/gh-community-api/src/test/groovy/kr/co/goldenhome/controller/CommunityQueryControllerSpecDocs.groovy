@@ -10,6 +10,7 @@ import kr.co.goldenhome.dto.DailyMedicationInfo
 import kr.co.goldenhome.dto.DailyRehabilitationInfo
 import kr.co.goldenhome.dto.DailyShotImageResponse
 import kr.co.goldenhome.dto.DailyShotInfo
+import kr.co.goldenhome.dto.MyCommunityResponse
 import kr.co.goldenhome.dto.NoticeInfo
 import kr.co.goldenhome.service.CommunityQueryService
 import org.spockframework.spring.SpringBean
@@ -181,4 +182,28 @@ class CommunityQueryControllerSpecDocs extends Specification {
             MockMvcResultMatchers.status().isOk()
         }
     }
+
+    def "내가 속한 커뮤니티 목록확인"() {
+        given:
+        communityQueryService.myJoinedCommunity(_) >> List.of(new MyCommunityResponse(1L))
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/communities/me")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(document("community-mine",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].facilityId").type(JsonFieldType.NUMBER)
+                                        .description("시설 아이디")
+                        )
+                ))
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+        }
+    }
+
+
 }

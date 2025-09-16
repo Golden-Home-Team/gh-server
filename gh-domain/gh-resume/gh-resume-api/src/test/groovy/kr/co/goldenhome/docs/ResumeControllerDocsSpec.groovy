@@ -38,7 +38,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-
 class ResumeControllerDocsSpec extends Specification{
 
     @Autowired

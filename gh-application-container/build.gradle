@@ -64,6 +64,8 @@ dependencies {
     implementation(project(":gh-domain:gh-community:gh-community-api"))
     implementation(project(":gh-domain:gh-community:gh-community-core"))
 
+    implementation(project(":gh-domain:gh-question:gh-question-api"))
+
     implementation(project(":gh-event"))
     implementation(project(":gh-common"))
     implementation(project(":gh-external-social"))

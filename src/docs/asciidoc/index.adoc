@@ -62,6 +62,8 @@ ifndef::snippets[]
 :community-user-check: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-user-check
 :community-read: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read
 :community-mine: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine
+:question-readAll: ../../../gh-domain/gh-question/gh-question-api/build/generated-snippets/question-readAll
+:question-survey: ../../../gh-domain/gh-question/gh-question-api/build/generated-snippets/question-survey
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -652,3 +654,23 @@ include::{community-mine}/http-request.adoc[]
 === HTTP Response
 include::{community-mine}/http-response.adoc[]
 include::{community-mine}/response-fields.adoc[]
+
+[[Question-API]]
+== Question API
+
+== 설문지 조회
+=== HTTP Request
+include::{question-readAll}/http-request.adoc[]
+
+=== HTTP Response
+include::{question-readAll}/http-response.adoc[]
+include::{question-readAll}/response-fields.adoc[]
+
+== 설문지 제출
+=== HTTP Request
+include::{question-survey}/http-request.adoc[]
+include::{question-survey}/request-fields.adoc[]
+
+=== HTTP Response
+include::{question-survey}/http-response.adoc[]
+include::{question-survey}/response-fields.adoc[]

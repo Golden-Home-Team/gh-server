@@ -120,7 +120,17 @@ class QuestionControllerDocsSpec extends Specification {
                         requestFields(
                                 fieldWithPath("questionDomainOptionIds").type(JsonFieldType.ARRAY)
                                         .description("답변 옵션 아이디 리스트 - " +
-                                                "클라언트가 선택한 답변 선택지 아이디값을 보내주시면 됩니다."),
+                                                "클라언트가 선택한 답변 선택지 아이디값을 보내주시면 됩니다." +
+                                                "{\n" +
+                                                "    \"questionDomainOptionIds\": [\n" +
+                                                "        1,2,2,2,1,1,1,1,1,1,1,1,\n" +
+                                                "        4,4,5,5,5,5,5,\n" +
+                                                "        7,7,7,7,7,7,7,\n" +
+                                                "        9,9,9,9,9,9,9,\n" +
+                                                "        11,11,12,10,\n" +
+                                                "        10,10,10,10,10,10\n" +
+                                                "    ]\n" +
+                                                "}"),
                         ),
                         responseFields(
                                 fieldWithPath("grade").type(JsonFieldType.STRING)

@@ -36,6 +36,8 @@ public enum ErrorCode {
     DAILY_REHAB_NOT_FOUND(404, "존재하지 않는 오늘의 재활입니다"),
     SCHEDULE_NOT_FOUND(404, "해당 일정이 존재하지 않습니다."),
     INQUIRY_NOT_FOUND(404, "해당 요청사항이 존재하지 않습니다."),
+    OPTION_NOT_FOUND(404, "해당 질문의 옵션이 존재하지 않습니다."),
+    SCORE_NOT_FOUND(404, "원점수 합에 해당하는 환산점수 합이 존재하지 않습니다."),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다."),
     UNKNOWN_ERROR(500, "알 수 없는 에러");

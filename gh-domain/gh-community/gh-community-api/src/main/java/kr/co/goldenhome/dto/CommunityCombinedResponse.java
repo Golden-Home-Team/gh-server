@@ -10,6 +10,7 @@ public record CommunityCombinedResponse(
         DailyMedicationInfo dailyMedicationInfo,
         DailyRehabilitationInfo dailyRehabilitationInfo,
         List<CommunityScheduleResponse> communityScheduleResponses,
-        String communityManagerName
+        String communityManagerName,
+        String facilityName
 ) {
 }

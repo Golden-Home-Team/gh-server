@@ -131,7 +131,8 @@ class CommunityQueryControllerSpecDocs extends Specification {
                         LocalDate.now(),
                         ""
                 )),
-                "구매니저"
+                "구매니저",
+                "땡땡경로원"
         )
         communityQueryService.read(givenFacilityId) >> givenResponse
 
@@ -173,7 +174,8 @@ class CommunityQueryControllerSpecDocs extends Specification {
                                 fieldWithPath("communityScheduleResponses[].id").description("일정 ID").optional(),
                                 fieldWithPath("communityScheduleResponses[].recordDate").description("일정 날짜").optional(),
                                 fieldWithPath("communityScheduleResponses[].content").description("일정 내용").optional(),
-                                fieldWithPath("communityManagerName").description("커뮤니티 관리자 이름").optional()
+                                fieldWithPath("communityManagerName").description("커뮤니티 관리자 이름").optional(),
+                                fieldWithPath("facilityName").description("시설 이름").optional()
                         )
                 ))
 

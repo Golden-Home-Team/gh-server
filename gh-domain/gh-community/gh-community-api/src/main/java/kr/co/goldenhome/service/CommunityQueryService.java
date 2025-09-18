@@ -28,6 +28,7 @@ public class CommunityQueryService {
     private final DailyExerciseRepository dailyExerciseRepository;
     private final CommunityScheduleRepository communityScheduleRepository;
     private final UserApi userApi;
+    private final FacilityApi facilityApi;
 
     public boolean isCommunityUser(Long facilityId, Long userId) {
         return communityUserRepository.findByFacilityIdAndUserId(facilityId, userId).isPresent();
@@ -42,6 +43,7 @@ public class CommunityQueryService {
         List<CommunityScheduleResponse> communityScheduleResponses = communityScheduleRepository.getByFacilityIdAndMonth(facilityId, LocalDate.now().getMonthValue()).stream().map(CommunityScheduleResponse::from).toList();
         CommunityUser manager = communityUserRepository.getManager();
         String communityManagerName = userApi.getUserName(manager.getUserId());
+        FacilityApiResponse facilityApiResponse = facilityApi.get(facilityId);
         return new CommunityCombinedResponse(
                 noticeInfo,
                 dailyDietInfo,
@@ -49,7 +51,8 @@ public class CommunityQueryService {
                 dailyMedicationInfo,
                 dailyRehabilitationInfo,
                 communityScheduleResponses,
-                communityManagerName
+                communityManagerName,
+                facilityApiResponse.name()
         );
     }
 

@@ -2,6 +2,8 @@ package kr.co.goldenhome.service
 
 import kr.co.goldenhome.DailyDietImageApi
 import kr.co.goldenhome.DailyShotImageApi
+import kr.co.goldenhome.FacilityApi
+import kr.co.goldenhome.FacilityApiResponse
 import kr.co.goldenhome.UserApi
 import kr.co.goldenhome.dto.MyCommunityResponse
 import kr.co.goldenhome.entity.CommunityUser
@@ -30,6 +32,7 @@ class CommunityQueryServiceSpec extends Specification {
     DailyExerciseRepository dailyExerciseRepository = Mock()
     CommunityScheduleRepository communityScheduleRepository = Mock()
     UserApi userApi = Mock()
+    FacilityApi facilityApi = Mock()
 
     def setup() {
         communityQueryService = new CommunityQueryService(
@@ -43,7 +46,8 @@ class CommunityQueryServiceSpec extends Specification {
                 dailyRehabilitationRepository,
                 dailyExerciseRepository,
                 communityScheduleRepository,
-                userApi
+                userApi,
+                facilityApi
         )
     }
 
@@ -82,6 +86,7 @@ class CommunityQueryServiceSpec extends Specification {
         1 * communityScheduleRepository.getByFacilityIdAndMonth(*_) >> List.of()
         1 * communityUserRepository.getManager() >> givenCommunityUser
         1 * userApi.getUserName(givenCommunityUser.userId)
+        1 * facilityApi.get(givenFacilityId) >> new FacilityApiResponse("시설이름", "시설주소")
 
     }
 

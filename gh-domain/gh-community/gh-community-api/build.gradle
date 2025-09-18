@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":gh-domain:gh-community:gh-community-core"))
     implementation(project(":gh-api-interface:gh-file-api-interface"))
     implementation(project(":gh-api-interface:gh-user-api-interface"))
+    implementation(project(":gh-api-interface:gh-facility-api-interface"))
 
 
 }

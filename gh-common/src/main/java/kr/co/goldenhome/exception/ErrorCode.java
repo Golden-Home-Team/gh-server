@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_RESET_PASSWORD_TOKEN(400, "유효하지 않은 비밀번호 재설정 토큰입니다."),
     INVALID_REQUEST(400, "Request 필드값이 유효하지 않습니다."),
     JSON_PROCESSING_EXCEPTION(400, "Json 변환 중 오류 발생"),
+    INVALID_MESSAGE(400, "메시지 전송 중 오류 발생"),
     LOGIN_FAILED(401, "아이디 혹은 비밀번호가 틀리거나 유효하지 않은 사용자입니다."),
     UNAUTHORIZED_TOKEN(401, "유효하지 않은 토큰입니다."),
     SOCIAL_LOGIN_FAILED(401, "소셜 로그인에 실패했습니다."),
@@ -38,6 +39,7 @@ public enum ErrorCode {
     INQUIRY_NOT_FOUND(404, "해당 요청사항이 존재하지 않습니다."),
     OPTION_NOT_FOUND(404, "해당 질문의 옵션이 존재하지 않습니다."),
     SCORE_NOT_FOUND(404, "원점수 합에 해당하는 환산점수 합이 존재하지 않습니다."),
+    CHATROOM_PARTICIPANT_NOT_FOUND(404, "해당 참여자는 채팅방 목록에 존재하지 않습니다."),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다."),
     UNKNOWN_ERROR(500, "알 수 없는 에러");

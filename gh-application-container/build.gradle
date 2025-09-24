@@ -36,6 +36,7 @@ bootJar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -62,9 +63,13 @@ dependencies {
     implementation(project(":gh-domain:gh-view:gh-view-internal-api"))
 
     implementation(project(":gh-domain:gh-community:gh-community-api"))
+    implementation(project(":gh-domain:gh-community:gh-community-internal-api"))
     implementation(project(":gh-domain:gh-community:gh-community-core"))
 
     implementation(project(":gh-domain:gh-question:gh-question-api"))
+
+    implementation(project(":gh-domain:gh-chat:gh-chat-api"))
+    implementation(project(":gh-domain:gh-chat:gh-chat-core"))
 
     implementation(project(":gh-event"))
     implementation(project(":gh-common"))

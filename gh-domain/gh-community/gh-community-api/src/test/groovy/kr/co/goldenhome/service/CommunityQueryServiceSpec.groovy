@@ -84,7 +84,7 @@ class CommunityQueryServiceSpec extends Specification {
         1 * dailyRehabilitationRepository.findTopByFacilityIdOrderByCreatedAtDesc(givenFacilityId) >> Optional.of(givenDailyRehabilitation)
         1 * dailyExerciseRepository.findAllByDailyRehabilitationId(givenDailyRehabilitation.id) >> List.of()
         1 * communityScheduleRepository.getByFacilityIdAndMonth(*_) >> List.of()
-        1 * communityUserRepository.getManager() >> givenCommunityUser
+        1 * communityUserRepository.getManager(*_) >> givenCommunityUser
         1 * userApi.getUserName(givenCommunityUser.userId)
         1 * facilityApi.get(givenFacilityId) >> new FacilityApiResponse("시설이름", "시설주소")
 

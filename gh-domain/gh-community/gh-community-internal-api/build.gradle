@@ -1,0 +1,9 @@
+dependencies {
+
+    implementation(project(":gh-domain:gh-community:gh-community-core"))
+    implementation(project(":gh-api-interface:gh-community-api-interface"))
+
+    implementation(project(":gh-common"))
+}
+
+jar.enabled = true

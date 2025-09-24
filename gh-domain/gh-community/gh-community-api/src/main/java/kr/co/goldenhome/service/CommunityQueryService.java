@@ -41,7 +41,7 @@ public class CommunityQueryService {
         DailyMedicationInfo dailyMedicationInfo = getDailyMedicationInfo(facilityId);
         DailyRehabilitationInfo dailyRehabilitationInfo = getDailyRehabilitationInfo(facilityId);
         List<CommunityScheduleResponse> communityScheduleResponses = communityScheduleRepository.getByFacilityIdAndMonth(facilityId, LocalDate.now().getMonthValue()).stream().map(CommunityScheduleResponse::from).toList();
-        CommunityUser manager = communityUserRepository.getManager();
+        CommunityUser manager = communityUserRepository.getManager(facilityId);
         String communityManagerName = userApi.getUserName(manager.getUserId());
         FacilityApiResponse facilityApiResponse = facilityApi.get(facilityId);
         return new CommunityCombinedResponse(

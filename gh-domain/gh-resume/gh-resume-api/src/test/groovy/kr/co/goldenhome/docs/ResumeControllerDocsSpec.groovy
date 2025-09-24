@@ -132,7 +132,8 @@ class ResumeControllerDocsSpec extends Specification{
                 "01040363457",
                 Relationship.CHILD,
                 "양로원",
-                LocalDateTime.of(2020, 10, 10, 10, 10)
+                LocalDateTime.of(2020, 10, 10, 10, 10),
+                AdmissionTimeFrame.IMMEDIATELY
         )
         resumeService.read(*_) >> expectedResponse
 
@@ -171,6 +172,8 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("facilityType").type(JsonFieldType.STRING)
                                         .description("시설 타입"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING)
+                                        .description("수정 일"),
+                                fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
                                         .description("수정 일")
                         )
                 ))

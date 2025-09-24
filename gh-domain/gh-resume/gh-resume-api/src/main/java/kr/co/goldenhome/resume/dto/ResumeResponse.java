@@ -20,7 +20,8 @@ public record ResumeResponse(
          String guardianContactInformation,
          Relationship relationship,
          String facilityType,
-         LocalDateTime updatedAt
+         LocalDateTime updatedAt,
+         AdmissionTimeFrame admissionTimeFrame
 ) {
     public static ResumeResponse from(Resume resume) {
         return new ResumeResponse(
@@ -37,7 +38,8 @@ public record ResumeResponse(
                 resume.getGuardianContactInformation(),
                 resume.getRelationship(),
                 resume.getFacilityType(),
-                resume.getUpdatedAt()
+                resume.getUpdatedAt(),
+                resume.getAdmissionTimeFrame()
         );
     }
 }

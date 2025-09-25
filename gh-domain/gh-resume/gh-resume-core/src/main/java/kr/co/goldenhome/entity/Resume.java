@@ -42,9 +42,10 @@ public class Resume {
     private AdmissionTimeFrame admissionTimeFrame;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String otherRelationship;
 
     @Builder
-    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, String specialNotes, String guardianName, String guardianContactInformation, String facilityType, PhysicalCondition physicalCondition, HealthInsurance healthInsurance, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, String specialNotes, String guardianName, String guardianContactInformation, String facilityType, PhysicalCondition physicalCondition, HealthInsurance healthInsurance, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime createdAt, LocalDateTime updatedAt, String otherRelationship) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -61,9 +62,10 @@ public class Resume {
         this.admissionTimeFrame = admissionTimeFrame;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.otherRelationship = otherRelationship;
     }
 
-    public static Resume create(Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, String facilityType, AdmissionTimeFrame admissionTimeFrame) {
+    public static Resume create(Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
         return Resume.builder()
                 .userId(userId)
                 .name(name)
@@ -80,10 +82,11 @@ public class Resume {
                 .admissionTimeFrame(admissionTimeFrame)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .otherRelationship(otherRelationship)
                 .build();
     }
 
-    public void update(String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationShip, String facilityType, AdmissionTimeFrame admissionTimeFrame) {
+    public void update(String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationShip, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
@@ -97,5 +100,6 @@ public class Resume {
         this.relationship = relationShip;
         this.admissionTimeFrame = admissionTimeFrame;
         this.updatedAt = LocalDateTime.now();
+        this.otherRelationship = otherRelationship;
     }
 }

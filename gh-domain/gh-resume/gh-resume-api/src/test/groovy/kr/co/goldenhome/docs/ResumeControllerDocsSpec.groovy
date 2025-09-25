@@ -64,7 +64,8 @@ class ResumeControllerDocsSpec extends Specification{
                 "01040363457",
                 Relationship.CHILD.name(),
                 "양로원",
-                AdmissionTimeFrame.IMMEDIATELY.name()
+                AdmissionTimeFrame.IMMEDIATELY.name(),
+                "기타 - 친구"
         )
 
         when:
@@ -101,6 +102,9 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("시설 타입 e.g. 양로원"),
                                 fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
                                         .description("IMMEDIATELY, WITHIN_1_MONTH, WITHIN_3_MONTHS, TO_BE_DETERMINED"),
+                                fieldWithPath("otherRelationship").type(JsonFieldType.STRING)
+                                        .description("보호자와 관계가 기타일 때 입력해주세요")
+
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
@@ -133,7 +137,8 @@ class ResumeControllerDocsSpec extends Specification{
                 Relationship.CHILD,
                 "양로원",
                 LocalDateTime.of(2020, 10, 10, 10, 10),
-                AdmissionTimeFrame.IMMEDIATELY
+                AdmissionTimeFrame.IMMEDIATELY,
+                "기타 :..."
         )
         resumeService.read(*_) >> expectedResponse
 
@@ -174,7 +179,9 @@ class ResumeControllerDocsSpec extends Specification{
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING)
                                         .description("수정 일"),
                                 fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
-                                        .description("수정 일")
+                                        .description("IMMEDIATELY, WITHIN_1_MONTH, WITHIN_3_MONTHS, TO_BE_DETERMINED"),
+                                fieldWithPath("otherRelationship").type(JsonFieldType.STRING)
+                                        .description("보호자와 관계가 기타일 때 입력해주세요")
                         )
                 ))
 
@@ -200,7 +207,8 @@ class ResumeControllerDocsSpec extends Specification{
                 "01040363457",
                 Relationship.CHILD.name(),
                 "양로원",
-                AdmissionTimeFrame.IMMEDIATELY.name()
+                AdmissionTimeFrame.IMMEDIATELY.name(),
+                ""
         )
 
         when:
@@ -237,6 +245,8 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("시설 타입 e.g. 양로원"),
                                 fieldWithPath("admissionTimeFrame").type(JsonFieldType.STRING)
                                         .description("IMMEDIATELY, WITHIN_1_MONTH, WITHIN_3_MONTHS, TO_BE_DETERMINED"),
+                                fieldWithPath("otherRelationship").type(JsonFieldType.STRING)
+                                        .description("보호자와 관계가 기타일 때 입력해주세요")
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)

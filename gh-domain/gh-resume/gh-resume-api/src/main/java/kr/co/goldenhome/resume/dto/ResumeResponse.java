@@ -21,7 +21,8 @@ public record ResumeResponse(
          Relationship relationship,
          String facilityType,
          LocalDateTime updatedAt,
-         AdmissionTimeFrame admissionTimeFrame
+         AdmissionTimeFrame admissionTimeFrame,
+         String otherRelationship
 ) {
     public static ResumeResponse from(Resume resume) {
         return new ResumeResponse(
@@ -39,7 +40,8 @@ public record ResumeResponse(
                 resume.getRelationship(),
                 resume.getFacilityType(),
                 resume.getUpdatedAt(),
-                resume.getAdmissionTimeFrame()
+                resume.getAdmissionTimeFrame(),
+                resume.getOtherRelationship()
         );
     }
 }

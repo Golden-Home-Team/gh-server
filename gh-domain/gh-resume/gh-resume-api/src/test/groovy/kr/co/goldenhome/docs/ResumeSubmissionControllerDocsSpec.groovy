@@ -99,6 +99,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                 .relationship(Relationship.CHILD)
                 .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                 .admissionStatus(AdmissionStatus.PENDING_REVIEW)
+                .otherRelationship("e.g. 기타 - 친구")
                  .build(),
                 new FacilityApiResponse("", "")
             )
@@ -156,7 +157,9 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                 fieldWithPath("[].facilityName").type(JsonFieldType.STRING)
                                         .description("시설 이름"),
                                 fieldWithPath("[].facilityAddress").type(JsonFieldType.STRING)
-                                        .description("시설 주소")
+                                        .description("시설 주소"),
+                                fieldWithPath("[].otherRelationship").type(JsonFieldType.STRING)
+                                        .description("기타 관계일 시 추가설명")
 
                         )
                 )
@@ -188,6 +191,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         .relationship(Relationship.CHILD)
                         .submitTime(LocalDateTime.of(2000, 7, 2, 12, 30))
                         .admissionStatus(AdmissionStatus.PENDING_REVIEW)
+                        .otherRelationship("기타 - 친구")
                         .build(),
                 new FacilityApiResponse("", "")
         )
@@ -239,7 +243,9 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         fieldWithPath("facilityName").type(JsonFieldType.STRING)
                                 .description("시설 이름"),
                         fieldWithPath("facilityAddress").type(JsonFieldType.STRING)
-                                .description("시설 주소")
+                                .description("시설 주소"),
+                        fieldWithPath("otherRelationship").type(JsonFieldType.STRING)
+                                .description("기타 관계일 시 추가설명")
 
                 )
         )

@@ -25,7 +25,11 @@ public class ReviewReader {
 
     public List<ReviewResponse> readAll(Long facilityId, Long lastId, Integer lastScore, Long pageSize, String sort) {
         List<Review> reviews = reviewRepository.findAllInfiniteScroll(facilityId, lastId, lastScore, pageSize, sort);
-        return reviews.stream().map(review -> ReviewResponse.of(review, userApi.getLoginId(review.getWriterId()), reviewImageApi.getByReviewId(review.getId()), LocalDateTime.now())).toList();
+        return reviews.stream().map(review -> {
+            String loginId = userApi.getLoginId(review.getWriterId());
+            if(loginId == null) loginId = "탈퇴한 사용자";
+            return ReviewResponse.of(review, loginId, reviewImageApi.getByReviewId(review.getId()), LocalDateTime.now());
+        }).toList();
     }
 
     public List<MyReviewResponse> readMine(Long userId, Long lastId, Long pageSize) {

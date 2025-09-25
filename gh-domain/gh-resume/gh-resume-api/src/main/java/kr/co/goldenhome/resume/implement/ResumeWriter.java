@@ -28,7 +28,8 @@ public class ResumeWriter {
                         request.guardianContactInformation(),
                         Relationship.valueOf(request.relationship()),
                         request.facilityType(),
-                        AdmissionTimeFrame.valueOf(request.admissionTimeFrame())
+                        AdmissionTimeFrame.valueOf(request.admissionTimeFrame()),
+                        request.otherRelationship()
                 )
         );
     }

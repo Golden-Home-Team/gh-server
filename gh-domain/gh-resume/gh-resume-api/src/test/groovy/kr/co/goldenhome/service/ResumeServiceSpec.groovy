@@ -41,9 +41,10 @@ class ResumeServiceSpec extends Specification {
                 "없음",
                 "구머니",
                 "01040363457",
-                Relationship.CHILD.name(),
+                Relationship.ETC.name(),
                 "양로원",
-                AdmissionTimeFrame.IMMEDIATELY.name()
+                AdmissionTimeFrame.IMMEDIATELY.name(),
+                "친구"
         )
         def givenUserId = 1L
 
@@ -89,7 +90,8 @@ class ResumeServiceSpec extends Specification {
                 "01040363457",
                 Relationship.CHILD.name(),
                 "양로원",
-                AdmissionTimeFrame.IMMEDIATELY.name()
+                AdmissionTimeFrame.IMMEDIATELY.name(),
+                ""
         )
         def givenUserId = 1L
 

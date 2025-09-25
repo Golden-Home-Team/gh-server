@@ -24,7 +24,9 @@ public record ResumeSubmissionResponse(
          String guardianContactInformation,
          Relationship relationship,
          LocalDateTime submitTime,
-         AdmissionStatus admissionStatus
+         AdmissionStatus admissionStatus,
+         String otherRelationship
+
 ) {
     public static ResumeSubmissionResponse of(ResumeSubmission resumeSubmission, FacilityApiResponse facilityApiResponse) {
         return new ResumeSubmissionResponse(
@@ -44,7 +46,8 @@ public record ResumeSubmissionResponse(
                 resumeSubmission.getGuardianContactInformation(),
                 resumeSubmission.getRelationship(),
                 resumeSubmission.getSubmitTime(),
-                resumeSubmission.getAdmissionStatus()
+                resumeSubmission.getAdmissionStatus(),
+                resumeSubmission.getOtherRelationship()
         );
     }
 }

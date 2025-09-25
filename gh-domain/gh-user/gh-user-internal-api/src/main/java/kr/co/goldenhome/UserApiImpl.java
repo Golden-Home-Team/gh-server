@@ -1,5 +1,6 @@
 package kr.co.goldenhome;
 
+import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.infrastructure.UserRepository;
@@ -14,11 +15,11 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public String getLoginId(Long userId) {
-        return userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND, "UserApiImpl.getUsername")).getLoginId();
+        return userRepository.findById(userId).map(User::getLoginId).orElse(null);
     }
 
     @Override
     public String getUserName(Long userId) {
-        return userRepository.findById(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND, "UserApiImpl.getUsername")).getUsername();
+        return userRepository.findById(userId).map(User::getUsername).orElse(null);
     }
 }

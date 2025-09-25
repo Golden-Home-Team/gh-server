@@ -43,6 +43,7 @@ public class CommunityQueryService {
         List<CommunityScheduleResponse> communityScheduleResponses = communityScheduleRepository.getByFacilityIdAndMonth(facilityId, LocalDate.now().getMonthValue()).stream().map(CommunityScheduleResponse::from).toList();
         CommunityUser manager = communityUserRepository.getManager(facilityId);
         String communityManagerName = userApi.getUserName(manager.getUserId());
+        if (communityManagerName == null) communityManagerName = "탈퇴한 사용자";
         FacilityApiResponse facilityApiResponse = facilityApi.get(facilityId);
         return new CommunityCombinedResponse(
                 noticeInfo,

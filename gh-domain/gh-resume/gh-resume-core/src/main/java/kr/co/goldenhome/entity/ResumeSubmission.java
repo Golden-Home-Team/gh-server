@@ -41,9 +41,10 @@ public class ResumeSubmission {
     private LocalDateTime submitTime;
     @Enumerated(EnumType.STRING)
     private AdmissionStatus admissionStatus;
+    private String otherRelationship;
 
     @Builder
-    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus) {
+    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus, String otherRelationship) {
         this.id = id;
         this.resumeId = resumeId;
         this.facilityId = facilityId;
@@ -61,6 +62,7 @@ public class ResumeSubmission {
         this.admissionTimeFrame = admissionTimeFrame;
         this.submitTime = submitTime;
         this.admissionStatus = admissionStatus;
+        this.otherRelationship = otherRelationship;
     }
 
     public static ResumeSubmission create(Resume resume, Long facilityId) {
@@ -81,6 +83,7 @@ public class ResumeSubmission {
                 .admissionTimeFrame(resume.getAdmissionTimeFrame())
                 .submitTime(LocalDateTime.now())
                 .admissionStatus(AdmissionStatus.PENDING_REVIEW)
+                .otherRelationship(resume.getOtherRelationship())
                 .build();
     }
 

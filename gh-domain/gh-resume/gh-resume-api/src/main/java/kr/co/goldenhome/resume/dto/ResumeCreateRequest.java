@@ -13,5 +13,6 @@ public record ResumeCreateRequest(String name,
                                   String guardianContactInformation,
                                   String relationship,
                                   String facilityType,
-                                  String admissionTimeFrame) {
+                                  String admissionTimeFrame,
+                                  String otherRelationship) {
 }

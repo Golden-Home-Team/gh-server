@@ -24,8 +24,8 @@ public class FacilityQueryService {
     private final FacilityReader facilityReader;
     private final FacilityEventManger facilityEventManger;
 
-    public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size) {
-        List<FacilityDocument> facilityDocuments = facilitySearcher.search(name, address, facilityType, grade, sort, withinYears, page, size);
+    public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double latitude, Double longitude, Double radiusKm) {
+        List<FacilityDocument> facilityDocuments = facilitySearcher.search(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm);
         return facilityDocuments.stream().map(document -> {
             String profileUrl = facilityReader.getProfileUrl(Long.valueOf(document.getId()));
             return FacilityResponse.from(document, profileUrl);

@@ -34,13 +34,16 @@ class FacilityQueryServiceSpec extends Specification {
         def givenSize = 20
         def givenResponse1 = FacilityDocument.builder().id("1").build()
         def givenResponse2 = FacilityDocument.builder().id("2").build()
+        def givenLatitude = 34.1
+        def givenLongitude = 127.1
+        def givenRadiusKm = 1
 
         when:
-        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize)
+        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm)
 
         then:
         1 * facilitySearcher.search(*_) >> {
-            String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size ->
+            String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double lat, Double lon, Double radiusKm ->
                 name == givenName
                 address == givenAddress
                 facilityType == givenFacilityType
@@ -49,6 +52,9 @@ class FacilityQueryServiceSpec extends Specification {
                 withinYears == givenWithinYears
                 page == givenPage
                 size == givenSize
+                lat == givenLatitude
+                lon == givenLongitude
+                radiusKm == givenRadiusKm
                 List.of(givenResponse1, givenResponse2)
         }
 

@@ -44,7 +44,7 @@ public class ResumeSubmission {
     private String otherRelationship;
 
     @Builder
-    public ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus, String otherRelationship) {
+    private ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus, String otherRelationship) {
         this.id = id;
         this.resumeId = resumeId;
         this.facilityId = facilityId;

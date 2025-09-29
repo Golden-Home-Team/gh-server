@@ -8,6 +8,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Setting;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.data.geo.Point;
 
 import java.util.List;
 
@@ -46,9 +48,12 @@ public class FacilityDocument {
     @Setter
     @Field(type = FieldType.Keyword)
     private List<String> imageUrls;
+    @Setter
+    @Field
+    private GeoPoint location;
 
     @Builder
-    private FacilityDocument(String id, String institutionSymbol, String facilityType, String name, String address, Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, Integer viewCount, Integer reviewCount, Integer likeCount, Integer consultationCount) {
+    private FacilityDocument(String id, String institutionSymbol, String facilityType, String name, String address, Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, Integer viewCount, Integer reviewCount, Integer likeCount, Integer consultationCount, GeoPoint location) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.facilityType = facilityType;
@@ -62,6 +67,7 @@ public class FacilityDocument {
         this.reviewCount = reviewCount;
         this.likeCount = likeCount;
         this.consultationCount = consultationCount;
+        this.location = location;
     }
 
     public static FacilityDocument from(Facility facility) {

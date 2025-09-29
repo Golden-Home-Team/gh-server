@@ -100,7 +100,7 @@ public class SqliteJobConfig {
     @Bean
     public SqlitePagingQueryProvider sqliteFacilityQueryProvider() throws Exception {
         SqlitePagingQueryProvider queryProvider = new SqlitePagingQueryProvider();
-        queryProvider.setSelectClause("MIN(`index`) as `index`, id, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, capacity, current_male, current_female, current_total, staff_total");
+        queryProvider.setSelectClause("MIN(`index`) as `index`, id, facility_type, name, address, phone_number, email, homepage, establishment_date, district_name, capacity, current_male, current_female, current_total, staff_total, latitude, longitude");
         queryProvider.setFromClause("from faclilty"); // 오타 아니고 맞음: faclilty
         queryProvider.setGroupClause("GROUP BY id");
         queryProvider.setSortKeys(Collections.singletonMap("id", Order.ASCENDING));
@@ -125,7 +125,7 @@ public class SqliteJobConfig {
                 "id",
                 "institutionSymbol", "facilityType", "name", "address", "phoneNumber", "email",
                 "homepage", "establishmentDate", "districtName", "capacity",
-                "currentMale", "currentFemale", "currentTotal", "staffTotal"
+                "currentMale", "currentFemale", "currentTotal", "staffTotal", "latitude", "longitude"
         };
         fieldExtractor.setNames(fieldNames);
 

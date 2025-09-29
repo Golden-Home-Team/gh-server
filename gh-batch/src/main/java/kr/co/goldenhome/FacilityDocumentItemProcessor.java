@@ -8,6 +8,7 @@ import kr.co.goldenhome.repository.FacilityGradeRepository;
 import kr.co.goldenhome.repository.FacilityPhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,11 +25,14 @@ public class FacilityDocumentItemProcessor implements ItemProcessor<Facility, Fa
         FacilityDocument document = FacilityDocument.from(facility);
         List<FacilityPhoto> photos = facilityPhotoRepository.findByInstitutionSymbol(facility.getInstitutionSymbol());
         List<String> imageUrls = photos.stream()
-                .map(FacilityPhoto::getImageUrl) // 각 FacilityPhoto 객체에서 imageUrl만 추출
+                .map(FacilityPhoto::getImageUrl)
                 .toList();
         document.setImageUrls(imageUrls);
         FacilityGrade facilityGrade = facilityGradeRepository.findTopByInstitutionSymbolOrderByEvaluationDateDesc(facility.getInstitutionSymbol());
         if (facilityGrade != null) document.setGrade(facilityGrade.getGrade());
+        if (facility.getLatitude() != null && facility.getLongitude() != null) {
+            document.setLocation(new GeoPoint(facility.getLatitude(), facility.getLongitude()));
+        }
         return document;
 
     }

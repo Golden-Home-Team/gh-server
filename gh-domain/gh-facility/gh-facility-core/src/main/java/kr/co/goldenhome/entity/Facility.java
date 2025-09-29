@@ -31,9 +31,12 @@ public class Facility {
     private Integer currentFemale;
     private Integer currentTotal;
     private String staffTotal;
+    private Double latitude;
+    private Double longitude;
 
     @Builder
-    private Facility(Long id, String institutionSymbol, String facilityType, String name, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal) {
+    private Facility(Long id, String institutionSymbol, String facilityType, String name, String address, String phoneNumber, String email, String homepage, Integer establishmentDate, String districtName, Integer capacity, Integer currentMale, Integer currentFemale, Integer currentTotal, String staffTotal
+    , Double latitude, Double longitude) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.facilityType = facilityType;
@@ -49,6 +52,8 @@ public class Facility {
         this.currentFemale = currentFemale;
         this.currentTotal = currentTotal;
         this.staffTotal = staffTotal;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public static Facility from(SqliteFacility sqliteFacility) {
@@ -73,6 +78,8 @@ public class Facility {
                 .currentFemale(facilityFemale == null ? null : Integer.valueOf(facilityFemale))
                 .currentTotal(facilityTotal == null ? null : Integer.valueOf(facilityTotal))
                 .staffTotal(facilityStaffTotal)
+                .latitude(sqliteFacility.getLatitude())
+                .longitude(sqliteFacility.getLongitude())
                 .build();
     }
 

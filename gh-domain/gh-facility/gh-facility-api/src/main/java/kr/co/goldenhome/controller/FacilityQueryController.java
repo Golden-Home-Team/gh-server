@@ -26,9 +26,12 @@ public class FacilityQueryController {
             @RequestParam(value = "sort", defaultValue = "relevance") String sort,
             @RequestParam(value = "withinYears", defaultValue = "0") int withinYears,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "20") int size
+            @RequestParam(value = "size", defaultValue = "20") int size,
+            @RequestParam(value = "lat", required = false) Double lat,
+            @RequestParam(value = "lon", required = false) Double lon,
+            @RequestParam(value = "radiusKm", required = false) Double radiusKm
     ) {
-        return facilityQueryService.search(name, address, facilityType, grade, sort, withinYears, page, size);
+        return facilityQueryService.search(name, address, facilityType, grade, sort, withinYears, page, size, lat, lon, radiusKm);
     }
 
     @GetMapping("/{facilityId}")

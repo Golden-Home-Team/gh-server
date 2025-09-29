@@ -22,4 +22,6 @@ public class SqliteFacility {
     private String currentFemale;
     private String currentTotal;
     private String staffTotal;
+    private Double latitude;
+    private Double longitude;
 }

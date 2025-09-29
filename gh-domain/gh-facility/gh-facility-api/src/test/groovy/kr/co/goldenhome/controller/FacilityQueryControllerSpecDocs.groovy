@@ -55,10 +55,13 @@ class FacilityQueryControllerSpecDocs extends Specification {
         def givenWithinYears = 20
         def givenPage = 1
         def givenSize = 20
+        def givenLatitude = 34.1
+        def givenLongitude = 127.1
+        def givenRadiusKm = 1
 
         def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://"))
 
-        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize)
+        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm)
         >> expectedResponse
 
         when:
@@ -72,6 +75,9 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         .param("withinYears", givenWithinYears as String)
                         .param("page", givenPage as String)
                         .param("size", givenSize as String)
+                        .param("lat", givenLatitude as String)
+                        .param("lon", givenLongitude as String)
+                        .param("radiusKm", givenRadiusKm as String)
         ).andDo(document("facility-search",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -86,7 +92,10 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         parameterWithName("sort").description("정렬기준 (view, review, like, consultation) 아무것도 안보내면 유사도순입니다."),
                         parameterWithName("withinYears").description("설립연도 n년 이내 e.g. 1"),
                         parameterWithName("page").description("페이지 default = 1"),
-                        parameterWithName("size").description("페이지 크기 default = 20")
+                        parameterWithName("size").description("페이지 크기 default = 20"),
+                        parameterWithName("lat").description("클라이언트 위도"),
+                        parameterWithName("lon").description("클라이언트 경도"),
+                        parameterWithName("radiusKm").description("반경 n km 이내, e.g. 0.1, 1, 5..."),
                 ),
                 responseFields(
                         fieldWithPath("[]").type(JsonFieldType.ARRAY)

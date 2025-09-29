@@ -49,7 +49,7 @@ public class FacilityDocument {
     @Field(type = FieldType.Keyword)
     private List<String> imageUrls;
     @Setter
-    @Field(type = FieldType.Object)
+    @Field
     private GeoPoint location;
 
     @Builder

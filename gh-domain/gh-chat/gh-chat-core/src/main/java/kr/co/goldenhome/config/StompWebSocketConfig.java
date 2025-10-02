@@ -21,6 +21,8 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/connection")
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
+        registry.addEndpoint("/connection")
+                .setAllowedOriginPatterns("*");
         registry.setErrorHandler(stompErrorHandler);
     }
 

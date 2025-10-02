@@ -126,7 +126,7 @@ allprojects {
                 'community-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read',
                 'community-mine': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine',
                 'question-readAll': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/question-readAll',
-                'question-survey': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/community-survey'
+                'question-survey': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/question-survey'
 
 
 

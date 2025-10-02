@@ -8,6 +8,7 @@ import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
 import kr.co.goldenhome.FacilityEventManger
+import org.springframework.data.elasticsearch.core.geo.GeoPoint
 import spock.lang.Specification
 
 class FacilityQueryServiceSpec extends Specification {
@@ -32,8 +33,10 @@ class FacilityQueryServiceSpec extends Specification {
         def givenWithinYears = 20
         def givenPage = 1
         def givenSize = 20
-        def givenResponse1 = FacilityDocument.builder().id("1").build()
-        def givenResponse2 = FacilityDocument.builder().id("2").build()
+        def givenLat = (Double) 35.1
+        def givenLon = (double) 124.5
+        def givenResponse1 = FacilityDocument.builder().id("1").location(new GeoPoint(givenLat, givenLon)).build()
+        def givenResponse2 = FacilityDocument.builder().id("2").location(new GeoPoint(givenLat, givenLon)).build()
         def givenLatitude = 34.1
         def givenLongitude = 127.1
         def givenRadiusKm = 1

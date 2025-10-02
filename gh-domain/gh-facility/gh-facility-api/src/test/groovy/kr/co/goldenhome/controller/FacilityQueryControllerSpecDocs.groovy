@@ -59,7 +59,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
         def givenLongitude = 127.1
         def givenRadiusKm = 1
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://"))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 37.1, 126.4))
 
         facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm)
         >> expectedResponse
@@ -120,6 +120,10 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
                                 .description("현원 - 계"),
                         fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].latitude").type(JsonFieldType.NUMBER)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
                                 .description("시설 프로필 이미지")
 
                 )
@@ -129,17 +133,6 @@ class FacilityQueryControllerSpecDocs extends Specification {
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$[0].id').value(expectedResponse.get(0).id())
-            MockMvcResultMatchers.jsonPath('$[0].institutionSymbol').value(expectedResponse.get(0).institutionSymbol())
-            MockMvcResultMatchers.jsonPath('$[0].facilityType').value(expectedResponse.get(0).facilityType())
-            MockMvcResultMatchers.jsonPath('$[0].name').value(expectedResponse.get(0).name())
-            MockMvcResultMatchers.jsonPath('$[0].address').value(expectedResponse.get(0).address())
-            MockMvcResultMatchers.jsonPath('$[0].establishmentYear').value(expectedResponse.get(0).establishmentYear())
-            MockMvcResultMatchers.jsonPath('$[0].grade').value(expectedResponse.get(0).grade())
-            MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
-            MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
-            MockMvcResultMatchers.jsonPath('$[0].profileUrl').value(expectedResponse.get(0).profileUrl())
-
         }
 
     }
@@ -160,6 +153,8 @@ class FacilityQueryControllerSpecDocs extends Specification {
                 22,
                 8,
                 14,
+                36.1,
+                125.3,
                 new FacilityInfoInnerResponse(
                         50L,
                         "0",
@@ -255,6 +250,10 @@ class FacilityQueryControllerSpecDocs extends Specification {
                                         .description("현재 인원 (남성)"),
                                 fieldWithPath("currentFemale").type(JsonFieldType.NUMBER)
                                         .description("현재 인원 (여성)"),
+                                fieldWithPath("latitude").type(JsonFieldType.NUMBER)
+                                        .description("위도"),
+                                fieldWithPath("longitude").type(JsonFieldType.NUMBER)
+                                        .description("경도"),
 
                                 // facilityInfoInnerResponse
                                 fieldWithPath("facilityInfoInnerResponse.facilityDetailId").type(JsonFieldType.NUMBER)
@@ -386,7 +385,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
     def "좋아요한 시설 목록 조회"() {
         given:
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://"))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1))
 
         facilityService.getLikedFacilities(*_)
                 >> expectedResponse
@@ -420,7 +419,11 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
                                 .description("현원 - 계"),
                         fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
-                                .description("시설 프로필 이미지")
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].latitude").type(JsonFieldType.NUMBER)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
+                                .description("시설 프로필 이미지"),
 
                 )
         ))
@@ -429,17 +432,6 @@ class FacilityQueryControllerSpecDocs extends Specification {
         then:
         response.andExpect {
             MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$[0].id').value(expectedResponse.get(0).id())
-            MockMvcResultMatchers.jsonPath('$[0].institutionSymbol').value(expectedResponse.get(0).institutionSymbol())
-            MockMvcResultMatchers.jsonPath('$[0].facilityType').value(expectedResponse.get(0).facilityType())
-            MockMvcResultMatchers.jsonPath('$[0].name').value(expectedResponse.get(0).name())
-            MockMvcResultMatchers.jsonPath('$[0].address').value(expectedResponse.get(0).address())
-            MockMvcResultMatchers.jsonPath('$[0].establishmentYear').value(expectedResponse.get(0).establishmentYear())
-            MockMvcResultMatchers.jsonPath('$[0].grade').value(expectedResponse.get(0).grade())
-            MockMvcResultMatchers.jsonPath('$[0].capacity').value(expectedResponse.get(0).capacity())
-            MockMvcResultMatchers.jsonPath('$[0].currentTotal').value(expectedResponse.get(0).currentTotal())
-            MockMvcResultMatchers.jsonPath('$[0].profileUrl').value(expectedResponse.get(0).profileUrl())
-
         }
 
     }

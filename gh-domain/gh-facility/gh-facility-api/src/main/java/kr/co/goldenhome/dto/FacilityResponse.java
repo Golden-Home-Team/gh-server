@@ -5,7 +5,8 @@ import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.entity.FacilityDocument;
 
 public record FacilityResponse(Long id, String institutionSymbol, String facilityType, String name, String address,
-                               Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, String profileUrl) {
+                               Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, String profileUrl,
+                               Double latitude, Double longitude) {
 
     public static FacilityResponse from(FacilityDocument facilityDocument, String profileUrl) {
         return new FacilityResponse(
@@ -18,7 +19,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facilityDocument.getGrade(),
                 facilityDocument.getCapacity(),
                 facilityDocument.getCurrentTotal(),
-                profileUrl
+                profileUrl,
+                facilityDocument.getLocation().getLat(), facilityDocument.getLocation().getLon()
         );
     }
 
@@ -33,7 +35,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 grade,
                 facility.getCapacity(),
                 facility.getCurrentTotal(),
-                profileUrl
+                profileUrl,
+                facility.getLatitude(), facility.getLongitude()
         );
     }
 

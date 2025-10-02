@@ -13,6 +13,8 @@ public record FacilityCombinedDto(
         Integer currentTotal,
         Integer currentMale,
         Integer currentFemale,
+        Double latitude,
+        Double longitude,
         Long facilityDetailId, // facility_details
         String singleRoomCount,
         String doubleRoomCount,

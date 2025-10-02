@@ -37,6 +37,8 @@ public class FacilityRepositoryImpl implements FacilityRepository {
                         facility.currentTotal,
                         facility.currentMale,
                         facility.currentFemale,
+                        facility.latitude,
+                        facility.longitude,
                         facilityDetail.id,
                         facilityDetail.singleRoomCount,
                         facilityDetail.doubleRoomCount,

@@ -16,6 +16,8 @@ public record FacilityDetailServiceResponse(
         Integer currentTotal,
         Integer currentMale,
         Integer currentFemale,
+        Double latitude,
+        Double longitude,
         FacilityInfoInnerResponse facilityInfoInnerResponse,
         FacilityStaffInnerResponse facilityStaffInnerResponse,
         List<FacilityPhotoResponse> photoResponses,
@@ -36,6 +38,8 @@ public record FacilityDetailServiceResponse(
                 facilityCombinedDto.currentTotal(),
                 facilityCombinedDto.currentMale(),
                 facilityCombinedDto.currentFemale(),
+                facilityCombinedDto.latitude(),
+                facilityCombinedDto.longitude(),
                 new FacilityInfoInnerResponse(
                         facilityCombinedDto.facilityDetailId(),
                         facilityCombinedDto.singleRoomCount(),

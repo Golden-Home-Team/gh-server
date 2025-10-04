@@ -122,9 +122,9 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
                                 .description("시설 프로필 이미지"),
                         fieldWithPath("[].latitude").type(JsonFieldType.NUMBER)
-                                .description("시설 프로필 이미지"),
+                                .description("위도"),
                         fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
-                                .description("시설 프로필 이미지")
+                                .description("경도")
 
                 )
         ))

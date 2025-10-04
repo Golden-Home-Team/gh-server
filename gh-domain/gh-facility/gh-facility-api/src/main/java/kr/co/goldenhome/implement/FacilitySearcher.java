@@ -1,6 +1,5 @@
     package kr.co.goldenhome.implement;
 
-    import co.elastic.clients.elasticsearch._types.DistanceUnit;
     import co.elastic.clients.elasticsearch._types.GeoDistanceType;
     import co.elastic.clients.elasticsearch._types.GeoLocation;
     import co.elastic.clients.elasticsearch._types.LatLonGeoLocation;
@@ -13,7 +12,6 @@
     import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
     import org.springframework.data.elasticsearch.core.SearchHit;
     import org.springframework.data.elasticsearch.core.SearchHits;
-    import org.springframework.data.elasticsearch.core.geo.GeoPoint;
     import org.springframework.stereotype.Component;
     import org.springframework.util.StringUtils;
 

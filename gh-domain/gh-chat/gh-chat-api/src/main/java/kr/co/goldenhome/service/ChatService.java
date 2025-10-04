@@ -19,7 +19,6 @@ public class ChatService {
     private final CommunityApi communityApi;
     private final ChatManager chatManager;
     private final ChatStreamWriter chatStreamWriter;
-    private final RedisMessage
 
     public Long enterRoom(Long facilityId, Long userId) {
         Long communityManagerUserId = communityApi.getCommunityManagerUserId(facilityId);

@@ -14,10 +14,10 @@ public class ChatMessageSubscriber {
 
     public void send(String publishedMessage) {
         try {
-            objectMapper.readValue()
+//            objectMapper.readValue()
         } catch (Exception e) {
 
         }
-        messagingTemplate.convertAndSend("/topic/chat", message);
+//        messagingTemplate.convertAndSend("/topic/chat", message);
     }
 }

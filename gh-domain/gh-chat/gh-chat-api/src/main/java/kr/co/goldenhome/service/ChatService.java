@@ -4,7 +4,6 @@ import kr.co.goldenhome.entity.ChatMessage;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.messaging.ChatStreamWriter;
-import kr.co.goldenhome.messaging.ChatRoomCreatedEvent;
 import kr.co.goldenhome.CommunityApi;
 import kr.co.goldenhome.implement.ChatManager;
 import lombok.RequiredArgsConstructor;

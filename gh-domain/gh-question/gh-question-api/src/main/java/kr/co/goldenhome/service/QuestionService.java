@@ -42,7 +42,11 @@ public class QuestionService {
         Map<Long, Integer> originalScores = new HashMap<>();
         for (Long questionDomainOptionId : request.questionDomainOptionIds()) {
             QuestionDomainOption questionDomainOption = questionDomainOptionRepository.findById(questionDomainOptionId).orElseThrow(() -> new CustomException(ErrorCode.OPTION_NOT_FOUND, "QuestionService.survey"));
-            originalScores.merge(questionDomainOption.getQuestionDomainId(), questionDomainOption.getOriginalScore(), Integer::sum);
+            Long questionDomainId = questionDomainOption.getQuestionDomainId();
+            if (questionDomainId == 6L) {
+                questionDomainId = 5L;
+            }
+            originalScores.merge(questionDomainId, questionDomainOption.getOriginalScore(), Integer::sum);
         }
 
         double finalScore = 0;

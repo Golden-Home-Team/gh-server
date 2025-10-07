@@ -111,7 +111,7 @@ class QuestionControllerDocsSpec extends Specification {
         questionService.survey(request) >> expectedResponse
 
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/questions/survey")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/questions/survey")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("question-survey",

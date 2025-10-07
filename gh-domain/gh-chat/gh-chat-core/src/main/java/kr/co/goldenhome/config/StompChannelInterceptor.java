@@ -8,6 +8,7 @@ import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.messaging.ChatPrincipal;
+import kr.co.goldenhome.messaging.SessionAttributeAccessor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,15 +22,20 @@ import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 
+import static kr.co.goldenhome.constant.SessionConstant.USER_KEY;
+
 @Slf4j
 @Component
 public class StompChannelInterceptor implements ChannelInterceptor {
 
     private final SecretKey key;
+    private final SessionAttributeAccessor sessionAttributeAccessor;
 
-    public StompChannelInterceptor(@Value("${JWT_SECRET_KEY}") String secretKey) {
+    public StompChannelInterceptor(@Value("${JWT_SECRET_KEY}") String secretKey,
+                                   SessionAttributeAccessor sessionAttributeAccessor) {
         byte[] secretKeyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(secretKeyBytes);
+        this.sessionAttributeAccessor = sessionAttributeAccessor;
     }
 
     @Override
@@ -45,7 +51,8 @@ public class StompChannelInterceptor implements ChannelInterceptor {
                         .parseSignedClaims(accessToken)
                         .getPayload();
                 Long userId = claims.get("userId", Long.class);
-                stompHeaderAccessor.setUser(new ChatPrincipal(userId));
+                sessionAttributeAccessor.updateSession(stompHeaderAccessor, USER_KEY, userId);
+
             } catch (Exception e) {
                 log.error(e.getMessage());
                 throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "StompChannelInterceptor.preSend");

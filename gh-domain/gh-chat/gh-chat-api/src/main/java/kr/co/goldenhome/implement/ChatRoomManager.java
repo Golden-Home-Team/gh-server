@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ChatManager {
+public class ChatRoomManager {
 
     private final ChatRoomRepositoryImpl chatRoomRepositoryImpl;
     private final ChatRoomRepository chatRoomRepository;
@@ -22,7 +22,7 @@ public class ChatManager {
 
     @Transactional
     public Long getOrCreate(Long facilityId, Long userId, Long communityManagerUserId) {
-        ChatRoom chatRoom = chatRoomRepositoryImpl.findPrivateChatRoom(userId, communityManagerUserId, facilityId, ChatRoomType.DIRECT_MESSAGE);
+        ChatRoom chatRoom = chatRoomRepositoryImpl.getPrivateChatRoom(userId, communityManagerUserId, facilityId, ChatRoomType.DIRECT_MESSAGE);
         if (chatRoom == null) {
             Long chatRoomId = chatRoomRepository.save(ChatRoom.create(facilityId, ChatRoomType.DIRECT_MESSAGE)).getId();
             chatUserRepository.saveAll(List.of(ChatUser.create(userId, chatRoomId), ChatUser.create(communityManagerUserId, chatRoomId)));

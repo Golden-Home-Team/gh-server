@@ -3,23 +3,19 @@ package kr.co.goldenhome.controller;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.constant.SessionConstant;
 import kr.co.goldenhome.dto.ChatMessageRequest;
+import kr.co.goldenhome.dto.ChatRoomListResponse;
 import kr.co.goldenhome.dto.ChatRoomResponse;
+import kr.co.goldenhome.dto.SliceResponse;
 import kr.co.goldenhome.entity.ChatMessage;
-import kr.co.goldenhome.exception.CustomException;
-import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.messaging.SessionAttributeAccessor;
 import kr.co.goldenhome.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -30,9 +26,17 @@ public class ChatController {
     private final SessionAttributeAccessor sessionAttributeAccessor;
 
     @PostMapping
-    public ChatRoomResponse enterRoom(@RequestParam(value = "facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ChatRoomResponse enterRoomWithCommunityManager(@RequestParam(value = "facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long chatRoomId = chatService.enterRoom(facilityId, userPrincipal.userId());
         return new ChatRoomResponse(chatRoomId);
+    }
+
+    @GetMapping
+    public SliceResponse<ChatRoomListResponse> getChatRooms(
+            @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        return chatService.getChatRooms(cursor,userPrincipal.userId());
     }
 
     @MessageMapping("/message")

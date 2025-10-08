@@ -126,7 +126,10 @@ allprojects {
                 'community-read': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-read',
                 'community-mine': 'gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine',
                 'question-readAll': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/question-readAll',
-                'question-survey': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/question-survey'
+                'question-survey': 'gh-domain/gh-question/gh-question-api/build/generated-snippets/question-survey',
+                'chat-enter': 'gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-enter',
+                'chat-get-rooms': 'gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-rooms',
+                'chat-get-messages': 'gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-messages'
 
 
 

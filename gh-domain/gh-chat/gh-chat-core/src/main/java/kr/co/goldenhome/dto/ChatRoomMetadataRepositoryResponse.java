@@ -12,4 +12,5 @@ public record ChatRoomMetadataRepositoryResponse(
         String lastMessage,
         String timestamp
 ) {
+
 }

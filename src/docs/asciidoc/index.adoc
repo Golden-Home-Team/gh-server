@@ -64,6 +64,9 @@ ifndef::snippets[]
 :community-mine: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-mine
 :question-readAll: ../../../gh-domain/gh-question/gh-question-api/build/generated-snippets/question-readAll
 :question-survey: ../../../gh-domain/gh-question/gh-question-api/build/generated-snippets/question-survey
+:chat-enter: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-enter
+:chat-get-rooms: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-rooms
+:chat-get-messages: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-messages
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -674,3 +677,35 @@ include::{question-survey}/request-fields.adoc[]
 === HTTP Response
 include::{question-survey}/http-response.adoc[]
 include::{question-survey}/response-fields.adoc[]
+
+[[Chat-API]]
+== Chat API
+
+== 채팅방 생성 혹은 조회
+=== HTTP Request
+include::{chat-enter}/http-request.adoc[]
+include::{chat-enter}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{chat-enter}/http-response.adoc[]
+include::{chat-enter}/response-fields.adoc[]
+
+== 채팅방 목록 조회
+=== HTTP Request
+include::{chat-get-rooms}/http-request.adoc[]
+include::{chat-get-rooms}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{chat-get-rooms}/http-response.adoc[]
+include::{chat-get-rooms}/response-fields.adoc[]
+
+== 채팅방 메시지 조회
+=== HTTP Request
+include::{chat-get-messages}/http-request.adoc[]
+include::{chat-get-messages}/query-parameters.adoc[]
+include::{chat-get-messages}/path-parameters.adoc[]
+
+=== HTTP Response
+include::{chat-get-messages}/http-response.adoc[]
+include::{chat-get-messages}/response-fields.adoc[]
+

@@ -1,6 +1,7 @@
 package kr.co.goldenhome.service;
 
-import kr.co.goldenhome.dto.ChatRoomListResponse;
+import kr.co.goldenhome.dto.ChatMessageResponse;
+import kr.co.goldenhome.dto.ChatRoomMetadataRepositoryResponse;
 import kr.co.goldenhome.dto.SliceResponse;
 import kr.co.goldenhome.entity.ChatMessage;
 import kr.co.goldenhome.exception.CustomException;
@@ -27,7 +28,7 @@ public class ChatService {
     public Long enterRoom(Long facilityId, Long userId) {
         Long communityManagerUserId = communityApi.getCommunityManagerUserId(facilityId);
         if (Objects.equals(communityManagerUserId, userId)) throw new CustomException(ErrorCode.INVALID_CHAT_ROOM, "ChatService.enterRoom");
-        return chatRoomManager.getOrCreate(facilityId, userId, communityManagerUserId);
+        return chatRoomManager.getOrCreate(facilityId, userId, communityManagerUserId).getId();
     }
 
     public void chat(ChatMessage chatMessage) {
@@ -35,8 +36,11 @@ public class ChatService {
         chatMessagePublisher.sendChatMessage(chatMessage);
     }
 
-    public SliceResponse<ChatRoomListResponse> getChatRooms(LocalDateTime cursor, Long userId) {
-//        chatRoomManager.getMyChatRooms(userId);
-        return null;
+    public SliceResponse<ChatRoomMetadataRepositoryResponse> getChatRooms(LocalDateTime cursor, Long userId, int pageSize) {
+        return chatRoomManager.getChatRooms(cursor, userId, pageSize);
+    }
+
+    public SliceResponse<ChatMessageResponse> getChatMessages(Long chatRoomId, LocalDateTime cursor, Long userId, int pageSize) {
+        return chatRoomManager.getChatMessages(chatRoomId, cursor, userId, pageSize);
     }
 }

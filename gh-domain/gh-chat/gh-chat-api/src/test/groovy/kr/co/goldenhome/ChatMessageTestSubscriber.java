@@ -1,22 +1,23 @@
-package kr.co.goldenhome.messaging;
+package kr.co.goldenhome;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.goldenhome.entity.ChatMessage;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
-public class ChatMessageSubscriber {
+public class ChatMessageTestSubscriber {
 
     private final ObjectMapper objectMapper;
     private final SimpMessageSendingOperations messagingTemplate ;
+
+    public ChatMessageTestSubscriber(ObjectMapper objectMapper, SimpMessageSendingOperations messagingTemplate) {
+        this.objectMapper = objectMapper;
+        this.messagingTemplate = messagingTemplate;
+    }
 
     public void send(String publishedMessage) {
         try {
@@ -25,7 +26,6 @@ public class ChatMessageSubscriber {
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION, "ChatMessageSubscriber.send");
         } catch (Exception e) {
-            log.error("ChatMessageSubscriber.send", e);
             throw e;
         }
     }

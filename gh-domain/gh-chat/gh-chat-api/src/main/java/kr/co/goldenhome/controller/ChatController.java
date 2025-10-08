@@ -2,10 +2,7 @@ package kr.co.goldenhome.controller;
 
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.constant.SessionConstant;
-import kr.co.goldenhome.dto.ChatMessageRequest;
-import kr.co.goldenhome.dto.ChatRoomListResponse;
-import kr.co.goldenhome.dto.ChatRoomResponse;
-import kr.co.goldenhome.dto.SliceResponse;
+import kr.co.goldenhome.dto.*;
 import kr.co.goldenhome.entity.ChatMessage;
 import kr.co.goldenhome.messaging.SessionAttributeAccessor;
 import kr.co.goldenhome.service.ChatService;
@@ -25,18 +22,29 @@ public class ChatController {
     private final ChatService chatService;
     private final SessionAttributeAccessor sessionAttributeAccessor;
 
-    @PostMapping
-    public ChatRoomResponse enterRoomWithCommunityManager(@RequestParam(value = "facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    @PostMapping("/{facilityId}")
+    public ChatRoomResponse enterRoomWithCommunityManager(@PathVariable(value = "facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long chatRoomId = chatService.enterRoom(facilityId, userPrincipal.userId());
         return new ChatRoomResponse(chatRoomId);
     }
 
     @GetMapping
-    public SliceResponse<ChatRoomListResponse> getChatRooms(
+    public SliceResponse<ChatRoomMetadataRepositoryResponse> getChatRooms(
             @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        return chatService.getChatRooms(cursor,userPrincipal.userId());
+        return chatService.getChatRooms(cursor,userPrincipal.userId(), pageSize);
+    }
+
+    @GetMapping("/{chatRoomId}")
+    public SliceResponse<ChatMessageResponse> getChatMessages(
+            @PathVariable("chatRoomId") Long chatRoomId,
+            @RequestParam(value = "cursor", required = false) LocalDateTime cursor,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
+        return chatService.getChatMessages(chatRoomId, cursor,userPrincipal.userId(), pageSize);
     }
 
     @MessageMapping("/message")

@@ -2,6 +2,7 @@ package kr.co.goldenhome.profile.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ProfileImageApiResponse
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.profile.dto.ProfileEmailRequest
 import kr.co.goldenhome.profile.dto.ProfileImageRequest
 import kr.co.goldenhome.profile.dto.ProfileLoginIdRequest
@@ -57,7 +58,8 @@ class ProfileControllerDocsSpec extends Specification {
         profileService.get(*_) >> expectedResponse
 
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/profiles"))
+        def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/profiles")
+                .principal(new UserPrincipal(1L)))
                 .andDo(document("profile-get",
                         preprocessResponse(prettyPrint()),
                         responseFields(
@@ -99,6 +101,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/profiles")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest)))
                 .andDo(document("profile-image-create",
@@ -126,6 +129,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/name")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         ).andDo(document("profile-modify-name",
@@ -153,6 +157,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/loginId")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         ).andDo(document("profile-modify-loginId",
@@ -180,6 +185,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/phoneNumber")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         ).andDo(document("profile-modify-phoneNumber",
@@ -207,6 +213,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/email")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         ).andDo(document("profile-modify-email",
@@ -234,6 +241,7 @@ class ProfileControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.put("/api/profiles/password")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         ).andDo(document("profile-modify-password",

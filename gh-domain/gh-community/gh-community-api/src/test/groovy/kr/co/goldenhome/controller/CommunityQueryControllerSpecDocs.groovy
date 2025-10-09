@@ -1,6 +1,7 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.CommunityCombinedResponse
 import kr.co.goldenhome.dto.CommunityScheduleResponse
 import kr.co.goldenhome.dto.DailyDietImageResponse
@@ -62,6 +63,8 @@ class CommunityQueryControllerSpecDocs extends Specification {
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/communities/{facilityId}/check", givenFacilityId)
                 .contentType(MediaType.APPLICATION_JSON)
+                .principal(new UserPrincipal(1L))
+
         )
                 .andDo(document("community-user-check",
                         preprocessRequest(prettyPrint()),
@@ -192,6 +195,8 @@ class CommunityQueryControllerSpecDocs extends Specification {
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/communities/me")
                 .contentType(MediaType.APPLICATION_JSON)
+                .principal(new UserPrincipal(1L))
+
         )
                 .andDo(document("community-mine",
                         preprocessRequest(prettyPrint()),

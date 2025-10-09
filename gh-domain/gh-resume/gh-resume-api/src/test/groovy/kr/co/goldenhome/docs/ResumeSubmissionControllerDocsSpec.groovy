@@ -2,6 +2,7 @@ package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.FacilityApiResponse
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.enums.Gender
 import kr.co.goldenhome.enums.HealthInsurance
 import kr.co.goldenhome.enums.LongTermCareGrade
@@ -57,6 +58,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/resumes-submission/{facilityId}", 1L)
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("resume-submission-submit",
                         preprocessRequest(prettyPrint()),
@@ -109,6 +111,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
         when:
         def response = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/resumes-submission/readAll")
+                    .principal(new UserPrincipal(1L))
                     .param("lastId", givenLastId.toString())
                     .param("pageSize",givenPageSize.toString())
         )
@@ -201,6 +204,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
         when:
         def response = mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/resumes-submission/{id}", 1L)
+                        .principal(new UserPrincipal(1L))
         ).andDo(document("resume-submission-read",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),

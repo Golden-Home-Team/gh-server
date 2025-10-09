@@ -1,6 +1,7 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.service.CommunityEntryService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,6 +48,7 @@ class CommunityEntryControllerSpecDocs extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/communities/{facilityId}/admin", givenFacilityId)
+        .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("community-entry-generate-invitationLink",
                         preprocessRequest(prettyPrint()),
@@ -75,6 +77,7 @@ class CommunityEntryControllerSpecDocs extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/communities/enter")
+                .principal(new UserPrincipal(1L))
                 .queryParam("code", "1234")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("community-entry-enter",

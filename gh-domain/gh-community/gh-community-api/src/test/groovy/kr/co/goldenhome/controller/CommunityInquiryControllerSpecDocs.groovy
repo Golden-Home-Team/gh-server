@@ -1,6 +1,7 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.CommunityInquiryRequest
 import kr.co.goldenhome.entity.CommunityInquiry
 import kr.co.goldenhome.enums.CommunityInquiryStatus
@@ -54,9 +55,12 @@ class CommunityInquiryControllerSpecDocs extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/communities/{facilityId}/inquiry", givenFacilityId)
+                .principal(new UserPrincipal(1L))
+
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(givenRequest))
         )
+
                 .andDo(document("community-inquiry-write",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),

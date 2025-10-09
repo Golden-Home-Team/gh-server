@@ -1,6 +1,7 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailResponse
 import kr.co.goldenhome.dto.FacilityInfoInnerResponse
 import kr.co.goldenhome.dto.FacilityPhotoResponse
@@ -393,6 +394,8 @@ class FacilityQueryControllerSpecDocs extends Specification {
         when:
         def response = mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/facilities/like")
+                        .principal(new UserPrincipal(1L))
+
         ).andDo(document("facility-read-liked",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),

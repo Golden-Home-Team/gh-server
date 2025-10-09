@@ -2,6 +2,7 @@ package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.ReviewImageApiResponse
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.MyReviewResponse
 import kr.co.goldenhome.dto.ReviewRequest
 import kr.co.goldenhome.dto.ReviewResponse
@@ -54,6 +55,7 @@ class ReviewControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/reviews/{facilityId}", 1L)
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("review-write",
@@ -157,6 +159,7 @@ class ReviewControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/reviews/readAll")
+                .principal(new UserPrincipal(1L))
                 .param("lastId", "1")
                 .param("pageSize", "20")
         ).andDo(document("review-readMine",

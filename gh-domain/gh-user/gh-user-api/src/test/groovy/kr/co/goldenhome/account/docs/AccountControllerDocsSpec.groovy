@@ -2,6 +2,7 @@ package kr.co.goldenhome.account.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.account.service.AccountService
+import kr.co.goldenhome.auth.UserPrincipal
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -41,6 +42,7 @@ class AccountControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/withdraw")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("user-withdraw",
                         preprocessResponse(prettyPrint()),
@@ -60,6 +62,7 @@ class AccountControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/logout")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("user-logout",
                         preprocessResponse(prettyPrint()),

@@ -1,6 +1,7 @@
 package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.service.FacilityLikeService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,6 +52,7 @@ class FacilityLikeControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/likes/facility/{facilityId}", 1L)
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("facility-like",
                         preprocessRequest(prettyPrint()),
@@ -74,6 +76,7 @@ class FacilityLikeControllerDocsSpec extends Specification {
     def "좋아요를 취소한다"() {
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.delete("/api/likes/facility/{facilityId}", 1L)
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("facility-unlike",
                         preprocessRequest(prettyPrint()),

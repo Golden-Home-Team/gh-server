@@ -25,15 +25,7 @@ public class ChatMessageListener implements StreamListener<String, MapRecord<Str
     @Override
     public void onMessage(MapRecord<String, String, String> record) {
         ChatMessage chatMessage = ChatMessage.convert(record.getValue());
-        log.info("[onMessage] {}", chatMessage);
-        try {
-            mongoTemplate.insert(chatMessage);
-        } catch (Exception e) {
-            log.error("MongoDB 강제 INSERT 실패: {}", record.getId(), e);
-            return;
-        }
-//        chatMessageRepository.save(chatMessage);
-        log.info("[redisStream]");
+        chatMessageRepository.save(chatMessage);
         redisTemplate.opsForStream().acknowledge(CHAT_MESSAGE_STREAM_KEY, CHAT_CONSUMER_GROUP, record.getId());
     }
 

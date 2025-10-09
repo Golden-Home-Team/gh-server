@@ -8,6 +8,7 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testImplementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation("org.springframework.security:spring-security-test:7.0.0-M3")
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-chat:gh-chat-core"))

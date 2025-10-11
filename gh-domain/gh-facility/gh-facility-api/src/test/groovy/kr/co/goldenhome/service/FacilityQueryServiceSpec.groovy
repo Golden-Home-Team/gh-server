@@ -1,7 +1,8 @@
 package kr.co.goldenhome.service
 
-
+import kr.co.goldenhome.LikeApi
 import kr.co.goldenhome.ReviewMetaData
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
@@ -17,10 +18,11 @@ class FacilityQueryServiceSpec extends Specification {
     FacilitySearcher facilitySearcher = Mock()
     FacilityReader facilityReader = Mock()
     FacilityEventManger facilityEventManager = Mock()
+    LikeApi likeApi = Mock()
 
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, likeApi)
     }
 
     def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
@@ -40,9 +42,10 @@ class FacilityQueryServiceSpec extends Specification {
         def givenLatitude = 34.1
         def givenLongitude = 127.1
         def givenRadiusKm = 1
+        def givenUserPrincipal = new UserPrincipal(1L)
 
         when:
-        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm)
+        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
 
         then:
         1 * facilitySearcher.search(*_) >> {

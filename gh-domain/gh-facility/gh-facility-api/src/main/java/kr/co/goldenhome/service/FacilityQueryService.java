@@ -1,6 +1,7 @@
 package kr.co.goldenhome.service;
 
 import kr.co.goldenhome.*;
+import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
@@ -23,13 +24,25 @@ public class FacilityQueryService {
     private final FacilitySearcher facilitySearcher;
     private final FacilityReader facilityReader;
     private final FacilityEventManger facilityEventManger;
+    private final LikeApi likeApi;
 
-    public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double latitude, Double longitude, Double radiusKm) {
+    public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                         Double latitude, Double longitude, Double radiusKm,
+                                         UserPrincipal userPrincipal) {
         List<FacilityDocument> facilityDocuments = facilitySearcher.search(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm);
+        if (userPrincipal == null) {
+            return facilityDocuments.stream().map(document -> {
+                String profileUrl = facilityReader.getProfileUrl(Long.valueOf(document.getId()));
+                return FacilityResponse.of(document, profileUrl);
+            }).toList();
+        }
+        Long userId = userPrincipal.userId();
         return facilityDocuments.stream().map(document -> {
             String profileUrl = facilityReader.getProfileUrl(Long.valueOf(document.getId()));
-            return FacilityResponse.from(document, profileUrl);
+            boolean isLiked = likeApi.isLiked(Long.valueOf(document.getId()), userId);
+            return FacilityResponse.of(document, profileUrl, isLiked);
         }).toList();
+
     }
 
     public FacilityDetailResponse read(Long facilityId, Long userId) {
@@ -47,7 +60,7 @@ public class FacilityQueryService {
         return facilities.stream().map(facility -> {
             String profileUrl = facilityReader.getProfileUrl(facility.getId());
             String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
-            return FacilityResponse.from(facility, profileUrl, grade);
+            return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
         }).toList();
     }
 }

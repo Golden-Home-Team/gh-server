@@ -59,10 +59,11 @@ class FacilityQueryControllerSpecDocs extends Specification {
         def givenLatitude = 34.1
         def givenLongitude = 127.1
         def givenRadiusKm = 1
+        def givenUserPrincipal = new UserPrincipal(1L)
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 37.1, 126.4))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 37.1, 126.4, false))
 
-        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm)
+        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
         >> expectedResponse
 
         when:
@@ -79,6 +80,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         .param("lat", givenLatitude as String)
                         .param("lon", givenLongitude as String)
                         .param("radiusKm", givenRadiusKm as String)
+                .principal(givenUserPrincipal)
         ).andDo(document("facility-search",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
@@ -125,7 +127,9 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].latitude").type(JsonFieldType.NUMBER)
                                 .description("위도"),
                         fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
-                                .description("경도")
+                                .description("경도"),
+                        fieldWithPath("[].isLiked").type(JsonFieldType.BOOLEAN)
+                                .description("좋아요 여부")
 
                 )
         ))
@@ -386,7 +390,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
     def "좋아요한 시설 목록 조회"() {
         given:
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1, true))
 
         facilityService.getLikedFacilities(*_)
                 >> expectedResponse
@@ -427,6 +431,8 @@ class FacilityQueryControllerSpecDocs extends Specification {
                                 .description("시설 프로필 이미지"),
                         fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
                                 .description("시설 프로필 이미지"),
+                        fieldWithPath("[].isLiked").type(JsonFieldType.BOOLEAN)
+                                .description("시설 좋아요 여부")
 
                 )
         ))

@@ -21,7 +21,7 @@ public class ChatMessageSubscriber {
     public void send(String publishedMessage) {
         try {
             ChatMessage chatMessage = objectMapper.readValue(publishedMessage, ChatMessage.class);
-            messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+            messagingTemplate.convertAndSend("/topic/chat/" + chatMessage.getChatRoomId(), chatMessage);
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION, "ChatMessageSubscriber.send");
         } catch (Exception e) {

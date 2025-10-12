@@ -25,10 +25,8 @@ public class StompEventListener {
         String sessionId = accessor.getSessionId();
         String destination = accessor.getDestination();
         Long userId = sessionAttributeAccessor.getById(accessor, USER_KEY);
-        System.out.println("sessionId: " + sessionId + ", userId: " + userId + ", destination: " + destination);
         if (destination != null && destination.startsWith("/topic/chat/")) {
             long chatRoomId = Long.parseLong(destination.substring("/topic/chat/".length()));
-            System.out.println("chatRoomId = " + chatRoomId);
             chatConnectionRepository.connect(userId, sessionId, chatRoomId, Duration.ofMinutes(30));
         }
     }

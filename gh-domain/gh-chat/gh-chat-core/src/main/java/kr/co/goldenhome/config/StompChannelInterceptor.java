@@ -4,10 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
-import kr.co.goldenhome.messaging.ChatPrincipal;
 import kr.co.goldenhome.messaging.SessionAttributeAccessor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -57,9 +55,7 @@ public class StompChannelInterceptor implements ChannelInterceptor {
                 log.error(e.getMessage());
                 throw new CustomException(ErrorCode.UNAUTHORIZED_TOKEN, "StompChannelInterceptor.preSend");
             }
-
         }
-
         return ChannelInterceptor.super.preSend(message, channel);
     }
 

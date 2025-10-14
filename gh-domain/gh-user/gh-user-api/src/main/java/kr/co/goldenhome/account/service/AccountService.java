@@ -1,9 +1,12 @@
 package kr.co.goldenhome.account.service;
 
+import kr.co.goldenhome.authentication.dto.FcmRequest;
+import kr.co.goldenhome.entity.UserFcmToken;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.User;
 import kr.co.goldenhome.infrastructure.TokenRepository;
+import kr.co.goldenhome.infrastructure.UserFcmTokenRepository;
 import kr.co.goldenhome.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ public class AccountService {
 
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final UserFcmTokenRepository userFcmTokenRepository;
 
     @Transactional
     public void withdraw(Long userId) {
@@ -25,4 +29,17 @@ public class AccountService {
     public void logout(Long userId) {
         tokenRepository.deleteByKey(String.valueOf(userId));
     }
+
+    @Transactional
+    public void saveOrUpdateFcmToken(FcmRequest request, Long userId) {
+        userFcmTokenRepository.findByUserIdOrToken(userId, request.fcmToken()).ifPresentOrElse(
+                UserFcmToken::renewUpdatedAt,
+                () -> {
+                    UserFcmToken userFcmToken = UserFcmToken.create(userId, request.fcmToken(), request.deviceId());
+                    userFcmTokenRepository.save(userFcmToken);
+                }
+        );
+    }
+
+
 }

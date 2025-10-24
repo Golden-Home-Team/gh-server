@@ -14,7 +14,6 @@ public class FcmSender {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    // https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages?_gl=1*wck368*_up*MQ..*_ga*ODQ4NjQxNzY3LjE3NjAzNzk5MTE.*_ga_CW55HF8NVT*czE3NjAzNzk5MTEkbzEkZzAkdDE3NjAzNzk5MTEkajYwJGwwJGgw#Notification
     public void sendMessage(NotificationRequest request) {
         Notification notification = Notification.builder()
                 .setTitle(request.title())
@@ -30,16 +29,29 @@ public class FcmSender {
             firebaseMessaging.sendAsync(message);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.send");
+            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.sendMessage");
         }
     }
 
-    public void sendMessages(NotificationRequest request) {
-        MulticastMessage.builder(). //https://soso-hyeon.tistory.com/87
-                build();
+    public void sendMessages(NotificationsRequest request) {
+        Notification notification = Notification.builder()
+                .setTitle(request.title())
+                .setBody(request.body())
+                .build();
+        MulticastMessage message = MulticastMessage.builder()
+                .setNotification(notification)
+                .setApnsConfig(getApnsConfig())
+                .setAndroidConfig(getAndroidConfig())
+                .addAllTokens(request.token())
+                .build();
+        try {
+            firebaseMessaging.sendEachForMulticastAsync(message);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.sendMessages");
+        }
     }
 
-    // https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
     private ApnsConfig getApnsConfig() {
         return ApnsConfig.builder()
                 .setAps(Aps.builder().build())

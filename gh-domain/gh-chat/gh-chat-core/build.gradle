@@ -18,6 +18,8 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation(project(":gh-common"))
+    implementation(project(":gh-notification"))
+    implementation(project(":gh-api-interface:gh-user-api-interface"))
 }
 
 jar.enabled = true

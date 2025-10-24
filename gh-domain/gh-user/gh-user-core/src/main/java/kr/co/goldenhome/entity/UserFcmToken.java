@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "user_facm_tokens")
+@Table(name = "user_fcm_tokens")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

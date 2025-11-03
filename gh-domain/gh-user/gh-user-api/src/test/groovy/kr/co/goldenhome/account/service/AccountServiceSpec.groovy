@@ -62,6 +62,27 @@ class AccountServiceSpec extends Specification {
 
     }
 
+    def "saveOrUpdateFcmToken - userFcmTokenRepository 를 호출한다, present 라면 그대로 종료한다"() {
+        given:
+        def givenUserId = 1L
+        def givenFcmToken = "adg1234"
+        def givenDeviceId = "device-1"
+        def givenRequest = new FcmRequest(givenFcmToken, givenDeviceId)
+
+        when:
+        accountService.saveOrUpdateFcmToken(givenRequest, givenUserId)
+
+        then:
+        1 * userFcmTokenRepository.findByUserIdOrToken(*_) >> {
+            Long userId, String fcmToken ->
+                userId == givenUserId
+                fcmToken == givenFcmToken
+                Optional.of(UserFcmToken.builder().build())
+        }
+        0 * userFcmTokenRepository.save(*_)
+
+    }
+
     def "saveOrUpdateFcmToken - userFcmTokenRepository 를 호출한다, Not present 라면 save() 를 호출한다"() {
         given:
         def givenUserId = 1L

@@ -22,6 +22,9 @@ import java.util.UUID;
 @Service
 public class AuthRecoveryService {
 
+    /**
+     * 이렇게 인터페이스로 for 문 돌리는거 보다는 인증타입에 따라 다른 결과를 내여주는 클래스를 만드는게 나을듯
+     */
     private final List<VerificationManager> verificationManagers;
     private final UserRepository userRepository;
     private final PasswordProcessor passwordProcessor;

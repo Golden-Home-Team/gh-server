@@ -3,6 +3,8 @@ package kr.co.goldenhome.profile.service
 import kr.co.goldenhome.ProfileImageApi
 import kr.co.goldenhome.ProfileImageApiResponse
 import kr.co.goldenhome.entity.User
+import kr.co.goldenhome.exception.CustomException
+import kr.co.goldenhome.exception.ErrorCode
 import kr.co.goldenhome.infrastructure.PasswordProcessor
 import kr.co.goldenhome.infrastructure.UserRepository
 import kr.co.goldenhome.profile.dto.ProfileEmailRequest
@@ -51,6 +53,20 @@ class ProfileServiceSpec extends Specification {
 
     }
 
+    def "get - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenUserId = 1L
+
+        when:
+        profileService.get(givenUserId)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
+    }
+
     def "createProfileImage - profileImageApi 를 호출한다"() {
         given:
         def givenRequest = new ProfileImageRequest("123-adb-image1.jpg")
@@ -82,6 +98,20 @@ class ProfileServiceSpec extends Specification {
         }
     }
 
+    def "modifyName - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenRequest = new ProfileNameRequest("test2user")
+
+        when:
+        profileService.modifyName(givenRequest, 1L)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
+    }
+
     def "modifyLoginId - userRepository, signupManager 를 호출한다"() {
         given:
         def givenRequest = new ProfileLoginIdRequest("test2user")
@@ -99,6 +129,19 @@ class ProfileServiceSpec extends Specification {
         1 * signupManager.isLoginIdDuplicated(*_)
     }
 
+    def "modifyLoginId - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenRequest = new ProfileLoginIdRequest("test2user")
+
+        when:
+        profileService.modifyLoginId(givenRequest, 1L)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
+    }
+
     def "modifyPhoneNumber - userRepository 를 호출한다"() {
         given:
         def givenRequest = new ProfilePhoneNumberRequest("01012345678")
@@ -112,6 +155,19 @@ class ProfileServiceSpec extends Specification {
                 userId == 1L
                 Optional.of(User.builder().build())
         }
+    }
+
+    def "modifyPhoneNumber - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenRequest = new ProfilePhoneNumberRequest("01012345678")
+
+        when:
+        profileService.modifyPhoneNumber(givenRequest, 1L)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
     }
 
     def "modifyEmail - userRepository, signupManager 를 호출한다"() {
@@ -129,6 +185,19 @@ class ProfileServiceSpec extends Specification {
         }
         and:
         1 * signupManager.isEmailDuplicated(*_)
+    }
+
+    def "modifyEmail - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenRequest = new ProfileEmailRequest("test2user@naver.com")
+
+        when:
+        profileService.modifyEmail(givenRequest, 1L)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
     }
 
     def "modifyPassword - userRepository, passwordProcessor 를 호출한다"() {
@@ -150,6 +219,19 @@ class ProfileServiceSpec extends Specification {
                 password == givenRequest.password()
                 "dfienfkef"
         }
+    }
+
+    def "modifyPassword - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
+        given:
+        def givenRequest = new ProfilePasswordRequest("1234")
+
+        when:
+        profileService.modifyPassword(givenRequest, 1L)
+
+        then:
+        1 * userRepository.findById(*_) >> Optional.empty()
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.NOT_FOUND
     }
 
 

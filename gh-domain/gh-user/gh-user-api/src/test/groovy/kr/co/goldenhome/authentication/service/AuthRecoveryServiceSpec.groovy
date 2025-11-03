@@ -28,7 +28,7 @@ class AuthRecoveryServiceSpec extends Specification {
         emailVerificationManager.getVerificationType() >> VerificationType.EMAIL
     }
 
-    def "requestVerification - emailVerificationManager 를 호출한다"() {
+    def "requestVerification - Email 타입의 emailVerificationManager 를 호출한다"() {
         given:
         def givenRequest = new VerificationRequest(
                 "EMAIL",

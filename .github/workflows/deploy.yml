@@ -25,8 +25,9 @@ jobs:
       - name: application.yml 파일 만들기
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > gh-application-container/src/main/resources/application.yml
 
-      - name: fcm sdk 파일 만들기
-        run: echo "${{ secrets.FCM_SDK }}" >> gh-application-container/src/main/resources/gh-notification-firebase-adminsdk-fbsvc-4ecbec311d.json
+      - name: fcm sdk 파일 만들기 (Base64 디코딩)
+        run: |
+          echo "${{ secrets.FCM_SDK_BASE64 }}" | base64 -d > gh-application-container/src/main/resources/gh-notification-firebase-adminsdk-fbsvc-4ecbec311d.json
       # 추가
       - name: gradlew 권한주기
         run: chmod +x ./gradlew

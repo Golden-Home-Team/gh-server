@@ -13,20 +13,20 @@ import java.util.concurrent.locks.ReentrantLock;
 @Component
 public class OidcPublicKeyProvider {
 
-    private final Map<String, Key> cache = new ConcurrentHashMap<>();
+    private final Map<String, Key> jwks = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
 
-    public Key get(String id, Supplier<JwkSet> supplier) {
-        Key key = cache.get(id);
+    public Key get(String kid, Supplier<JwkSet> supplier) {
+        Key key = jwks.get(kid);
         if (key != null) return key;
         try {
             if (lock.tryLock(5, TimeUnit.SECONDS)) {
                 try {
-                    key = cache.get(id);
+                    key = jwks.get(kid);
                     if (key != null) return key;
                     JwkSet jwkSet = supplier.get();
-                    jwkSet.forEach(jwk -> cache.put(jwk.getId(), jwk.toKey()));
-                    return cache.get(id);
+                    jwkSet.forEach(jwk -> jwks.put(jwk.getId(), jwk.toKey()));
+                    return jwks.get(kid);
                 } finally {
                     lock.unlock();
                 }
@@ -34,6 +34,6 @@ public class OidcPublicKeyProvider {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        throw new IllegalArgumentException();
+        throw new SocialLoginException();
     }
 }

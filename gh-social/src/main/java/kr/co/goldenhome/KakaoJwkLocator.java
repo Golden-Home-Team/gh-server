@@ -13,7 +13,7 @@ import java.security.Key;
 @RequiredArgsConstructor
 public class KakaoJwkLocator implements Locator<Key> {
 
-    private final KakaoOidcJwkParser kakaoOidcJwkParser;
+    private final KakaoOidcJwkSetProvider kakaoOidcJwkSetProvider;
     private final OidcPublicKeyProvider oidcPublicKeyProvider;
 
     @Override
@@ -23,6 +23,6 @@ public class KakaoJwkLocator implements Locator<Key> {
             log.error("공개키가 존재하지 않음, origin={}", "KakaoJwkLocator.locate");
             throw new SocialLoginException();
         }
-        return oidcPublicKeyProvider.get(publicKeyId, kakaoOidcJwkParser);
+        return oidcPublicKeyProvider.get(publicKeyId, kakaoOidcJwkSetProvider);
     }
 }

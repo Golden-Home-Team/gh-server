@@ -69,4 +69,28 @@ class SignupManagerSpec extends Specification {
         }
     }
 
+    def "isEmailDuplicated - userRepository 를 호출한다"() {
+        given:
+        def givenEmail = "rnwnsgud@naver.com"
+
+        when:
+        signupManager.isEmailDuplicated(givenEmail)
+
+        then:
+        1 * userRepository.existsByEmail(givenEmail) >> false
+    }
+
+    def "isEmailDuplicated - 이메일이 중복되면 예외를 던진다"() {
+        given:
+        def givenEmail = "rnwnsgud@naver.com"
+
+        when:
+        signupManager.isEmailDuplicated(givenEmail)
+
+        then:
+        1 * userRepository.existsByEmail(givenEmail) >> true
+        def e = thrown(CustomException)
+        e.errorCode == ErrorCode.DUPLICATED_EMAIL_ID
+    }
+
 }

@@ -3,6 +3,7 @@ package kr.co.goldenhome.account.docs
 import com.fasterxml.jackson.databind.ObjectMapper
 import kr.co.goldenhome.account.service.AccountService
 import kr.co.goldenhome.auth.UserPrincipal
+import kr.co.goldenhome.authentication.dto.FcmRequest
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -20,6 +21,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 
 @ActiveProfiles("test")
@@ -69,6 +71,34 @@ class AccountControllerDocsSpec extends Specification {
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                         .description("로그아웃은 헤더에 액세스 토큰을 없애주세요. 해당 api 는 Refresh Token 을 없애는 용도입니다.")
+                        )
+                ))
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+        }
+
+    }
+
+    def "FCM 토큰 저장"() {
+
+        when:
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/fcm")
+                .principal(new UserPrincipal(1L))
+                .content(objectMapper.writeValueAsString(new FcmRequest("fcm-token", "device-id-1")))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("user-fcm",
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("fcmToken").type(JsonFieldType.STRING)
+                                        .description("fcm토큰"),
+                                fieldWithPath("deviceId").type(JsonFieldType.STRING)
+                                        .description("디바이스 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN)
+                                        .description("성공여부")
                         )
                 ))
 

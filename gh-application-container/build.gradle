@@ -73,6 +73,7 @@ dependencies {
 
     implementation(project(":gh-event"))
     implementation(project(":gh-common"))
-    implementation(project(":gh-external-social"))
+    implementation(project(":gh-social"))
+    implementation(project(":gh-notification"))
 
 }

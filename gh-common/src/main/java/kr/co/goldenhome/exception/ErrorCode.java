@@ -18,6 +18,7 @@ public enum ErrorCode {
     JSON_PROCESSING_EXCEPTION(400, "Json 변환 중 오류 발생"),
     INVALID_MESSAGE(400, "메시지 전송 중 오류 발생"),
     INVALID_CHAT_ROOM(400, "자기 자신과의 채팅방은 만들 수 없습니다."),
+    FCM_FAILED(400, "FCM 전송 중 에러 발생"),
     LOGIN_FAILED(401, "아이디 혹은 비밀번호가 틀리거나 유효하지 않은 사용자입니다."),
     UNAUTHORIZED_TOKEN(401, "유효하지 않은 토큰입니다."),
     SOCIAL_LOGIN_FAILED(401, "소셜 로그인에 실패했습니다."),

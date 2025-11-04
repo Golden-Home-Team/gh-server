@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 
 
 @Component
-public class KakaoOidcJwkParser implements Supplier<JwkSet> {
+public class KakaoOidcJwkSetProvider implements Supplier<JwkSet> {
 
     @Override
     public JwkSet get() {

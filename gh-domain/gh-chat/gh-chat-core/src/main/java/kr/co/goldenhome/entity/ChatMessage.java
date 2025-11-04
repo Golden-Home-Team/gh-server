@@ -17,7 +17,7 @@ import java.util.Map;
 public class ChatMessage {
 
     @Id
-    private String id; //todo 메시지 읽음 처리 고민 : 각 채팅마다 마지막 읽음 메세 저장 vs 몽고DB에 안 읽은 채팅 테이블 별도 관리
+    private String id;
     @Indexed
     private Long chatRoomId;
     private Long senderId;

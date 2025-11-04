@@ -20,7 +20,6 @@ class EmailVerificationRepositoryTest extends Specification {
     EntityManager entityManager
 
     def setup() {
-        // 각 테스트 메서드 실행 전에 DB 초기화 (테스트 간 독립성 보장)
         emailVerificationRepository.deleteAll()
         entityManager.flush()
         entityManager.clear()

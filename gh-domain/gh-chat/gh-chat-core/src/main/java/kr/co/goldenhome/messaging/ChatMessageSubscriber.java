@@ -31,22 +31,10 @@ public class ChatMessageSubscriber {
         try {
             ChatMessage chatMessage = objectMapper.readValue(publishedMessage, ChatMessage.class);
             Long chatRoomId = chatMessage.getChatRoomId();
+            Long senderId = chatMessage.getSenderId();
+            String content = chatMessage.getContent();
             messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId, chatMessage);
-//            eventPublisher.publishEvent(new ChatNotificationEvent()); // todo 이벤트로 분리
-//            List<Long> list = chatUserRepository.findByChatRoomId(chatRoomId).stream()
-//                    .map(chatUser -> {
-//                        Long userId = chatUser.getUserId();
-//                        if (!chatConnectionRepository.isUserViewingChatRoom(userId, chatRoomId)) return userId;
-//                        return null;
-//                    }).toList();
-//            List<String> fcmTokens = userApi.getFcmTokens(list);
-//            String userName = userApi.getUserName(senderId);
-//            fcmSender.sendMessages(new NotificationsRequest(
-//                    fcmTokens,
-//                    userName,
-//                    publishedMessage
-//            ));
-
+            eventPublisher.publishEvent(new ChatNotificationEvent(chatRoomId,senderId,content));
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.JSON_PROCESSING_EXCEPTION, "ChatMessageSubscriber.send");
         } catch (Exception e) {

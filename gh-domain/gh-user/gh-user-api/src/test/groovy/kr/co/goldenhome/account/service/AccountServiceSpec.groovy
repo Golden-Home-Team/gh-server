@@ -1,5 +1,6 @@
 package kr.co.goldenhome.account.service
 
+import kr.co.goldenhome.account.dto.NotifySetting
 import kr.co.goldenhome.authentication.dto.FcmRequest
 import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.entity.UserFcmToken
@@ -102,6 +103,18 @@ class AccountServiceSpec extends Specification {
         }
         1 * userFcmTokenRepository.save(*_)
 
+    }
+
+    def "setNotification - userRepository 를 호출한다"() {
+        given:
+        def givenNotifySetting = new NotifySetting(true, false)
+        def givenUserId = 1L
+
+        when:
+        accountService.setNotification(givenNotifySetting, givenUserId)
+
+        then:
+        1 * userRepository.findById(givenUserId) >> Optional.of(User.builder().build())
     }
 
 }

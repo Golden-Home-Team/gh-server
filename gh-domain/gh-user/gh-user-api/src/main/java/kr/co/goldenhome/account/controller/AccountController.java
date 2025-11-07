@@ -1,6 +1,7 @@
 package kr.co.goldenhome.account.controller;
 
 import jakarta.validation.Valid;
+import kr.co.goldenhome.account.dto.NotifySetting;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
 import kr.co.goldenhome.dto.CommonResponse;
@@ -36,4 +37,12 @@ public class AccountController {
         accountService.saveOrUpdateFcmToken(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
+
+    @PostMapping("/notification")
+    public CommonResponse notification(@Valid @RequestBody NotifySetting notifySetting, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        accountService.setNotification(notifySetting, userPrincipal.userId());
+        return CommonResponse.ok();
+    }
+
+
 }

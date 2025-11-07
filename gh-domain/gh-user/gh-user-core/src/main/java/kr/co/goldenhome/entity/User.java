@@ -40,11 +40,13 @@ public class User {
     private ProviderType providerType;
     @Column(unique = true)
     private String providerId;
+    private Boolean chatNotify;
+    private Boolean noticeNotify;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @Builder
-    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, Boolean chatNotify, Boolean noticeNotify, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.loginId = loginId;
         this.email = email;
@@ -55,6 +57,8 @@ public class User {
         this.status = status;
         this.providerType = providerType;
         this.providerId = providerId;
+        this.chatNotify = chatNotify;
+        this.noticeNotify = noticeNotify;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -111,5 +115,10 @@ public class User {
 
     public void withdraw() {
         this.status = UserStatus.DELETED;
+    }
+
+    public void setNotification(Boolean notice, Boolean chat) {
+        this.noticeNotify = notice;
+        this.chatNotify = chat;
     }
 }

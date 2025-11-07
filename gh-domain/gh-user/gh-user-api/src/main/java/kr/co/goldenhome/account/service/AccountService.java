@@ -1,5 +1,6 @@
 package kr.co.goldenhome.account.service;
 
+import kr.co.goldenhome.account.dto.NotifySetting;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
 import kr.co.goldenhome.entity.UserFcmToken;
 import kr.co.goldenhome.exception.CustomException;
@@ -41,5 +42,9 @@ public class AccountService {
         );
     }
 
-
+    @Transactional
+    public void setNotification(NotifySetting notifySetting, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "UserAuthenticationManager.withdraw"));
+        user.setNotification(notifySetting.notice(), notifySetting.chat());
+    }
 }

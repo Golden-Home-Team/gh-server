@@ -25,12 +25,12 @@ public class CommunityNoticeService {
 
     @Transactional
     public void update(CommunityNoticeUpdateRequest request, Long noticeId) {
-        CommunityNotice communityNotice = communityNoticeRepository.findById(noticeId).orElseThrow(() -> new CustomException(ErrorCode.NOTICE_NOT_FOUND, "CommunityNoticeService.update"));
+        CommunityNotice communityNotice = communityNoticeRepository.findById(noticeId).orElseThrow(() -> new CustomException(ErrorCode.COMMUNITY_NOTICE_NOT_FOUND, "CommunityNoticeService.update"));
         communityNotice.update(request.title(), request.content());
     }
 
     public CommunityNotice read(Long noticeId) {
-        return communityNoticeRepository.findById(noticeId).orElseThrow(()-> new CustomException(ErrorCode.NOTICE_NOT_FOUND, "CommunityNoticeService.read"));
+        return communityNoticeRepository.findById(noticeId).orElseThrow(()-> new CustomException(ErrorCode.COMMUNITY_NOTICE_NOT_FOUND, "CommunityNoticeService.read"));
     }
 
     public Optional<CommunityNotice> readLatest(Long facilityId) {

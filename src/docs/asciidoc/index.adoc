@@ -69,6 +69,9 @@ ifndef::snippets[]
 :chat-enter: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-enter
 :chat-get-rooms: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-rooms
 :chat-get-messages: ../../../gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-messages
+:notice-write: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-write
+:notice-readAll: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-readAll
+:notice-read: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-read
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -440,7 +443,7 @@ include::{community-entry-enter}/query-parameters.adoc[]
 include::{community-entry-enter}/http-response.adoc[]
 include::{community-entry-enter}/response-fields.adoc[]
 
-== 공지 작성
+== 커뮤니티 공지 작성
 === HTTP Request
 include::{community-notice-write}/http-request.adoc[]
 include::{community-notice-write}/request-fields.adoc[]
@@ -450,7 +453,7 @@ include::{community-notice-write}/path-parameters.adoc[]
 include::{community-notice-write}/http-response.adoc[]
 include::{community-notice-write}/response-fields.adoc[]
 
-== 공지 수정
+== 커뮤니티 공지 수정
 === HTTP Request
 include::{community-notice-update}/http-request.adoc[]
 include::{community-notice-update}/request-fields.adoc[]
@@ -460,7 +463,7 @@ include::{community-notice-update}/path-parameters.adoc[]
 include::{community-notice-update}/http-response.adoc[]
 include::{community-notice-update}/response-fields.adoc[]
 
-== 공지 조회
+== 커뮤니티 공지 조회
 === HTTP Request
 include::{community-notice-read}/http-request.adoc[]
 include::{community-notice-read}/path-parameters.adoc[]
@@ -469,7 +472,7 @@ include::{community-notice-read}/path-parameters.adoc[]
 include::{community-notice-read}/http-response.adoc[]
 include::{community-notice-read}/response-fields.adoc[]
 
-== 공지 리스트 조회
+== 커뮤니티 공지 리스트 조회
 === HTTP Request
 include::{community-notice-readAll}/http-request.adoc[]
 include::{community-notice-readAll}/path-parameters.adoc[]
@@ -729,3 +732,31 @@ include::{chat-get-messages}/path-parameters.adoc[]
 include::{chat-get-messages}/http-response.adoc[]
 include::{chat-get-messages}/response-fields.adoc[]
 
+[[Notice-API]]
+== Notice API
+
+== 공지사항 작성
+=== HTTP Request
+include::{notice-write}/http-request.adoc[]
+include::{notice-write}/request-fields.adoc[]
+
+=== HTTP Response
+include::{notice-write}/http-response.adoc[]
+include::{notice-write}/response-fields.adoc[]
+
+== 공지사항목록 조회
+=== HTTP Request
+include::{notice-readAll}/http-request.adoc[]
+include::{notice-readAll}/query-parameters.adoc[]
+
+=== HTTP Response
+include::{notice-readAll}/http-response.adoc[]
+include::{notice-readAll}/response-fields.adoc[]
+
+== 공지사항 조회
+=== HTTP Request
+include::{notice-read}/http-request.adoc[]
+
+=== HTTP Response
+include::{notice-read}/http-response.adoc[]
+include::{notice-read}/response-fields.adoc[]

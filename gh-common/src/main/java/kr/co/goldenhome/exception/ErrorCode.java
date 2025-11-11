@@ -30,7 +30,7 @@ public enum ErrorCode {
     RESUME_NOT_FOUND(404, "이력서 제출전에 작성해야합니다."),
     USER_NOT_FOUND(404, "존재하지 않는 유저"),
     EMAIL_NOT_FOUND(404, "해당 이메일로 가입한 계정이 존재하지 않습니다."),
-    NOTICE_NOT_FOUND(404, "해당 공지가 존재하지 않습니다."),
+    COMMUNITY_NOTICE_NOT_FOUND(404, "해당 커뮤니티 공지가 존재하지 않습니다."),
     LOGIN_ID_NOT_FOUND(404, "아이디가 존재하지 않습니다."),
     FACILITY_NOT_FOUND(404, "존재하지 않는 시설입니다"),
     DAILY_DIET_NOT_FOUND(404, "존재하지 않는 오늘의 식단입니다"),
@@ -42,6 +42,7 @@ public enum ErrorCode {
     OPTION_NOT_FOUND(404, "해당 질문의 옵션이 존재하지 않습니다."),
     SCORE_NOT_FOUND(404, "원점수 합에 해당하는 환산점수 합이 존재하지 않습니다."),
     CHATROOM_PARTICIPANT_NOT_FOUND(404, "해당 참여자는 채팅방 목록에 존재하지 않습니다."),
+    NOTICE_NOT_FOUND(404, "공지사항이 존재하지 않습니다."),
     DUPLICATED_LOGIN_ID(409, "이미 존재하는 아이디입니다."),
     DUPLICATED_EMAIL_ID(409, "이미 존재하는 이메일입니다."),
     UNKNOWN_ERROR(500, "알 수 없는 에러");

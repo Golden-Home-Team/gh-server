@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// todo api 문서
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/communities")

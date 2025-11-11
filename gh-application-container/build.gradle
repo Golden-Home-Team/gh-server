@@ -71,6 +71,8 @@ dependencies {
     implementation(project(":gh-domain:gh-chat:gh-chat-api"))
     implementation(project(":gh-domain:gh-chat:gh-chat-core"))
 
+    implementation(project(":gh-domain:gh-notice:gh-notice-api"))
+
     implementation(project(":gh-event"))
     implementation(project(":gh-common"))
     implementation(project(":gh-social"))

@@ -1,6 +1,8 @@
 package kr.co.goldenhome.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.NoticeRequest
 import kr.co.goldenhome.entity.Notice
@@ -44,6 +46,12 @@ class NoticeControllerSpecDocs extends Specification {
 
     @SpringBean
     NoticeService noticeService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "공지등록"() {
 

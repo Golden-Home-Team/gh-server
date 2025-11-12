@@ -7,6 +7,8 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     testImplementation 'com.h2database:h2'
+    testImplementation("com.google.firebase:firebase-admin:9.7.0")
+
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-notice:gh-notice-core"))

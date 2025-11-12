@@ -2,6 +2,7 @@ package kr.co.goldenhome.service
 
 import kr.co.goldenhome.dto.NoticeRequest
 import kr.co.goldenhome.entity.Notice
+import kr.co.goldenhome.implement.NotificationSender
 import kr.co.goldenhome.repository.NoticeRepository
 import spock.lang.Specification
 
@@ -9,9 +10,10 @@ class NoticeServiceSpec extends Specification {
 
     NoticeService noticeService
     NoticeRepository noticeRepository = Mock()
+    NotificationSender notificationSender = Mock()
 
     def setup() {
-        noticeService = new NoticeService(noticeRepository)
+        noticeService = new NoticeService(noticeRepository,notificationSender)
     }
 
     def "write - noticeRepository 를 호출한다"() {

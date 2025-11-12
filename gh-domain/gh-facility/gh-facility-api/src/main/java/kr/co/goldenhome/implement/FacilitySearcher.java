@@ -94,6 +94,23 @@
                 filters.add(yearRangeFilter);
             }
 
+            Query locationExistsFilter = ExistsQuery.of(e -> e.field("location"))._toQuery();
+            filters.add(locationExistsFilter);
+
+            if (latitude != null && longitude != null && radiusKm != null) {
+                LatLonGeoLocation latLon = LatLonGeoLocation.of(l -> l.lat(latitude).lon(longitude));
+
+                Query geoDistanceQuery = GeoDistanceQuery.of(q -> q
+                        .field("location")
+                        .location(GeoLocation.of(l -> l.latlon(latLon)))
+                        .distance(radiusKm+"km")
+                        .distanceType(GeoDistanceType.Arc)
+                )._toQuery();
+
+                filters.add(geoDistanceQuery);
+
+            }
+
             Query boolQuery = BoolQuery.of(b -> b
                     .must(queries)
                     .filter(filters)
@@ -112,19 +129,7 @@
                         Sort.unsorted();
             };
 
-            if (latitude != null && longitude != null && radiusKm != null) {
-                LatLonGeoLocation latLon = LatLonGeoLocation.of(l -> l.lat(latitude).lon(longitude));
 
-                Query geoDistanceQuery = GeoDistanceQuery.of(q -> q
-                        .field("location")
-                        .location(GeoLocation.of(l -> l.latlon(latLon)))
-                        .distance(radiusKm+"km")
-                        .distanceType(GeoDistanceType.Arc)
-                )._toQuery();
-
-                filters.add(geoDistanceQuery);
-
-            }
 
             NativeQuery nativeQuery = NativeQuery.builder()
                     .withQuery(boolQuery)

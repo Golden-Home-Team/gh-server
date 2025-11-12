@@ -3,6 +3,7 @@ package kr.co.goldenhome.service;
 import kr.co.goldenhome.dto.NoticeRequest;
 import kr.co.goldenhome.entity.Notice;
 import kr.co.goldenhome.exception.CustomException;
+import kr.co.goldenhome.implement.NotificationSender;
 import kr.co.goldenhome.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import static kr.co.goldenhome.exception.ErrorCode.NOT_FOUND;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final NotificationSender notificationSender;
 
     public void write(NoticeRequest request, Long userId) {
         noticeRepository.save(Notice.create(request.title(), request.content(), userId));

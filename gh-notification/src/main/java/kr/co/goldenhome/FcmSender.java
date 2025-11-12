@@ -13,25 +13,25 @@ import org.springframework.stereotype.Component;
 public class FcmSender {
 
     private final FirebaseMessaging firebaseMessaging;
-
-    public void sendMessage(NotificationRequest request) {
-        Notification notification = Notification.builder()
-                .setTitle(request.title())
-                .setBody(request.body())
-                .build();
-        Message message = Message.builder()
-                .setToken(request.token())
-                .setNotification(notification)
-                .setApnsConfig(getApnsConfig())
-                .setAndroidConfig(getAndroidConfig())
-                .build();
-        try {
-            firebaseMessaging.sendAsync(message);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.sendMessage");
-        }
-    }
+//
+//    public void sendMessage(NotificationRequest request) {
+//        Notification notification = Notification.builder()
+//                .setTitle(request.title())
+//                .setBody(request.body())
+//                .build();
+//        Message message = Message.builder()
+//                .setToken(request.token())
+//                .setNotification(notification)
+//                .setApnsConfig(getApnsConfig(request))
+//                .setAndroidConfig(getAndroidConfig())
+//                .build();
+//        try {
+//            firebaseMessaging.sendAsync(message);
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.sendMessage");
+//        }
+//    }
 
     public void sendMessages(NotificationsRequest request) {
         Notification notification = Notification.builder()
@@ -40,8 +40,8 @@ public class FcmSender {
                 .build();
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
-                .setApnsConfig(getApnsConfig())
-                .setAndroidConfig(getAndroidConfig())
+                .setApnsConfig(getApnsConfig(request))
+                .setAndroidConfig(getAndroidConfig(request))
                 .addAllTokens(request.token())
                 .build();
         try {
@@ -52,14 +52,32 @@ public class FcmSender {
         }
     }
 
-    private ApnsConfig getApnsConfig() {
+    /**
+     * https://developer.apple.com/documentation/usernotifications/generating-a-remote-notification
+     */
+    private ApnsConfig getApnsConfig(NotificationsRequest request) {
         return ApnsConfig.builder()
-                .setAps(Aps.builder().build())
+                .setAps(Aps.builder()
+                        .setAlert(ApsAlert
+                                .builder()
+                                .setTitle(request.title())
+                                .setBody(request.body())
+//                                .setLaunchImage()
+                                .build())
+                        .build())
                 .build();
     }
 
-    private AndroidConfig getAndroidConfig() {
+    /**
+     * https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages?_gl=1*rfaly5*_up*MQ..*_ga*MTIzMDg1MTE1NC4xNzYyODg4ODQw*_ga_CW55HF8NVT*czE3NjI4ODg4MzkkbzEkZzAkdDE3NjI4ODg4NzMkajI2JGwwJGgw#AndroidNotification
+     */
+    private AndroidConfig getAndroidConfig(NotificationsRequest request) {
         return AndroidConfig.builder()
+                .setPriority(AndroidConfig.Priority.HIGH) // 자원사용 증가, 알림 빨리 도달
+                .setNotification(AndroidNotification.builder()
+                        .setTitle(request.title())
+                        .setBody(request.body())
+                        .build())
                 .build();
     }
 }

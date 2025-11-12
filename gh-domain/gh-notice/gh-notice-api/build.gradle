@@ -10,6 +10,7 @@ dependencies {
 
     implementation(project(":gh-common"))
     implementation(project(":gh-domain:gh-notice:gh-notice-core"))
+    implementation(project(":gh-notification"))
 
 
 }

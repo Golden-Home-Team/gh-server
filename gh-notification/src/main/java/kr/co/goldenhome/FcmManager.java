@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FcmSender {
+public class FcmManager {
 
     private final FirebaseMessaging firebaseMessaging;
 //
@@ -32,6 +34,33 @@ public class FcmSender {
 //            throw new CustomException(ErrorCode.FCM_FAILED, "FcmSender.sendMessage");
 //        }
 //    }
+
+
+    public void subscribeToTopic(List<String> tokens, String topicName) {
+        try {
+            TopicManagementResponse response = FirebaseMessaging.getInstance()
+                    .subscribeToTopic(tokens, topicName);
+            if (response.getFailureCount() > 0) {
+                // 실패한 토큰처리
+
+            }
+        } catch (FirebaseMessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void unsubscribeFromTopic(List<String> tokens, String topicName) {
+        try {
+            TopicManagementResponse response = FirebaseMessaging.getInstance()
+                    .unsubscribeFromTopic(tokens, topicName);
+
+            if (response.getFailureCount() > 0) {
+                // 실패한 토큰처리
+            }
+        } catch (Exception e) {
+            // 예외 처리
+        }
+    }
 
     public void sendMessages(NotificationsRequest request) {
         Notification notification = Notification.builder()

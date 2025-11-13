@@ -1,7 +1,7 @@
 package kr.co.goldenhome.account.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import kr.co.goldenhome.account.dto.NotifySetting
+import kr.co.goldenhome.account.dto.NotificationSettingRequest
 import kr.co.goldenhome.account.service.AccountService
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.authentication.dto.FcmRequest
@@ -114,15 +114,15 @@ class AccountControllerDocsSpec extends Specification {
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/notification")
                 .principal(new UserPrincipal(1L))
-                .content(objectMapper.writeValueAsString(new NotifySetting(true, false)))
+                .content(objectMapper.writeValueAsString(new NotificationSettingRequest("NOTICE", false)))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("user-notification",
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("notice").type(JsonFieldType.BOOLEAN)
-                                        .description("공지 알림 여부"),
-                                fieldWithPath("chat").type(JsonFieldType.BOOLEAN)
-                                        .description("채팅 알림 여부")
+                                fieldWithPath("type").type(JsonFieldType.STRING)
+                                        .description("알림 타입 e.g. NOTICE, CHAT"),
+                                fieldWithPath("isEnabled").type(JsonFieldType.BOOLEAN)
+                                        .description("알림 허용 여부")
                         ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)

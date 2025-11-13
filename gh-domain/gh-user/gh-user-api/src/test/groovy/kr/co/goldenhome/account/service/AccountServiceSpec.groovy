@@ -1,9 +1,12 @@
 package kr.co.goldenhome.account.service
 
-import kr.co.goldenhome.account.dto.NotifySetting
+import kr.co.goldenhome.account.dto.NotificationSettingRequest
 import kr.co.goldenhome.authentication.dto.FcmRequest
+import kr.co.goldenhome.entity.NotificationSetting
 import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.entity.UserFcmToken
+import kr.co.goldenhome.enums.NotificationType
+import kr.co.goldenhome.infrastructure.NotificationSettingRepository
 import kr.co.goldenhome.infrastructure.TokenRepository
 import kr.co.goldenhome.infrastructure.UserFcmTokenRepository
 import kr.co.goldenhome.infrastructure.UserRepository
@@ -15,9 +18,10 @@ class AccountServiceSpec extends Specification {
     UserRepository userRepository = Mock()
     TokenRepository tokenRepository = Mock()
     UserFcmTokenRepository userFcmTokenRepository = Mock()
+    NotificationSettingRepository notificationSettingRepository = Mock()
 
     def setup() {
-        accountService = new AccountService(userRepository,tokenRepository,userFcmTokenRepository)
+        accountService = new AccountService(userRepository,tokenRepository,userFcmTokenRepository, notificationSettingRepository)
     }
 
     def "withdraw - userRepository 를 호출한다"() {
@@ -105,16 +109,34 @@ class AccountServiceSpec extends Specification {
 
     }
 
-    def "setNotification - userRepository 를 호출한다"() {
+    def "updateNotificationSetting - notificationSettingRepository 를 호출한다(존재하면 그대로 종료한다)"() {
         given:
-        def givenNotifySetting = new NotifySetting(true, false)
+        def givenRequest = new NotificationSettingRequest("NOTICE", true)
         def givenUserId = 1L
 
         when:
-        accountService.setNotification(givenNotifySetting, givenUserId)
+        accountService.updateNotificationSetting(givenRequest, givenUserId)
 
         then:
-        1 * userRepository.findById(givenUserId) >> Optional.of(User.builder().build())
+        1 * notificationSettingRepository.findByUserIdAndNotificationType(givenUserId, NotificationType.NOTICE) >>
+                Optional.of(NotificationSetting.builder().build())
+
     }
+
+    def "updateNotificationSetting - notificationSettingRepository 를 호출한다(존재하지 않으면 추가로 호출한다)"() {
+        given:
+        def givenRequest = new NotificationSettingRequest("NOTICE", true)
+        def givenUserId = 1L
+
+        when:
+        accountService.updateNotificationSetting(givenRequest, givenUserId)
+
+        then:
+        1 * notificationSettingRepository.findByUserIdAndNotificationType(givenUserId, NotificationType.NOTICE) >>
+                Optional.empty()
+        1 * notificationSettingRepository.save(_)
+
+    }
+
 
 }

@@ -1,11 +1,14 @@
 package kr.co.goldenhome.account.service;
 
-import kr.co.goldenhome.account.dto.NotifySetting;
+import kr.co.goldenhome.account.dto.NotificationSettingRequest;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
+import kr.co.goldenhome.entity.NotificationSetting;
 import kr.co.goldenhome.entity.UserFcmToken;
+import kr.co.goldenhome.enums.NotificationType;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
 import kr.co.goldenhome.entity.User;
+import kr.co.goldenhome.infrastructure.NotificationSettingRepository;
 import kr.co.goldenhome.infrastructure.TokenRepository;
 import kr.co.goldenhome.infrastructure.UserFcmTokenRepository;
 import kr.co.goldenhome.infrastructure.UserRepository;
@@ -20,10 +23,11 @@ public class AccountService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final UserFcmTokenRepository userFcmTokenRepository;
+    private final NotificationSettingRepository notificationSettingRepository;
 
     @Transactional
     public void withdraw(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "UserAuthenticationManager.withdraw"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "AccountService.withdraw"));
         user.withdraw();
     }
 
@@ -43,8 +47,13 @@ public class AccountService {
     }
 
     @Transactional
-    public void setNotification(NotifySetting notifySetting, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "UserAuthenticationManager.withdraw"));
-        user.setNotification(notifySetting.notice(), notifySetting.chat());
+    public void updateNotificationSetting(NotificationSettingRequest request, Long userId) {
+        notificationSettingRepository.findByUserIdAndNotificationType(userId, NotificationType.valueOf(request.type())).ifPresentOrElse(
+                notificationSetting -> notificationSetting.updateStatus(request.isEnabled()),
+                () -> {
+                    NotificationSetting notificationSetting = NotificationSetting.create(userId, NotificationType.valueOf(request.type()), request.isEnabled());
+                    notificationSettingRepository.save(notificationSetting);
+                }
+        );
     }
 }

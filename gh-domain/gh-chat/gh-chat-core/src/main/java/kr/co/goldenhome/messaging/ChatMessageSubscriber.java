@@ -2,21 +2,14 @@ package kr.co.goldenhome.messaging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.goldenhome.FcmSender;
-import kr.co.goldenhome.NotificationsRequest;
-import kr.co.goldenhome.UserApi;
 import kr.co.goldenhome.entity.ChatMessage;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
-import kr.co.goldenhome.repository.ChatConnectionRepository;
-import kr.co.goldenhome.repository.ChatUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Slf4j
 @Component

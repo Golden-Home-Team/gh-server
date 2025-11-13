@@ -1,11 +1,13 @@
 package kr.co.goldenhome.account.controller;
 
 import jakarta.validation.Valid;
-import kr.co.goldenhome.account.dto.NotifySetting;
+import kr.co.goldenhome.account.dto.NotificationSettingRequest;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
 import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.account.service.AccountService;
+import kr.co.goldenhome.enums.NotificationType;
+import kr.co.goldenhome.validator.EnumValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ public class AccountController {
         return CommonResponse.ok();
     }
 
+    //todo fcm 삭제?
     @PostMapping("/logout")
     public CommonResponse logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         accountService.logout(userPrincipal.userId());
@@ -39,8 +42,9 @@ public class AccountController {
     }
 
     @PostMapping("/notification")
-    public CommonResponse notification(@Valid @RequestBody NotifySetting notifySetting, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        accountService.setNotification(notifySetting, userPrincipal.userId());
+    public CommonResponse notification(@Valid @RequestBody NotificationSettingRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        EnumValidator.validate(NotificationType.class, "type", request.type(), "AccountController.notification");
+        accountService.updateNotificationSetting(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 

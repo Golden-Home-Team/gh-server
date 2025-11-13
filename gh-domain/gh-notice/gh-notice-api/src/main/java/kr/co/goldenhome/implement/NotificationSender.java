@@ -1,6 +1,6 @@
 package kr.co.goldenhome.implement;
 
-import kr.co.goldenhome.FcmSender;
+import kr.co.goldenhome.FcmManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class NotificationSender {
 
 //    private final UserApi userApi;
-    private final FcmSender fcmSender;
+    private final FcmManager fcmManager;
 
     public void send() {
 

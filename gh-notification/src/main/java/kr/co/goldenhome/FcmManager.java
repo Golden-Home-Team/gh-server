@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FcmSender {
+public class FcmManager {
 
     private final FirebaseMessaging firebaseMessaging;
 //
@@ -33,6 +35,54 @@ public class FcmSender {
 //        }
 //    }
 
+
+    public void subscribeToTopic(List<String> tokens, String topicName) {
+        try {
+            TopicManagementResponse response = FirebaseMessaging.getInstance()
+                    .subscribeToTopic(tokens, topicName);
+            if (response.getFailureCount() > 0) {
+                // 실패한 토큰처리
+                log.error("subscribeToTopic failed: {}", response.getFailureCount());
+            }
+            log.info("subscribeToTopic success");
+        } catch (FirebaseMessagingException e) {
+            log.error("subscribeToTopic exception: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void unsubscribeFromTopic(List<String> tokens, String topicName) {
+        try {
+            TopicManagementResponse response = FirebaseMessaging.getInstance()
+                    .unsubscribeFromTopic(tokens, topicName);
+
+            if (response.getFailureCount() > 0) {
+                // 실패한 토큰처리
+            }
+        } catch (Exception e) {
+            // 예외 처리
+        }
+    }
+
+    public void sendMessages(String title, String body, String topicName) {
+        Notification notification = Notification.builder()
+                .setTitle(title)
+                .setBody(body)
+                .build();
+        Message message = Message.builder()
+                .setTopic(topicName)
+                .setNotification(notification)
+                .setApnsConfig(getApnsConfig(title, body))
+                .setAndroidConfig(getAndroidConfig(title, body))
+                .build();
+        try {
+            String response = firebaseMessaging.send(message);
+            log.info("successfully sent message: {}", response);
+        } catch (Exception e) {
+            log.error("sendMessages failed: {}", e.getMessage());
+        }
+    }
+
     public void sendMessages(NotificationsRequest request) {
         Notification notification = Notification.builder()
                 .setTitle(request.title())
@@ -40,8 +90,8 @@ public class FcmSender {
                 .build();
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
-                .setApnsConfig(getApnsConfig(request))
-                .setAndroidConfig(getAndroidConfig(request))
+                .setApnsConfig(getApnsConfig(request.title(), request.body()))
+                .setAndroidConfig(getAndroidConfig(request.title(), request.body()))
                 .addAllTokens(request.token())
                 .build();
         try {
@@ -55,13 +105,13 @@ public class FcmSender {
     /**
      * https://developer.apple.com/documentation/usernotifications/generating-a-remote-notification
      */
-    private ApnsConfig getApnsConfig(NotificationsRequest request) {
+    private ApnsConfig getApnsConfig(String title, String body) {
         return ApnsConfig.builder()
                 .setAps(Aps.builder()
                         .setAlert(ApsAlert
                                 .builder()
-                                .setTitle(request.title())
-                                .setBody(request.body())
+                                .setTitle(title)
+                                .setBody(body)
 //                                .setLaunchImage()
                                 .build())
                         .build())
@@ -71,12 +121,12 @@ public class FcmSender {
     /**
      * https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages?_gl=1*rfaly5*_up*MQ..*_ga*MTIzMDg1MTE1NC4xNzYyODg4ODQw*_ga_CW55HF8NVT*czE3NjI4ODg4MzkkbzEkZzAkdDE3NjI4ODg4NzMkajI2JGwwJGgw#AndroidNotification
      */
-    private AndroidConfig getAndroidConfig(NotificationsRequest request) {
+    private AndroidConfig getAndroidConfig(String title, String body) {
         return AndroidConfig.builder()
                 .setPriority(AndroidConfig.Priority.HIGH) // 자원사용 증가, 알림 빨리 도달
                 .setNotification(AndroidNotification.builder()
-                        .setTitle(request.title())
-                        .setBody(request.body())
+                        .setTitle(title)
+                        .setBody(body)
                         .build())
                 .build();
     }

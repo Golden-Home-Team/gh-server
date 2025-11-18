@@ -28,6 +28,9 @@ out/
 application.yml
 docker-compose.yml
 *.json
+test.html
+firebase-messaging-sw.js
+*.png
 
 ### NetBeans ###
 /nbproject/private/

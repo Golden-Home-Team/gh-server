@@ -1,9 +1,13 @@
 package kr.co.goldenhome.account.service
 
-import kr.co.goldenhome.account.dto.NotifySetting
+import kr.co.goldenhome.FcmManager
+import kr.co.goldenhome.account.dto.NotificationSettingRequest
+import kr.co.goldenhome.account.implement.NotificationSettingManager
 import kr.co.goldenhome.authentication.dto.FcmRequest
+import kr.co.goldenhome.entity.NotificationSetting
 import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.entity.UserFcmToken
+import kr.co.goldenhome.enums.NotificationType
 import kr.co.goldenhome.infrastructure.TokenRepository
 import kr.co.goldenhome.infrastructure.UserFcmTokenRepository
 import kr.co.goldenhome.infrastructure.UserRepository
@@ -15,9 +19,11 @@ class AccountServiceSpec extends Specification {
     UserRepository userRepository = Mock()
     TokenRepository tokenRepository = Mock()
     UserFcmTokenRepository userFcmTokenRepository = Mock()
+    NotificationSettingManager notificationSettingManager = Mock()
+    FcmManager fcmManager = Mock()
 
     def setup() {
-        accountService = new AccountService(userRepository,tokenRepository,userFcmTokenRepository)
+        accountService = new AccountService(userRepository,tokenRepository,userFcmTokenRepository, notificationSettingManager, fcmManager)
     }
 
     def "withdraw - userRepository 를 호출한다"() {
@@ -54,7 +60,7 @@ class AccountServiceSpec extends Specification {
         accountService.saveOrUpdateFcmToken(givenRequest, givenUserId)
 
         then:
-        1 * userFcmTokenRepository.findByUserIdOrToken(*_) >> {
+        1 * userFcmTokenRepository.findByUserIdAndToken(*_) >> {
             Long userId, String fcmToken ->
                 userId == givenUserId
                 fcmToken == givenFcmToken
@@ -74,7 +80,7 @@ class AccountServiceSpec extends Specification {
         accountService.saveOrUpdateFcmToken(givenRequest, givenUserId)
 
         then:
-        1 * userFcmTokenRepository.findByUserIdOrToken(*_) >> {
+        1 * userFcmTokenRepository.findByUserIdAndToken(*_) >> {
             Long userId, String fcmToken ->
                 userId == givenUserId
                 fcmToken == givenFcmToken
@@ -95,7 +101,7 @@ class AccountServiceSpec extends Specification {
         accountService.saveOrUpdateFcmToken(givenRequest, givenUserId)
 
         then:
-        1 * userFcmTokenRepository.findByUserIdOrToken(*_) >> {
+        1 * userFcmTokenRepository.findByUserIdAndToken(*_) >> {
             Long userId, String fcmToken ->
                 userId == givenUserId
                 fcmToken == givenFcmToken
@@ -105,16 +111,24 @@ class AccountServiceSpec extends Specification {
 
     }
 
-    def "setNotification - userRepository 를 호출한다"() {
+    def "updateNotificationSetting - notificationSettingManager, userFcmTokenRepository, fcmManager 를 호출한다"() {
         given:
-        def givenNotifySetting = new NotifySetting(true, false)
+        def givenRequest = new NotificationSettingRequest("NOTICE", true)
         def givenUserId = 1L
+        def givenResponse = List.of(UserFcmToken.builder().token("12").build())
+        def givenTokens = givenResponse.stream().map {it -> it.token}.toList()
+        def expectedType = NotificationType.valueOf(givenRequest.type())
 
         when:
-        accountService.setNotification(givenNotifySetting, givenUserId)
+        accountService.updateNotificationSetting(givenRequest, givenUserId)
 
         then:
-        1 * userRepository.findById(givenUserId) >> Optional.of(User.builder().build())
+        1 * notificationSettingManager.update(expectedType, givenRequest.isEnabled(), givenUserId)
+        1 * userFcmTokenRepository.findEnabledToken(givenUserId) >> givenResponse
+        1 * fcmManager.subscribeToTopic(givenTokens, expectedType.name())
+
     }
+
+
 
 }

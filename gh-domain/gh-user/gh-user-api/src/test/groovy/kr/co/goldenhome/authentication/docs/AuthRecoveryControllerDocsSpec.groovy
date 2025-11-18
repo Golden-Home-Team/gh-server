@@ -1,6 +1,8 @@
 package kr.co.goldenhome.authentication.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.authentication.dto.ResetPasswordRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmRequest
 import kr.co.goldenhome.authentication.dto.VerificationConfirmResponse
@@ -45,6 +47,12 @@ class AuthRecoveryControllerDocsSpec extends Specification {
 
     @SpringBean
     AuthRecoveryService authRecoveryService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "계정 찾기 - 인증요청"() {
         given:

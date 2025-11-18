@@ -1,6 +1,8 @@
 package kr.co.goldenhome.profile.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.ProfileImageApiResponse
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.profile.dto.ProfileEmailRequest
@@ -49,6 +51,12 @@ class ProfileControllerDocsSpec extends Specification {
 
     @SpringBean
     ProfileService profileService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "프로필 조회"() {
 

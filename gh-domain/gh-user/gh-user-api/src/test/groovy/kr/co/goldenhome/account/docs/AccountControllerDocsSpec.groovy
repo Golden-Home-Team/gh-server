@@ -1,6 +1,8 @@
 package kr.co.goldenhome.account.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.account.dto.NotificationSettingRequest
 import kr.co.goldenhome.account.service.AccountService
 import kr.co.goldenhome.auth.UserPrincipal
@@ -39,6 +41,12 @@ class AccountControllerDocsSpec extends Specification {
 
     @SpringBean
     AccountService accountService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "회원탈퇴"() {
 

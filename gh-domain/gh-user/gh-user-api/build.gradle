@@ -12,12 +12,15 @@ dependencies {
 
     testImplementation 'com.h2database:h2'
     testImplementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    testImplementation("com.google.firebase:firebase-admin:9.7.0")
+
 
 
     implementation(project(":gh-common"))
     implementation(project(":gh-api-interface:gh-file-api-interface"))
     implementation(project(":gh-domain:gh-user:gh-user-core"))
     implementation(project(":gh-social"))
+    implementation(project(":gh-notification"))
 
 }
 

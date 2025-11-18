@@ -1,8 +1,8 @@
 package kr.co.goldenhome.signup.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
-
-
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.signup.dto.SignupRequest
 import kr.co.goldenhome.signup.service.SignupService
 import org.spockframework.spring.SpringBean
@@ -39,6 +39,12 @@ class SignupControllerDocsSpec extends Specification {
 
     @SpringBean
     SignupService signupService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "기존 사용자 아이디 존재여부 확인"() {
         given:

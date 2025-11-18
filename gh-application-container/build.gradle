@@ -39,6 +39,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
 
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf:4.0.0-RC1")
+
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     implementation(project(":gh-domain:gh-user:gh-user-api"))

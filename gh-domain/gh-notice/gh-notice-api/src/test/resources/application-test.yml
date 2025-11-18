@@ -39,11 +39,6 @@ spring:
       host: localhost
       port: 6379
 
-fcm:
-  project_id : gh-notification
-  sdk_path: test.json
-  url: https://fcm.googleapis.com/v1/projects/gh-notification/messages:send
-  google_api: https://www.googleapis.com/auth/cloud-platform
 
 JWT_SECRET_KEY: "111=kPzQxR9dg0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1abc3uV4wX5yZ6aB7c"
 KAKAO_CLIENT_ID: "abc"

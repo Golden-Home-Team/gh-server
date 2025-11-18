@@ -1,6 +1,8 @@
 package kr.co.goldenhome.authentication.docs
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
+import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.SocialPlatform
 import kr.co.goldenhome.authentication.dto.LoginRequest
 import kr.co.goldenhome.authentication.dto.LoginResponse
@@ -46,6 +48,12 @@ class LoginControllerDocsSpec extends Specification {
 
     @SpringBean
     LoginService authenticationService = Mock()
+
+    @SpringBean
+    FcmConfig fcmConfig = Mock()
+
+    @SpringBean
+    FirebaseMessaging firebaseMessaging = Mock()
 
     def "로그인 성공"() {
 

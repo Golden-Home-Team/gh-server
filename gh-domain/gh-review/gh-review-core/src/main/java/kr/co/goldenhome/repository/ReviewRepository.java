@@ -14,7 +14,7 @@ import java.util.Optional;
  *     (:sort = 'score' AND (...)) OR
  *     (:sort != 'score' AND reviews.id < :lastId)
  * )
- * 1. reviews.facility_id = :facilityId AND ///... lastId == null ? true, True or... 이므로 이후 조건 무시
+ * 1. lastId == null ? true, True or... 이므로 이후 조건 무시
  * 2. sort = 'score' 인 경우
  * 2-1. 현제 score 가 이전 score 보다 낮은 경우
  * 2-2. 현제 score 와 이전 score 가 동점이면 id 내림차순

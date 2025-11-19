@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReviewManager {
+public class ReviewMetadataUpdater {
 
     private final ElasticsearchOperations elasticsearchOperations;
 

@@ -34,7 +34,7 @@ public class ReviewReader {
 
     public List<MyReviewResponse> readMine(Long userId, Long lastId, Long pageSize) {
         List<Review> reviews = lastId == null ? reviewRepository.readMine(userId, pageSize) : reviewRepository.readMine(userId, lastId, pageSize);
-        return reviews .stream().map(review -> {
+        return reviews.stream().map(review -> {
                     FacilityApiResponse facilityApiResponse = facilityApi.get(review.getFacilityId());
                     return MyReviewResponse.of(review, userApi.getUserName(userId), reviewImageApi.getByReviewId(review.getId()), LocalDateTime.now(), facilityApiResponse.name(), facilityApiResponse.address());
                 }).toList();

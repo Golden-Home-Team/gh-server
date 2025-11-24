@@ -4,7 +4,6 @@ import kr.co.goldenhome.FcmManager
 import kr.co.goldenhome.account.dto.NotificationSettingRequest
 import kr.co.goldenhome.account.implement.NotificationSettingManager
 import kr.co.goldenhome.authentication.dto.FcmRequest
-import kr.co.goldenhome.entity.NotificationSetting
 import kr.co.goldenhome.entity.User
 import kr.co.goldenhome.entity.UserFcmToken
 import kr.co.goldenhome.enums.NotificationType
@@ -124,7 +123,7 @@ class AccountServiceSpec extends Specification {
 
         then:
         1 * notificationSettingManager.update(expectedType, givenRequest.isEnabled(), givenUserId)
-        1 * userFcmTokenRepository.findEnabledToken(givenUserId) >> givenResponse
+        1 * userFcmTokenRepository.findEnabledTokenByType(givenUserId) >> givenResponse
         1 * fcmManager.subscribeToTopic(givenTokens, expectedType.name())
 
     }

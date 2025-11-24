@@ -5,5 +5,5 @@ import java.util.List;
 public interface UserApi {
     String getLoginId(Long userId);
     String getUserName(Long userId);
-    List<String> getFcmTokens(List<Long> userIds);
+    List<String> getFcmTokens(List<Long> userIds, String type);
 }

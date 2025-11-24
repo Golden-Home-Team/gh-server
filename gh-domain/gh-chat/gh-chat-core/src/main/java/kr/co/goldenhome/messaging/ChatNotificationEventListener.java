@@ -30,7 +30,7 @@ public class ChatNotificationEventListener {
                         if (!chatConnectionRepository.isUserViewingChatRoom(userId, event.chatRoomId())) return userId;
                         return null;
                     }).toList();
-            List<String> fcmTokens = userApi.getFcmTokens(list);
+            List<String> fcmTokens = userApi.getFcmTokens(list, "CHAT");
             String userName = userApi.getUserName(event.senderId());
             fcmManager.sendMessages(new NotificationsRequest(
                     fcmTokens,

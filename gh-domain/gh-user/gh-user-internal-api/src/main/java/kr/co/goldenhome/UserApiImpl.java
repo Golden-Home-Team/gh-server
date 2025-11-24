@@ -29,8 +29,8 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public List<String> getFcmTokens(List<Long> userIds) {
-        return userFcmTokenRepository.findAllByUserIdIn(userIds).stream()
+    public List<String> getFcmTokens(List<Long> userIds, String type) {
+        return userFcmTokenRepository.findEnabledTokensByUserIdsAndType(userIds, type).stream()
                 .map(UserFcmToken::getToken).toList();
     }
 }

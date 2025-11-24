@@ -53,7 +53,7 @@ public class AccountService {
     public void updateNotificationSetting(NotificationSettingRequest request, Long userId) {
         NotificationType notificationType = NotificationType.valueOf(request.type());
         notificationSettingManager.update(notificationType, request.isEnabled(), userId);
-        List<String> fcmTokens = userFcmTokenRepository.findEnabledToken(userId).stream().map(UserFcmToken::getToken).toList();
+        List<String> fcmTokens = userFcmTokenRepository.findEnabledTokenByType(userId, NotificationType.NOTICE.name()).stream().map(UserFcmToken::getToken).toList();
         fcmManager.subscribeToTopic(fcmTokens, notificationType.name());
     }
 }

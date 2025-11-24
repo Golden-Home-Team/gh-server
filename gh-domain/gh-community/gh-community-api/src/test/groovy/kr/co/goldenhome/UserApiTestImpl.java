@@ -17,7 +17,8 @@ public class UserApiTestImpl implements UserApi {
     }
 
     @Override
-    public List<String> getFcmTokens(List<Long> userIds) {
+    public List<String> getFcmTokens(List<Long> userIds, String type) {
         return List.of();
     }
+
 }

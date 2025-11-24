@@ -123,7 +123,7 @@ class AccountServiceSpec extends Specification {
 
         then:
         1 * notificationSettingManager.update(expectedType, givenRequest.isEnabled(), givenUserId)
-        1 * userFcmTokenRepository.findEnabledTokenByType(givenUserId) >> givenResponse
+        1 * userFcmTokenRepository.findEnabledTokenByType(givenUserId, NotificationType.NOTICE.name()) >> givenResponse
         1 * fcmManager.subscribeToTopic(givenTokens, expectedType.name())
 
     }

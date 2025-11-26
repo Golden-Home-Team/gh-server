@@ -21,9 +21,6 @@ class UserFcmTokenRepositorySpec extends Specification {
     @Autowired
     NotificationSettingRepository notificationSettingRepository
 
-    @Autowired
-    EntityManager entityManager
-
     def setup() {
         Long targetUserId = 100L
         Long otherUserId = 200L

@@ -72,6 +72,9 @@ ifndef::snippets[]
 :notice-write: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-write
 :notice-readAll: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-readAll
 :notice-read: ../../../gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-read
+:terms-create: ../../../gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-create
+:terms-get: ../../../gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-get
+:terms-agree: ../../../gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-agree
 endif::[]
 = Golden Home API 문서
 :doctype: book
@@ -760,3 +763,33 @@ include::{notice-read}/http-request.adoc[]
 === HTTP Response
 include::{notice-read}/http-response.adoc[]
 include::{notice-read}/response-fields.adoc[]
+
+[[Terms-API]]
+== Terms API
+
+== 약관 생성
+=== HTTP Request
+include::{terms-create}/http-request.adoc[]
+include::{terms-create}/request-fields.adoc[]
+
+=== HTTP Response
+include::{terms-create}/http-response.adoc[]
+include::{terms-create}/response-fields.adoc[]
+
+== 약관 조회
+=== HTTP Request
+include::{terms-get}/http-request.adoc[]
+
+=== HTTP Response
+include::{terms-get}/http-response.adoc[]
+include::{terms-get}/response-fields.adoc[]
+
+== 약관 동의
+=== HTTP Request
+include::{terms-agree}/http-request.adoc[]
+include::{terms-agree}/request-fields.adoc[]
+
+=== HTTP Response
+include::{terms-agree}/http-response.adoc[]
+include::{terms-agree}/response-fields.adoc[]
+

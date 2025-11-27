@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Terms {
 
-    // todo 회원가입 시, 띄울생각! UserStatus PENDING 하고 약관 동의 페이지로 리다이렉트 소셜로그인도 분기처리
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +24,10 @@ public class Terms {
     private String content;
     private Boolean isMandatory;
     private Boolean isActive;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
 
     @Builder
-    private Terms(Long id, TermsType termsType, String version, String title, String content, Boolean isMandatory, Boolean isActive, LocalDateTime createdAt) {
+    private Terms(Long id, TermsType termsType, String version, String title, String content, Boolean isMandatory, Boolean isActive, LocalDateTime createdDate) {
         this.id = id;
         this.termsType = termsType;
         this.version = version;
@@ -37,7 +35,7 @@ public class Terms {
         this.content = content;
         this.isMandatory = isMandatory;
         this.isActive = isActive;
-        this.createdAt = createdAt;
+        this.createdDate = createdDate;
     }
 
     public static Terms create(TermsType termsType, String version, String title, String content, Boolean isMandatory) {
@@ -48,7 +46,7 @@ public class Terms {
                 .content(content)
                 .isMandatory(isMandatory)
                 .isActive(true)
-                .createdAt(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 

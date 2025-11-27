@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "terms_agreements")
+@Table(name = "terms_agreement")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,17 +20,17 @@ public class TermsAgreement {
     private Long userId;
     private Long termsId;
     private Boolean isAgreed;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     @Builder
-    private TermsAgreement(Long id, Long userId, Long termsId, Boolean isAgreed, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private TermsAgreement(Long id, Long userId, Long termsId, Boolean isAgreed, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.id = id;
         this.userId = userId;
         this.termsId = termsId;
         this.isAgreed = isAgreed;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
     }
 
     public static TermsAgreement create(Long userId, Long termsId, Boolean isAgreed) {
@@ -38,13 +38,13 @@ public class TermsAgreement {
                 .userId(userId)
                 .termsId(termsId)
                 .isAgreed(isAgreed)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdDate(LocalDateTime.now())
+                .updatedDate(LocalDateTime.now())
                 .build();
     }
 
     public void update(Boolean isAgreed) {
         this.isAgreed = isAgreed;
-        this.updatedAt = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

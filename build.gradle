@@ -134,7 +134,10 @@ allprojects {
                 'chat-get-messages': 'gh-domain/gh-chat/gh-chat-api/build/generated-snippets/chat-get-messages',
                 'notice-write': 'gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-write',
                 'notice-readAll': 'gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-readAll',
-                'notice-read': 'gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-read'
+                'notice-read': 'gh-domain/gh-notice/gh-notice-api/build/generated-snippets/notice-read',
+                'terms-create': 'gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-create',
+                'terms-get': 'gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-get',
+                'terms-agree': 'gh-domain/gh-terms/gh-terms-api/build/generated-snippets/terms-agree'
 
 
 

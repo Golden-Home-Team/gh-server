@@ -1,17 +1,20 @@
 {
   "analysis": {
+    "tokenizer": {
+      "korean_seunjeon_tokenizer": {
+        "type": "seunjeon_tokenizer",
+        "index_eojeol": false,
+        "pos_tagging": false
+      }
+    },
     "analyzer": {
-      "elderly_facilities_analyzer": {
-        "char_filter": [],
-        "tokenizer": "nori_tokenizer",
-        "filter": ["nori_part_of_speech", "nori_readingform", "lowercase"]
-      },
       "facilities_analyzer": {
-        "char_filter": [],
-        "tokenizer": "nori_tokenizer",
-        "filter": ["nori_part_of_speech", "nori_readingform", "lowercase"]
+        "type": "custom",
+        "tokenizer": "korean_seunjeon_tokenizer",
+        "filter": [
+          "lowercase"
+        ]
       }
     }
   }
 }
-

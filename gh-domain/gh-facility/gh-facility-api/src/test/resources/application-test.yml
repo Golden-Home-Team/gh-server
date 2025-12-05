@@ -42,6 +42,10 @@ spring:
     redis:
       host: localhost
       port: 6379
+  elasticsearch:
+    uris: "df"
+    username: "sad"
+    password: "sd"
 
 
 JWT_SECRET_KEY: "111=kPzQxR9dg0uV1wX2yZ3aB4cD5eF6gH7iJ8kL9mN0oP1abc3uV4wX5yZ6aB7c"

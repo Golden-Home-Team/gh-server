@@ -8,12 +8,10 @@
       }
     },
     "analyzer": {
-      "facilities_analyzer": {
+      "facilities_search_analyzer": {
         "type": "custom",
         "tokenizer": "korean_seunjeon_tokenizer",
-        "filter": [
-          "lowercase"
-        ]
+        "filter": []
       }
     }
   }

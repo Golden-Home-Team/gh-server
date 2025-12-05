@@ -21,11 +21,11 @@ public class FacilityDocument {
     private String id;
     @Field(type = FieldType.Keyword)
     private String institutionSymbol;
-    @Field(type = FieldType.Text, analyzer = "facilities_analyzer")
+    @Field(type = FieldType.Text, analyzer = "facilities_search_analyzer")
     private String facilityType;
-    @Field(type = FieldType.Text, analyzer = "facilities_analyzer")
+    @Field(type = FieldType.Text, analyzer = "facilities_search_analyzer")
     private String name;
-    @Field(type = FieldType.Text, analyzer = "facilities_analyzer")
+    @Field(type = FieldType.Text, analyzer = "facilities_search_analyzer")
     private String address;
     @Field(type = FieldType.Integer)
     private Integer establishmentYear;

@@ -26,6 +26,25 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
         );
     }
 
+    public static FacilityResponse of(Facility facility, String profileUrl) {
+        return new FacilityResponse(
+                facility.getId(),
+                facility.getInstitutionSymbol(),
+                facility.getFacilityType(),
+                facility.getName(),
+                facility.getAddress(),
+                facility.getEstablishmentDate(),
+                "",
+                facility.getCapacity(),
+                facility.getCurrentTotal(),
+                profileUrl,
+                facility.getLatitude(),
+                facility.getLongitude(),
+                false
+        );
+    }
+
+
     public static FacilityResponse of(FacilityDocument facilityDocument, String profileUrl, boolean isLiked) {
         return new FacilityResponse(
                 Long.valueOf(facilityDocument.getId()),
@@ -39,6 +58,24 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facilityDocument.getCurrentTotal(),
                 profileUrl,
                 facilityDocument.getLocation().getLat(), facilityDocument.getLocation().getLon(),
+                isLiked
+        );
+    }
+
+    public static FacilityResponse of(Facility facility, String profileUrl, boolean isLiked) {
+        return new FacilityResponse(
+                facility.getId(),
+                facility.getInstitutionSymbol(),
+                facility.getFacilityType(),
+                facility.getName(),
+                facility.getAddress(),
+                facility.getEstablishmentDate(),
+                "",
+                facility.getCapacity(),
+                facility.getCurrentTotal(),
+                profileUrl,
+                facility.getLatitude(),
+                facility.getLongitude(),
                 isLiked
         );
     }
@@ -60,5 +97,4 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 true
         );
     }
-
 }

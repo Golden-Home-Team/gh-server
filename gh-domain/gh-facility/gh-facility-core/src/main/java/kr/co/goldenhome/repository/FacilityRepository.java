@@ -8,4 +8,5 @@ import java.util.List;
 public interface FacilityRepository {
     FacilityCombinedDto read(Long facilityId);
     List<Facility> findByIdIn(List<Long> facilityIds);
+    List<Facility> searchByFullTextFallback(String keyword, int page, int size);
 }

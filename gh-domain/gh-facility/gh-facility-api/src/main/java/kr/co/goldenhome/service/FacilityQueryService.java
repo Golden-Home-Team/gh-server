@@ -1,5 +1,7 @@
 package kr.co.goldenhome.service;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import kr.co.goldenhome.*;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
@@ -13,10 +15,12 @@ import kr.co.goldenhome.FacilityEventManger;
 import kr.co.goldenhome.model.FacilityEvent;
 import kr.co.goldenhome.model.FacilityEventType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FacilityQueryService {
@@ -26,6 +30,7 @@ public class FacilityQueryService {
     private final FacilityEventManger facilityEventManger;
     private final LikeApi likeApi;
 
+    @CircuitBreaker(name = "openSearch", fallbackMethod = "searchFallback")
     public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
                                          Double latitude, Double longitude, Double radiusKm,
                                          UserPrincipal userPrincipal) {
@@ -43,6 +48,41 @@ public class FacilityQueryService {
             return FacilityResponse.of(document, profileUrl, isLiked);
         }).toList();
 
+    }
+
+    public List<FacilityResponse> searchFallback(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                                 Double latitude, Double longitude, Double radiusKm,
+                                                 UserPrincipal userPrincipal, Throwable throwable) {
+        if (throwable instanceof CallNotPermittedException) {
+            return handleOpenCircuit(name,address,page,size,userPrincipal);
+        }
+        return handleException(name,address,page,size,userPrincipal,throwable);
+    }
+
+    private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
+        log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
+        return getFacilityResponses(name, address, page, size, userPrincipal);
+    }
+
+    private List<FacilityResponse> handleException(String name, String address, int page, int size, UserPrincipal userPrincipal, Throwable throwable) {
+        log.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
+        return getFacilityResponses(name, address, page, size, userPrincipal);
+    }
+
+    private List<FacilityResponse> getFacilityResponses(String name, String address, int page, int size, UserPrincipal userPrincipal) {
+        List<Facility> facilities = facilityReader.search(name, address, page, size);
+        if (userPrincipal == null) {
+            return facilities.stream().map(facility -> {
+                String profileUrl = facilityReader.getProfileUrl(facility.getId());
+                return FacilityResponse.of(facility, profileUrl);
+            }).toList();
+        }
+        Long userId = userPrincipal.userId();
+        return facilities.stream().map(facility -> {
+            String profileUrl = facilityReader.getProfileUrl(facility.getId());
+            boolean liked = likeApi.isLiked(facility.getId(), userId);
+            return FacilityResponse.of(facility, profileUrl, liked);
+        }).toList();
     }
 
     public FacilityDetailResponse read(Long facilityId, Long userId) {

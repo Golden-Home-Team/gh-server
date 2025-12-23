@@ -1,13 +1,10 @@
 package kr.co.goldenhome.implement;
 
 import kr.co.goldenhome.*;
+import kr.co.goldenhome.dto.*;
 import kr.co.goldenhome.entity.FacilityGrade;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
-import kr.co.goldenhome.dto.FacilityCombinedDto;
-import kr.co.goldenhome.dto.FacilityDetailServiceResponse;
-import kr.co.goldenhome.dto.FacilityPhotoResponse;
-import kr.co.goldenhome.dto.FacilityProgramResponse;
 import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.repository.FacilityGradeRepository;
 import kr.co.goldenhome.repository.FacilityPhotoRepository;
@@ -15,8 +12,12 @@ import kr.co.goldenhome.repository.FacilityProgramRepository;
 import kr.co.goldenhome.repository.FacilityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -72,4 +73,13 @@ public class FacilityReader {
         return likeApi.getLikedFacilityIds(facilityId);
     }
 
+    public List<Facility> search(String name, String address, int page, int size) {
+        String rawKeyword = StringUtils.hasText(name) ? name : address;
+        if (!StringUtils.hasText(rawKeyword)) return Collections.emptyList();
+        String formattedKeyword = Arrays.stream(rawKeyword.split("\\s+"))
+                .filter(word -> word.length() >= 2)
+                .map(word -> "+" + word)
+                .collect(Collectors.joining(" "));
+        return facilityRepository.searchByFullTextFallback(formattedKeyword, page, size);
+    }
 }

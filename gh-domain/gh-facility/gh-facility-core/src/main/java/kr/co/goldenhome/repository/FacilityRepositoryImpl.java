@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.goldenhome.dto.FacilityCombinedDto;
 import kr.co.goldenhome.entity.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -86,5 +88,10 @@ public class FacilityRepositoryImpl implements FacilityRepository {
     @Override
     public List<Facility> findByIdIn(List<Long> facilityIds) {
         return facilityJpaRepository.findByIdIn(facilityIds);
+    }
+
+    @Override
+    public List<Facility> searchByFullTextFallback(String keyword, int page, int size) {
+        return facilityJpaRepository.searchByFullTextFallback(keyword, PageRequest.of(page, size));
     }
 }

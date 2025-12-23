@@ -2,6 +2,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.security:spring-security-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:3.3.0'
+//    implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 

@@ -17,6 +17,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+            # Gradle 설치 및 캐싱을 담당하는 공식 액션
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.14.2
 
       # 추가
       - name: resources 파일 만들기

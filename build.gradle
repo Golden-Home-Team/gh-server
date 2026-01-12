@@ -73,6 +73,8 @@ allprojects {
                 'social-login': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login',
                 'social-login-callback': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/social-login-callback',
                 'token-refresh': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/token-refresh',
+                'verification-request': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/verification-request',
+                'find-login-id': 'gh-domain/gh-user/gh-user-api/build/generated-snippets/find-login-id',
                 'facility-read': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read',
                 'facility-read-liked': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read-liked',
                 'facility-search': 'gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-search',

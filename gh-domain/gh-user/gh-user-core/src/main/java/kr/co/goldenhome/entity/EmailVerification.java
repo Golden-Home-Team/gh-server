@@ -39,7 +39,7 @@ public class EmailVerification {
                 .emailAddress(emailAddress)
                 .verificationCode(String.format("%06d", new SecureRandom().nextInt(1_000_000)))
                 .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(10))
+                .expiresAt(LocalDateTime.now().plusMinutes(30))
                 .build();
     }
 

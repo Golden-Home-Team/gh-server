@@ -39,21 +39,4 @@ public class ProfileController {
         return CommonResponse.ok();
     }
 
-    @PutMapping("/phoneNumber")
-    public CommonResponse modifyPhoneNumber(@Valid @RequestBody ProfilePhoneNumberRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        profileService.modifyPhoneNumber(request, userPrincipal.userId());
-        return CommonResponse.ok();
-    }
-
-    @PutMapping("/email")
-    public CommonResponse modifyEmail(@Valid @RequestBody ProfileEmailRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        profileService.modifyEmail(request, userPrincipal.userId());
-        return CommonResponse.ok();
-    }
-
-    @PutMapping("/password")
-    public CommonResponse modifyPassword(@Valid @RequestBody ProfilePasswordRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        profileService.modifyPassword(request, userPrincipal.userId());
-        return CommonResponse.ok();
-    }
 }

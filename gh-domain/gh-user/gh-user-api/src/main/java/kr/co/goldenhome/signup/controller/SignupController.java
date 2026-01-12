@@ -1,5 +1,6 @@
 package kr.co.goldenhome.signup.controller;
 
+import jakarta.validation.Valid;
 import kr.co.goldenhome.dto.CommonResponse;
 
 import kr.co.goldenhome.signup.dto.SignupRequest;
@@ -21,7 +22,7 @@ public class SignupController {
     }
 
     @PostMapping
-    public CommonResponse signup(@RequestBody SignupRequest request) {
+    public CommonResponse signup(@Valid @RequestBody SignupRequest request) {
         signUpService.signup(request);
         return CommonResponse.ok();
     }

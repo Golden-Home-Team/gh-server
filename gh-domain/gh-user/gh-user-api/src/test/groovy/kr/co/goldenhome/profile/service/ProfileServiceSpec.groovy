@@ -23,10 +23,9 @@ class ProfileServiceSpec extends Specification {
     UserRepository userRepository = Mock()
     ProfileImageApi profileImageApi = Mock()
     SignupManager signupManager = Mock()
-    PasswordProcessor passwordProcessor = Mock()
 
     def setup() {
-        profileService = new ProfileService(userRepository, profileImageApi, signupManager, passwordProcessor)
+        profileService = new ProfileService(userRepository, profileImageApi, signupManager)
     }
 
     def "get - userRepository, profileImageApi 를 호출한다"() {
@@ -129,110 +128,9 @@ class ProfileServiceSpec extends Specification {
         1 * signupManager.isLoginIdDuplicated(*_)
     }
 
-    def "modifyLoginId - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
-        given:
-        def givenRequest = new ProfileLoginIdRequest("test2user")
 
-        when:
-        profileService.modifyLoginId(givenRequest, 1L)
 
-        then:
-        1 * userRepository.findById(*_) >> Optional.empty()
-        def e = thrown(CustomException)
-        e.errorCode == ErrorCode.NOT_FOUND
-    }
 
-    def "modifyPhoneNumber - userRepository 를 호출한다"() {
-        given:
-        def givenRequest = new ProfilePhoneNumberRequest("01012345678")
-
-        when:
-        profileService.modifyPhoneNumber(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> {
-            Long userId ->
-                userId == 1L
-                Optional.of(User.builder().build())
-        }
-    }
-
-    def "modifyPhoneNumber - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
-        given:
-        def givenRequest = new ProfilePhoneNumberRequest("01012345678")
-
-        when:
-        profileService.modifyPhoneNumber(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> Optional.empty()
-        def e = thrown(CustomException)
-        e.errorCode == ErrorCode.NOT_FOUND
-    }
-
-    def "modifyEmail - userRepository, signupManager 를 호출한다"() {
-        given:
-        def givenRequest = new ProfileEmailRequest("test2user@naver.com")
-
-        when:
-        profileService.modifyEmail(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> {
-            Long userId ->
-                userId == 1L
-                Optional.of(User.builder().build())
-        }
-        and:
-        1 * signupManager.isEmailDuplicated(*_)
-    }
-
-    def "modifyEmail - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
-        given:
-        def givenRequest = new ProfileEmailRequest("test2user@naver.com")
-
-        when:
-        profileService.modifyEmail(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> Optional.empty()
-        def e = thrown(CustomException)
-        e.errorCode == ErrorCode.NOT_FOUND
-    }
-
-    def "modifyPassword - userRepository, passwordProcessor 를 호출한다"() {
-        given:
-        def givenRequest = new ProfilePasswordRequest("1234")
-
-        when:
-        profileService.modifyPassword(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> {
-            Long userId ->
-                userId == 1L
-                Optional.of(User.builder().build())
-        }
-        and:
-        1 * passwordProcessor.encode(*_) >> {
-            String password ->
-                password == givenRequest.password()
-                "dfienfkef"
-        }
-    }
-
-    def "modifyPassword - userId 에 해당하는 사용자가 없으면 예외를 던진다"() {
-        given:
-        def givenRequest = new ProfilePasswordRequest("1234")
-
-        when:
-        profileService.modifyPassword(givenRequest, 1L)
-
-        then:
-        1 * userRepository.findById(*_) >> Optional.empty()
-        def e = thrown(CustomException)
-        e.errorCode == ErrorCode.NOT_FOUND
-    }
 
 
 }

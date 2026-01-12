@@ -50,7 +50,7 @@ class SignupManagerSpec extends Specification {
 
     def "createUser - 비밀번호를 인코딩하고 UserRepository 를 호출한다"() {
         given:
-        def givenSignup = new SignupRequest("gucoding1234", "gucoding@1234", "1234", "01012345555")
+        def givenSignup = new SignupRequest("gucoding1234", "gucoding@1234", "1234", "01012345555","EMAIL", "1233")
 
         when:
         signupManager.createUser(givenSignup)

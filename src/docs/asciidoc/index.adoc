@@ -1,6 +1,6 @@
 ifndef::snippets[]
-:user-signup-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
-:user-login-snippets: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
+:user-signup: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-signup
+:user-login: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-login
 :user-check-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-check-duplicated
 :user-email-duplicated: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-email-duplicated
 :user-withdraw: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/user-withdraw
@@ -25,16 +25,16 @@ ifndef::snippets[]
 :review-write: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-write
 :review-readAll: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readAll
 :review-readMine: ../../../gh-domain/gh-review/gh-review-api/build/generated-snippets/review-readMine
-:recovery-request: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-request
-:recovery-confirm: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/recovery-confirm
+:verification-request: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/verification-request
+:reset-password: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/reset-password
+:reset-email: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/reset-email
+:reset-phone: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/reset-phone
+:find-login-id: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/find-login-id
 :password-change: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/password-change
 :profile-get: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-get
 :profile-image-create: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-image-create
 :profile-modify-name: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-name
 :profile-modify-loginId: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-loginId
-:profile-modify-phoneNumber: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-phoneNumber
-:profile-modify-email: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-email
-:profile-modify-password: ../../../gh-domain/gh-user/gh-user-api/build/generated-snippets/profile-modify-password
 :facility-like: ../../../gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-like
 :facility-unlike: ../../../gh-domain/gh-like/gh-like-api/build/generated-snippets/facility-unlike
 :community-entry-generate-invitationLink: ../../../gh-domain/gh-community/gh-community-api/build/generated-snippets/community-entry-generate-invitationLink
@@ -110,22 +110,22 @@ include::{user-email-duplicated}/response-fields.adoc[]
 
 == 회원가입
 === HTTP Request
-include::{user-signup-snippets}/http-request.adoc[]
-include::{user-signup-snippets}/request-fields.adoc[]
+include::{user-signup}/http-request.adoc[]
+include::{user-signup}/request-fields.adoc[]
 
 === HTTP Response
-include::{user-signup-snippets}/http-response.adoc[]
-include::{user-signup-snippets}/response-fields.adoc[]
+include::{user-signup}/http-response.adoc[]
+include::{user-signup}/response-fields.adoc[]
 
 
 == 로그인
 === HTTP Request
-include::{user-login-snippets}/http-request.adoc[]
-include::{user-login-snippets}/request-fields.adoc[]
+include::{user-login}/http-request.adoc[]
+include::{user-login}/request-fields.adoc[]
 
 === HTTP Response
-include::{user-login-snippets}/http-response.adoc[]
-include::{user-login-snippets}/response-fields.adoc[]
+include::{user-login}/http-response.adoc[]
+include::{user-login}/response-fields.adoc[]
 
 == 회원탈퇴
 === HTTP Request
@@ -187,33 +187,50 @@ include::{token-refresh}/request-fields.adoc[]
 include::{token-refresh}/http-response.adoc[]
 include::{token-refresh}/response-fields.adoc[]
 
-== 계정 찾기 - 인증코드 요청
+== 본인인증
 === HTTP Request
-include::{recovery-request}/http-request.adoc[]
-include::{recovery-request}/request-fields.adoc[]
+include::{verification-request}/http-request.adoc[]
+include::{verification-request}/request-fields.adoc[]
 
 === HTTP Response
-include::{recovery-request}/http-response.adoc[]
-include::{recovery-request}/response-fields.adoc[]
+include::{verification-request}/http-response.adoc[]
+include::{verification-request}/response-fields.adoc[]
 
-== 계정 찾기 - 인증코드 확인
+== 비밀번호 변경(본인인증확인)
 === HTTP Request
-include::{recovery-confirm}/http-request.adoc[]
-include::{recovery-confirm}/request-fields.adoc[]
+include::{reset-password}/http-request.adoc[]
+include::{reset-password}/request-fields.adoc[]
 
 === HTTP Response
-include::{recovery-confirm}/http-response.adoc[]
-include::{recovery-confirm}/response-fields.adoc[]
+include::{reset-password}/http-response.adoc[]
+include::{reset-password}/response-fields.adoc[]
 
-== 비밀번호 변경
+== 이메일 변경(본인인증확인)
 === HTTP Request
-include::{password-change}/http-request.adoc[]
-include::{password-change}/request-fields.adoc[]
+include::{reset-email}/http-request.adoc[]
+include::{reset-email}/request-fields.adoc[]
 
 === HTTP Response
-include::{password-change}/http-response.adoc[]
-include::{password-change}/response-fields.adoc[]
+include::{reset-email}/http-response.adoc[]
+include::{reset-email}/response-fields.adoc[]
 
+== 전화번호 변경(본인인증확인)
+=== HTTP Request
+include::{reset-phone}/http-request.adoc[]
+include::{reset-phone}/request-fields.adoc[]
+
+=== HTTP Response
+include::{reset-phone}/http-response.adoc[]
+include::{reset-phone}/response-fields.adoc[]
+
+== 아이디 찾기(본인인증확인)
+=== HTTP Request
+include::{find-login-id}/http-request.adoc[]
+include::{find-login-id}/request-fields.adoc[]
+
+=== HTTP Response
+include::{find-login-id}/http-response.adoc[]
+include::{find-login-id}/response-fields.adoc[]
 
 == 프로필 조회
 === HTTP Request
@@ -247,33 +264,6 @@ include::{profile-modify-loginId}/request-fields.adoc[]
 === HTTP Response
 include::{profile-modify-loginId}/http-response.adoc[]
 include::{profile-modify-loginId}/response-fields.adoc[]
-
-== 프로필 - 전화번호 수정
-=== HTTP Request
-include::{profile-modify-phoneNumber}/http-request.adoc[]
-include::{profile-modify-phoneNumber}/request-fields.adoc[]
-
-=== HTTP Response
-include::{profile-modify-phoneNumber}/http-response.adoc[]
-include::{profile-modify-phoneNumber}/response-fields.adoc[]
-
-== 프로필 - 이메일 수정
-=== HTTP Request
-include::{profile-modify-email}/http-request.adoc[]
-include::{profile-modify-email}/request-fields.adoc[]
-
-=== HTTP Response
-include::{profile-modify-email}/http-response.adoc[]
-include::{profile-modify-email}/response-fields.adoc[]
-
-== 프로필 - 비밀번호 수정
-=== HTTP Request
-include::{profile-modify-password}/http-request.adoc[]
-include::{profile-modify-password}/request-fields.adoc[]
-
-=== HTTP Response
-include::{profile-modify-password}/http-response.adoc[]
-include::{profile-modify-password}/response-fields.adoc[]
 
 
 [[Facility-API]]

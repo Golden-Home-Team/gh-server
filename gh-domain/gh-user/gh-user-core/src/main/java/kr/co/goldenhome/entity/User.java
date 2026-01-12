@@ -89,6 +89,14 @@ public class User {
         this.password = password;
     }
 
+    public void resetEmail(String email) {
+        this.email = email;
+    }
+
+    public void resetPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public void modifyName(String name) {
         this.username = name;
     }
@@ -97,20 +105,9 @@ public class User {
         this.loginId = loginId;
     }
 
-    public void modifyPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void modifyEmail(String email) {
-        this.email = email;
-    }
-
-    public void modifyPassword(String encodePassword) {
-        this.password = encodePassword;
-    }
-
     public void withdraw() {
         this.status = UserStatus.DELETED;
     }
+
 
 }

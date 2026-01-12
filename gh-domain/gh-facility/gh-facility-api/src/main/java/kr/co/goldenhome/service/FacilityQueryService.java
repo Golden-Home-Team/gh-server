@@ -59,6 +59,31 @@ public class FacilityQueryService {
         return handleException(name,address,page,size,userPrincipal,throwable);
     }
 
+    public FacilityDetailResponse read(Long facilityId, Long userId) {
+        FacilityDetailServiceResponse facilityDetailServiceResponse = facilityReader.read(facilityId);
+        ReviewMetaData reviewMetaData = facilityReader.getReviewMetaData(facilityId);
+        boolean isLiked = facilityReader.isLiked(facilityId, userId);
+        Long viewCount = facilityReader.view(facilityId, userId);
+        facilityEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.VIEW));
+        return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked, viewCount);
+    }
+
+    public List<FacilityResponse> getLikedFacilities(Long userId) {
+        List<Long> facilityIds = facilityReader.getLikedFacilityIds(userId);
+        List<Facility> facilities = facilityReader.getByIds(facilityIds);
+        return facilities.stream().map(facility -> {
+            String profileUrl = facilityReader.getProfileUrl(facility.getId());
+            String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
+            return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
+        }).toList();
+    }
+
+//    public List<FacilityRecommendResponse> recommendFacilities(String userQuery) throws IOException {
+//        List<Float> queryVector = embeddingClient.getBatchEmbeddings(List.of(userQuery)).getFirst();
+//        return embeddingClient.getFacilitiesWithKNN(queryVector);
+//    }
+
+
     private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
         log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
         return getFacilityResponses(name, address, page, size, userPrincipal);
@@ -85,22 +110,6 @@ public class FacilityQueryService {
         }).toList();
     }
 
-    public FacilityDetailResponse read(Long facilityId, Long userId) {
-        FacilityDetailServiceResponse facilityDetailServiceResponse = facilityReader.read(facilityId);
-        ReviewMetaData reviewMetaData = facilityReader.getReviewMetaData(facilityId);
-        boolean isLiked = facilityReader.isLiked(facilityId, userId);
-        Long viewCount = facilityReader.view(facilityId, userId);
-        facilityEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.VIEW));
-        return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked, viewCount);
-    }
 
-    public List<FacilityResponse> getLikedFacilities(Long userId) {
-        List<Long> facilityIds = facilityReader.getLikedFacilityIds(userId);
-        List<Facility> facilities = facilityReader.getByIds(facilityIds);
-        return facilities.stream().map(facility -> {
-            String profileUrl = facilityReader.getProfileUrl(facility.getId());
-            String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
-            return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
-        }).toList();
-    }
+
 }

@@ -2,12 +2,14 @@
 
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
+import kr.co.goldenhome.dto.FacilityRecommendResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
 import kr.co.goldenhome.service.FacilityQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -45,4 +47,9 @@ public class FacilityQueryController {
     public List<FacilityResponse> getLikedFacilities(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return facilityQueryService.getLikedFacilities(userPrincipal.userId());
     }
+
+//    @GetMapping("/recommend")
+//    public List<FacilityRecommendResponse> getRecommendFacilities(@RequestParam("query") String query) throws IOException {
+//        return facilityQueryService.recommendFacilities(query);
+//    }
 }

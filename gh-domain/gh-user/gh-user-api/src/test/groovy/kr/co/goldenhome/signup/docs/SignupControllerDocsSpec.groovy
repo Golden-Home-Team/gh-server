@@ -71,7 +71,7 @@ class SignupControllerDocsSpec extends Specification {
 
     def "회원가입 성공"() {
         given:
-        def request = new SignupRequest("gucoding1234", "gucoding@naver.com", "a12345678", "01012345555")
+        def request = new SignupRequest("gucoding1234", "gucoding@naver.com", "a12345678", "01012345555", "EMAIL", "122333")
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/signup")
@@ -89,7 +89,11 @@ class SignupControllerDocsSpec extends Specification {
                                 fieldWithPath("password").type(JsonFieldType.STRING)
                                         .description("비밀번호"),
                                 fieldWithPath("phoneNumber").type(JsonFieldType.STRING)
-                                        .description("전화번호")
+                                        .description("전화번호"),
+                                fieldWithPath("type").type(JsonFieldType.STRING)
+                                        .description("인증타입(EMAIL, PHONE)"),
+                                fieldWithPath("verificationCode").type(JsonFieldType.STRING)
+                                        .description("인증코드")
                         ),
                         responseFields(fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                 .description("성공여부"))))

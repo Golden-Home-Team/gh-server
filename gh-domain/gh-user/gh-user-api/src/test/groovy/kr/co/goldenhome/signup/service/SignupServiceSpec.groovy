@@ -1,5 +1,6 @@
 package kr.co.goldenhome.signup.service
 
+import kr.co.goldenhome.authentication.implement.VerificationManagerFactory
 import kr.co.goldenhome.signup.dto.SignupRequest
 import kr.co.goldenhome.signup.implement.SignupManager
 import spock.lang.Specification
@@ -9,9 +10,10 @@ class SignupServiceSpec extends Specification {
     SignupService signupService
 
     def signupManager = Mock(SignupManager)
+    VerificationManagerFactory factory = Mock()
 
     def setup() {
-        signupService = new SignupService(signupManager)
+        signupService = new SignupService(signupManager, factory)
     }
 
     def "isLoginDuplicated - SignupManager 를 호출한다"() {
@@ -29,21 +31,16 @@ class SignupServiceSpec extends Specification {
 
     }
 
-    def "signup - SignupManager 를 호출한다"() {
+    def "signup - factory, SignupManager 를 호출한다"() {
         given:
-        def givenSignup = new SignupRequest("gucoding1234", "gucoding@1234", "1234", "01012345555")
+        def givenSignup = new SignupRequest("gucoding1234", "gucoding@1234", "1234", "01012345555", "EMAIL", "12333")
 
         when:
         signupService.signup(givenSignup)
 
         then:
-        1 * signupManager.createUser(*_) >> {
-            SignupRequest request ->
-                assert request.loginId() == givenSignup.loginId()
-                assert request.email() == givenSignup.email()
-                assert request.password() == givenSignup.password()
-                assert request.phoneNumber() == givenSignup.phoneNumber()
-        }
+        1 * factory.confirm(*_)
+        1 * signupManager.createUser(*_)
 
     }
 

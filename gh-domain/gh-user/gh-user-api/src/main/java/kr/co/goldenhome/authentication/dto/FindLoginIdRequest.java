@@ -2,11 +2,9 @@ package kr.co.goldenhome.authentication.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ResetPasswordRequest(
+public record FindLoginIdRequest(
         @NotBlank String type,
         @NotBlank String contact,
-        @NotBlank String verificationCode,
-        @NotBlank String newPassword,
-        @NotBlank String confirmPassword
+        @NotBlank String verificationCode
 ) {
 }

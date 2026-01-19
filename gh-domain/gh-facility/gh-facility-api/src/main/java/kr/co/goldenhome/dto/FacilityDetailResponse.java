@@ -2,6 +2,7 @@ package kr.co.goldenhome.dto;
 
 import kr.co.goldenhome.ReviewMetaData;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record FacilityDetailResponse(
@@ -23,14 +24,14 @@ public record FacilityDetailResponse(
         FacilityStaffInnerResponse facilityStaffInnerResponse,
         List<FacilityPhotoResponse> photoResponses,
         List<FacilityProgramResponse> facilityProgramResponses,
-        double averageScore,
-        int totalCount,
-        int onePointCount,
-        int twoPointCount,
-        int threePointCount,
-        int fourPointCount,
-        int fivePointCount,
-        boolean isLiked,
+        BigDecimal averageScore,
+        Long totalCount,
+        Long onePointCount,
+        Long twoPointCount,
+        Long threePointCount,
+        Long fourPointCount,
+        Long fivePointCount,
+        Boolean isLiked,
         Long viewCount
 ) {
 

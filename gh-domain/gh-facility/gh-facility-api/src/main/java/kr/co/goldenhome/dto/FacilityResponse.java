@@ -7,7 +7,7 @@ import kr.co.goldenhome.entity.FacilityDocument;
 public record FacilityResponse(Long id, String institutionSymbol, String facilityType, String name, String address,
                                Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, String profileUrl,
                                Double latitude, Double longitude,
-                               boolean isLiked) {
+                               boolean isLiked, Float avgScore) {
 
     public static FacilityResponse of(FacilityDocument facilityDocument, String profileUrl) {
         return new FacilityResponse(
@@ -22,7 +22,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facilityDocument.getCurrentTotal(),
                 profileUrl,
                 facilityDocument.getLocation().getLat(), facilityDocument.getLocation().getLon(),
-                false
+                false,
+                facilityDocument.getAvgScore()
         );
     }
 
@@ -40,7 +41,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 profileUrl,
                 facility.getLatitude(),
                 facility.getLongitude(),
-                false
+                false,
+                null
         );
     }
 
@@ -58,7 +60,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facilityDocument.getCurrentTotal(),
                 profileUrl,
                 facilityDocument.getLocation().getLat(), facilityDocument.getLocation().getLon(),
-                isLiked
+                isLiked,
+                facilityDocument.getAvgScore()
         );
     }
 
@@ -76,7 +79,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 profileUrl,
                 facility.getLatitude(),
                 facility.getLongitude(),
-                isLiked
+                isLiked,
+                null
         );
     }
 
@@ -94,7 +98,8 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 facility.getCurrentTotal(),
                 profileUrl,
                 facility.getLatitude(), facility.getLongitude(),
-                true
+                true,
+                null
         );
     }
 }

@@ -1,6 +1,5 @@
 package kr.co.goldenhome.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.co.goldenhome.FacilityEventManger;
 import kr.co.goldenhome.entity.FacilityLike;
 import kr.co.goldenhome.entity.FacilityLikeCount;
@@ -27,7 +26,7 @@ public class FacilityLikeService {
         if (result == 0) {
             facilityLikeCountRepository.save(FacilityLikeCount.create(facilityId));
         }
-        facilityEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.LIKE));
+        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.LIKE));
     }
 
     @Transactional
@@ -37,6 +36,6 @@ public class FacilityLikeService {
                     int result = facilityLikeRepository.deleteByFacilityIdAndUserId(facilityId, userId);
                     if (result != 0) facilityLikeCountRepository.decrease(facilityId);
                 });
-        facilityEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.DISLIKE));
+        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.DISLIKE));
     }
 }

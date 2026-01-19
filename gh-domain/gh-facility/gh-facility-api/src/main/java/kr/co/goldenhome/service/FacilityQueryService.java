@@ -64,7 +64,7 @@ public class FacilityQueryService {
         ReviewMetaData reviewMetaData = facilityReader.getReviewMetaData(facilityId);
         boolean isLiked = facilityReader.isLiked(facilityId, userId);
         Long viewCount = facilityReader.view(facilityId, userId);
-        facilityEventManger.saveLog(FacilityEvent.create(facilityId, FacilityEventType.VIEW));
+        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.VIEW));
         return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked, viewCount);
     }
 

@@ -61,7 +61,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
         def givenRadiusKm = 1
         def givenUserPrincipal = new UserPrincipal(1L)
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 37.1, 126.4, false))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 37.1, 126.4, false, 4.3))
 
         facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
         >> expectedResponse
@@ -88,11 +88,11 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         parameterWithName("name").description("시설명"),
                         parameterWithName("address").description("시설 주소"),
                         parameterWithName("facilityType").description(
-                                "실버타운, 양로원 -> 시설명으로 검색" +
-                                "요양원 -> 노인요양시설 + 노인요양공동생활가정 시설종류로 검색 " +
+                                "실버타운, 양로원 -> 시설명으로 검색\n" +
+                                "요양원 -> 노인요양시설 + 노인요양공동생활가정 시설종류로 검색\n" +
                                 "그 외 -> 시설종류 그대로 검색"),
                         parameterWithName("grade").description("시설등급 e.g. A,B..."),
-                        parameterWithName("sort").description("정렬기준 (view, review, like, consultation) 아무것도 안보내면 유사도순입니다."),
+                        parameterWithName("sort").description("정렬기준 (view(조회수), review(리뷰수), consultation(상담수), highestRated(평점높은순), lowestRated(평점낮은순)) 아무것도 안보내면 유사도순입니다."),
                         parameterWithName("withinYears").description("설립연도 n년 이내 e.g. 1"),
                         parameterWithName("page").description("페이지 default = 1"),
                         parameterWithName("size").description("페이지 크기 default = 20"),
@@ -129,7 +129,9 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
                                 .description("경도"),
                         fieldWithPath("[].isLiked").type(JsonFieldType.BOOLEAN)
-                                .description("좋아요 여부")
+                                .description("좋아요 여부"),
+                        fieldWithPath("[].avgScore").type(JsonFieldType.NUMBER)
+                                .description("시설 평점"),
 
                 )
         ))
@@ -390,7 +392,7 @@ class FacilityQueryControllerSpecDocs extends Specification {
     def "좋아요한 시설 목록 조회"() {
         given:
 
-        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1, true))
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1, true, 4.3))
 
         facilityService.getLikedFacilities(*_)
                 >> expectedResponse
@@ -432,7 +434,9 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
                                 .description("시설 프로필 이미지"),
                         fieldWithPath("[].isLiked").type(JsonFieldType.BOOLEAN)
-                                .description("시설 좋아요 여부")
+                                .description("시설 좋아요 여부"),
+                        fieldWithPath("[].avgScore").type(JsonFieldType.NUMBER)
+                                .description("시설 평점"),
 
                 )
         ))

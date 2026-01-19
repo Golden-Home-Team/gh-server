@@ -1,12 +1,14 @@
 package kr.co.goldenhome.authentication.controller;
 
 import jakarta.validation.Valid;
+import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.authentication.dto.*;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.authentication.service.AuthService;
 import kr.co.goldenhome.validator.DtoValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,21 +29,21 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public CommonResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+    public CommonResponse resetPassword(@RequestBody @Valid ResetPasswordRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         DtoValidator.password(request.newPassword(), request.confirmPassword());
-        authService.resetPassword(request);
+        authService.resetPassword(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 
     @PostMapping("/reset-email")
-    public CommonResponse resetEmail(@RequestBody @Valid ResetEmailRequest request) {
-        authService.resetEmail(request);
+    public CommonResponse resetEmail(@RequestBody @Valid ResetEmailRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        authService.resetEmail(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 
     @PostMapping("/reset-phone")
-    public CommonResponse resetPhoneNumber(@RequestBody @Valid ResetPhoneNumberRequest request) {
-        authService.resetPhoneNumber(request);
+    public CommonResponse resetPhoneNumber(@RequestBody @Valid ResetPhoneNumberRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        authService.resetPhoneNumber(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 

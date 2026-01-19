@@ -7,5 +7,5 @@ public interface VerificationManager {
     String create(String contact);
     VerificationType getVerificationType();
     void send(String contact, String verificationCode);
-    VerificationConfirmServiceResponse confirm(String contact, String verificationCode);
+    void confirm(String contact, String verificationCode);
 }

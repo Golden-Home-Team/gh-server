@@ -1,14 +1,16 @@
 package kr.co.goldenhome;
 
-public record ReviewMetaData(double averageScore,
-                             int totalCount,
-                             int onePointCount,
-                             int twoPointCount,
-                             int threePointCount,
-                             int fourPointCount,
-                             int fivePointCount) {
+import java.math.BigDecimal;
+
+public record ReviewMetaData(BigDecimal averageScore,
+                             Long totalCount,
+                             Long onePointCount,
+                             Long twoPointCount,
+                             Long threePointCount,
+                             Long fourPointCount,
+                             Long fivePointCount) {
 
     public static ReviewMetaData noData() {
-        return new ReviewMetaData(0, 0, 0, 0, 0, 0, 0);
+        return new ReviewMetaData(BigDecimal.ZERO, 0L, 0L, 0L, 0L, 0L, 0L);
     }
 }

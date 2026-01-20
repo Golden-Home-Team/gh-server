@@ -1,5 +1,6 @@
 package kr.co.goldenhome.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Document(indexName = "facilities")
@@ -50,9 +53,13 @@ public class FacilityDocument {
     @Setter
     @Field
     private GeoPoint location;
+    @Field(type = FieldType.Float)
+    private Float avgScore;
+    @Field(type = FieldType.Object)
+    private Map<String, Object> source; // 전체 데이터를 Map으로 다 받아보기
 
     @Builder
-    private FacilityDocument(String id, String institutionSymbol, String facilityType, String name, String address, Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, Integer viewCount, Integer reviewCount, Integer likeCount, Integer consultationCount, GeoPoint location) {
+    private FacilityDocument(String id, String institutionSymbol, String facilityType, String name, String address, Integer establishmentYear, String grade, Integer capacity, Integer currentTotal, Integer viewCount, Integer reviewCount, Integer likeCount, Integer consultationCount, GeoPoint location, Float avgScore, Map<String, Object> source) {
         this.id = id;
         this.institutionSymbol = institutionSymbol;
         this.facilityType = facilityType;
@@ -67,6 +74,8 @@ public class FacilityDocument {
         this.likeCount = likeCount;
         this.consultationCount = consultationCount;
         this.location = location;
+        this.avgScore = avgScore;
+        this.source = source;
     }
 
     public static FacilityDocument from(Facility facility) {

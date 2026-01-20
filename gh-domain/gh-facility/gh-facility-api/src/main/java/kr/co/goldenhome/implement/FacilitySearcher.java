@@ -121,15 +121,15 @@
                         Sort.by(Sort.Direction.DESC, "viewCount");
                 case "review" ->
                         Sort.by(Sort.Direction.DESC, "reviewCount");
-                case "like" ->
-                        Sort.by(Sort.Direction.DESC, "likeCount");
                 case "consultation" ->
                         Sort.by(Sort.Direction.DESC, "consultationCount");
+                case "highestRated" ->
+                        Sort.by(Sort.Direction.DESC, "avgScore");
+                case "lowestRated" ->
+                        Sort.by(Sort.Direction.ASC, "avgScore");
                 default ->
                         Sort.unsorted();
             };
-
-
 
             NativeQuery nativeQuery = NativeQuery.builder()
                     .withQuery(boolQuery)

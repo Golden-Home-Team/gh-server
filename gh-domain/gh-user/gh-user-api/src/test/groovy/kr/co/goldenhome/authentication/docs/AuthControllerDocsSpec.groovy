@@ -3,6 +3,7 @@ package kr.co.goldenhome.authentication.docs
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.firebase.messaging.FirebaseMessaging
 import kr.co.goldenhome.FcmConfig
+import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.authentication.dto.FindLoginIdRequest
 import kr.co.goldenhome.authentication.dto.FindLoginIdResponse
 import kr.co.goldenhome.authentication.dto.ResetEmailRequest
@@ -95,6 +96,7 @@ class AuthControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/reset-password")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("reset-password",
@@ -132,6 +134,7 @@ class AuthControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/reset-email")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("reset-email",
@@ -167,6 +170,7 @@ class AuthControllerDocsSpec extends Specification {
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/reset-phone")
+                .principal(new UserPrincipal(1L))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(document("reset-phone",

@@ -1,46 +1,25 @@
 package kr.co.goldenhome;
 
 
-import kr.co.goldenhome.entity.Review;
-
-import kr.co.goldenhome.repository.ReviewRepository;
+import kr.co.goldenhome.entity.ReviewStatistic;
+import kr.co.goldenhome.repository.ReviewStatisticRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class ReviewApiImpl implements ReviewApi {
 
-    private final ReviewRepository reviewRepository;
+    private final ReviewStatisticRepository reviewStatisticRepository;
 
     @Override
     public ReviewMetaData getReviewMetaData(Long facilityId) {
-        List<Review> reviews = reviewRepository.findByFacilityId(facilityId);
-        if (reviews.isEmpty()) return ReviewMetaData.noData();
-        return calculateReviewMetaData(reviews);
-    }
-
-    private ReviewMetaData calculateReviewMetaData(List<Review> reviews) {
-        int totalScore = 0;
-        int[] scoreCounts = new int[6];
-        for (Review review : reviews) {
-            totalScore += review.getScore();
-            scoreCounts[review.getScore()]++;
-        }
-
-        double averageScore = (double) totalScore / reviews.size();
-        int totalCount = reviews.size();
-
-        return new ReviewMetaData(
-                averageScore,
-                totalCount,
-                scoreCounts[1],
-                scoreCounts[2],
-                scoreCounts[3],
-                scoreCounts[4],
-                scoreCounts[5]
-        );
+        Optional<ReviewStatistic> reviewStatisticOptional = reviewStatisticRepository.findById(facilityId);
+        if (reviewStatisticOptional.isEmpty()) return ReviewMetaData.noData();
+        ReviewStatistic reviewStatistic = reviewStatisticOptional.get();
+        long totalCount = reviewStatistic.getScore1Count()+ reviewStatistic.getScore2Count()+reviewStatistic.getScore3Count()+reviewStatistic.getScore4Count()+reviewStatistic.getScore5Count();
+        return new ReviewMetaData(reviewStatistic.getAverageScore(), totalCount, reviewStatistic.getScore1Count(), reviewStatistic.getScore2Count(), reviewStatistic.getScore3Count(), reviewStatistic.getScore4Count(), reviewStatistic.getScore5Count());
     }
 }

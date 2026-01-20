@@ -48,6 +48,7 @@ class ReviewServiceSpec extends Specification {
                 formattedFileNames == givenFormattedFileNames
                 facilityId == givenFacilityId
                 userId == givenUserId
+                new ReviewAppenderWriteResponse(BigDecimal.ONE)
         }
         1 * facilityEventManager.saveLog(_)
     }

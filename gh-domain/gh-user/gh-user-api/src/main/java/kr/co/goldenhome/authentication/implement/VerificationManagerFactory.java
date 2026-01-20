@@ -1,6 +1,5 @@
 package kr.co.goldenhome.authentication.implement;
 
-import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse;
 import kr.co.goldenhome.enums.VerificationType;
 import kr.co.goldenhome.exception.CustomException;
 import kr.co.goldenhome.exception.ErrorCode;
@@ -27,9 +26,9 @@ public class VerificationManagerFactory {
         return verificationCode;
     }
 
-    public VerificationConfirmServiceResponse confirm(String type, String contact, String verificationCode) {
+    public void confirm(String type, String contact, String verificationCode) {
         VerificationManager manager = getManager(type);
-        return manager.confirm(contact, verificationCode);
+        manager.confirm(contact, verificationCode);
     }
 
     private VerificationManager getManager(String type) {

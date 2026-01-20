@@ -1,6 +1,5 @@
 package kr.co.goldenhome.authentication.implement;
 
-import kr.co.goldenhome.authentication.dto.VerificationConfirmServiceResponse;
 import kr.co.goldenhome.enums.VerificationType;
 
 public interface VerificationManager {

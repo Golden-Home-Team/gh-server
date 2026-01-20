@@ -1,6 +1,7 @@
 package kr.co.goldenhome.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.Cookie
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailResponse
 import kr.co.goldenhome.dto.FacilityInfoInnerResponse
@@ -403,6 +404,66 @@ class FacilityQueryControllerSpecDocs extends Specification {
                         .principal(new UserPrincipal(1L))
 
         ).andDo(document("facility-read-liked",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                        fieldWithPath("[]").type(JsonFieldType.ARRAY)
+                                .description("시설 목록"),
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER)
+                                .description("시설 아이디"),
+                        fieldWithPath("[].institutionSymbol").type(JsonFieldType.STRING)
+                                .description("기관 코드"),
+                        fieldWithPath("[].facilityType").type(JsonFieldType.STRING)
+                                .description("시설 종류"),
+                        fieldWithPath("[].name").type(JsonFieldType.STRING)
+                                .description("시설명"),
+                        fieldWithPath("[].address").type(JsonFieldType.STRING)
+                                .description("소재지"),
+                        fieldWithPath("[].establishmentYear").type(JsonFieldType.NUMBER)
+                                .description("시설연도"),
+                        fieldWithPath("[].grade").type(JsonFieldType.STRING)
+                                .description("시설 등급"),
+
+                        fieldWithPath("[].capacity").type(JsonFieldType.NUMBER)
+                                .description("정원"),
+                        fieldWithPath("[].currentTotal").type(JsonFieldType.NUMBER)
+                                .description("현원 - 계"),
+                        fieldWithPath("[].profileUrl").type(JsonFieldType.STRING)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].latitude").type(JsonFieldType.NUMBER)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].longitude").type(JsonFieldType.NUMBER)
+                                .description("시설 프로필 이미지"),
+                        fieldWithPath("[].isLiked").type(JsonFieldType.BOOLEAN)
+                                .description("시설 좋아요 여부"),
+                        fieldWithPath("[].avgScore").type(JsonFieldType.NUMBER)
+                                .description("시설 평점"),
+
+                )
+        ))
+
+
+        then:
+        response.andExpect {
+            MockMvcResultMatchers.status().isOk()
+        }
+
+    }
+
+    def "최근 둘러본 시설 목록 조회"() {
+        given:
+
+        def expectedResponse = List.of(new FacilityResponse(1L, "23017000292", "주야간보호 내 치매전담 1실", "대전요양원 주간보호센터", "대전광역시 서구 조달청길  116 (도마동)", 2014, "A", 25, 23, "https://", 36.4, 127.1, true, 4.3))
+
+        facilityService.recent(*_)
+                >> expectedResponse
+
+        when:
+        def response = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/facilities/recent")
+                        .principal(new UserPrincipal(1L))
+
+        ).andDo(document("facility-read-recent",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 responseFields(

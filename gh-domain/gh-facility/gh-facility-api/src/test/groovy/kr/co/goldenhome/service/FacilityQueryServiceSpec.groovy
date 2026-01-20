@@ -6,9 +6,11 @@ import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
+import kr.co.goldenhome.entity.RecentView
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
 import kr.co.goldenhome.FacilityEventManger
+import kr.co.goldenhome.repository.RecentViewRepository
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 import spock.lang.Specification
 
@@ -19,10 +21,11 @@ class FacilityQueryServiceSpec extends Specification {
     FacilityReader facilityReader = Mock()
     FacilityEventManger facilityEventManager = Mock()
     LikeApi likeApi = Mock()
+    RecentViewRepository recentViewRepository = Mock()
 
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, likeApi)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, recentViewRepository, likeApi)
     }
 
     def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
@@ -107,5 +110,18 @@ class FacilityQueryServiceSpec extends Specification {
         1 * facilityReader.getByIds(givenLikeApiResponse) >> givenReaderResponse
         2 * facilityReader.getProfileUrl(_) >> ""
         2 * facilityReader.getGradeByInstitutionSymbol(_) >> ""
+    }
+
+    def "recent - recentViewRepository 를 한번, facilityReader 를 여러번 호출한다"() {
+        given:
+
+        when:
+        facilityService.recent(1)
+
+        then:
+        1 * recentViewRepository.findByUserId(*_) >> List.of(RecentView.builder().id(1).build())
+        1 * facilityReader.getByIds(*_) >> List.of(Facility.builder().id(1).institutionSymbol("13").build())
+        1 * facilityReader.getProfileUrl(*_) >> "prf"
+        1 * facilityReader.getGradeByInstitutionSymbol(*_) >> "grd"
     }
 }

@@ -1,15 +1,14 @@
     package kr.co.goldenhome.controller;
 
+import kr.co.goldenhome.TrackRecentView;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
-import kr.co.goldenhome.dto.FacilityRecommendResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
 import kr.co.goldenhome.service.FacilityQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,6 +36,7 @@ public class FacilityQueryController {
         return facilityQueryService.search(name, address, facilityType, grade, sort, withinYears, page, size, lat, lon, radiusKm, userPrincipal);
     }
 
+    @TrackRecentView
     @GetMapping("/{facilityId}")
     public FacilityDetailResponse read(@PathVariable("facilityId") Long facilityId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long userId = (userPrincipal != null) ? userPrincipal.userId() : null;
@@ -46,6 +46,11 @@ public class FacilityQueryController {
     @GetMapping("/like")
     public List<FacilityResponse> getLikedFacilities(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return facilityQueryService.getLikedFacilities(userPrincipal.userId());
+    }
+
+    @GetMapping("/recent")
+    public List<FacilityResponse> recent(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return facilityQueryService.recent(userPrincipal.userId());
     }
 
 //    @GetMapping("/recommend")

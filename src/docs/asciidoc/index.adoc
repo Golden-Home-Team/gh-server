@@ -13,6 +13,7 @@ ifndef::snippets[]
 :facility-read: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read
 :facility-search: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-search
 :facility-read-liked: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read-liked
+:facility-read-recent: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-read-recent
 :facility-profile-upload: ../../../gh-domain/gh-facility/gh-facility-api/build/generated-snippets/facility-profile-upload
 :resume-write: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-write
 :resume-read: ../../../gh-domain/gh-resume/gh-resume-api/build/generated-snippets/resume-read
@@ -294,6 +295,14 @@ include::{facility-read-liked}/http-request.adoc[]
 === HTTP Response
 include::{facility-read-liked}/http-response.adoc[]
 include::{facility-read-liked}/response-fields.adoc[]
+
+== 최근본 시설 목록조회
+=== HTTP Request
+include::{facility-read-recent}/http-request.adoc[]
+
+=== HTTP Response
+include::{facility-read-recent}/http-response.adoc[]
+include::{facility-read-recent}/response-fields.adoc[]
 
 == 시설 프로필 등록
 === HTTP Request

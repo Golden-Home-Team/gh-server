@@ -23,9 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String loginId;
-    @Column(unique = true)
     private String email;
     private String password;
     private String phoneNumber;
@@ -41,10 +39,10 @@ public class User {
     @Column(unique = true)
     private String providerId;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 
     @Builder
-    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, LocalDateTime createdAt, LocalDateTime deletedAt) {
         this.id = id;
         this.loginId = loginId;
         this.email = email;
@@ -56,7 +54,7 @@ public class User {
         this.providerType = providerType;
         this.providerId = providerId;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     public static User create(String loginId, String email, String password, String phoneNumber, UserRole role) {
@@ -68,7 +66,7 @@ public class User {
                 .role(role)
                 .status(UserStatus.ACTIVE)
                 .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .deletedAt(LocalDateTime.of(1970, 1, 1, 0, 0))
                 .build();
     }
 
@@ -81,7 +79,7 @@ public class User {
                 .status(UserStatus.ACTIVE)
                 .role(UserRole.USER)
                 .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .deletedAt(LocalDateTime.of(1970, 1, 1, 0, 0))
                 .build();
     }
 
@@ -107,6 +105,7 @@ public class User {
 
     public void withdraw() {
         this.status = UserStatus.DELETED;
+        this.deletedAt = LocalDateTime.now();
     }
 
 

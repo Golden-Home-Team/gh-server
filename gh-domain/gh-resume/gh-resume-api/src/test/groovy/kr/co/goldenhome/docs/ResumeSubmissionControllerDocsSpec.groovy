@@ -11,6 +11,7 @@ import kr.co.goldenhome.enums.Relationship
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse
 import kr.co.goldenhome.entity.ResumeSubmission
 import kr.co.goldenhome.enums.AdmissionStatus
+import kr.co.goldenhome.submission.dto.ResumeSubmissionsResponse
 import kr.co.goldenhome.submission.service.ResumeSubmissionService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -84,7 +85,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
         given:
         def givenLastId = 1L
         def givenPageSize = 20L
-        def expectedResponse = List.of(ResumeSubmissionResponse.of(
+        def expectedResponse = List.of(ResumeSubmissionsResponse.of(
                 ResumeSubmission.builder()
                         .id(1L)
                         .resumeId(1L)
@@ -93,7 +94,6 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                 .dateOfBirth(LocalDate.of(2000,7,2))
                 .gender(Gender.MALE)
                 .longTermCareGrade(LongTermCareGrade.GRADE_1)
-                .physicalCondition(PhysicalCondition.DEMENTIA)
                 .healthInsurance(HealthInsurance.MEDICAL_AID_TYPE_1)
                 .specialNotes("없음")
                 .guardianName("구머니")
@@ -103,8 +103,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                 .admissionStatus(AdmissionStatus.PENDING_REVIEW)
                 .otherRelationship("e.g. 기타 - 친구")
                  .build(),
-                new FacilityApiResponse("", "")
-            )
+                new FacilityApiResponse("", ""))
         )
         1 * resumeSubmissionService.readAll(*_) >> expectedResponse
 
@@ -139,8 +138,6 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                         .description("성별"),
                                 fieldWithPath("[].longTermCareGrade").type(JsonFieldType.STRING)
                                         .description("장기요양등급"),
-                                fieldWithPath("[].physicalCondition").type(JsonFieldType.STRING)
-                                        .description("HYPERTENSION, DIABETES, DEMENTIA, TRAUMA, ETC, NONE"),
                                 fieldWithPath("[].healthInsurance").type(JsonFieldType.STRING)
                                         .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
                                 fieldWithPath("[].specialNotes").type(JsonFieldType.STRING)
@@ -186,7 +183,6 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         .dateOfBirth(LocalDate.of(2000,7,2))
                         .gender(Gender.MALE)
                         .longTermCareGrade(LongTermCareGrade.GRADE_1)
-                        .physicalCondition(PhysicalCondition.DEMENTIA)
                         .healthInsurance(HealthInsurance.MEDICAL_AID_TYPE_1)
                         .specialNotes("없음")
                         .guardianName("구머니")
@@ -196,7 +192,8 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                         .admissionStatus(AdmissionStatus.PENDING_REVIEW)
                         .otherRelationship("기타 - 친구")
                         .build(),
-                new FacilityApiResponse("", "")
+                new FacilityApiResponse("", ""),
+                List.of(PhysicalCondition.ETC)
         )
 
         1 * resumeSubmissionService.read(*_) >> expectedResponse
@@ -226,7 +223,7 @@ class ResumeSubmissionControllerDocsSpec extends Specification{
                                 .description("성별"),
                         fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
                                 .description("장기요양등급"),
-                        fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                        fieldWithPath("physicalCondition").type(JsonFieldType.ARRAY)
                                 .description("건강 상태"),
                         fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
                                 .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),

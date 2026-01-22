@@ -26,8 +26,8 @@ public class Resume {
     private LocalDate dateOfBirth;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Enumerated(EnumType.STRING)
-    private PhysicalCondition physicalCondition;
+//    @Enumerated(EnumType.STRING)
+//    private PhysicalCondition physicalCondition;
     @Enumerated(EnumType.STRING)
     private LongTermCareGrade longTermCareGrade;
     @Enumerated(EnumType.STRING)
@@ -45,13 +45,12 @@ public class Resume {
     private String otherRelationship;
 
     @Builder
-    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, String specialNotes, String guardianName, String guardianContactInformation, String facilityType, PhysicalCondition physicalCondition, HealthInsurance healthInsurance, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime createdAt, LocalDateTime updatedAt, String otherRelationship) {
+    private Resume(Long id, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, String specialNotes, String guardianName, String guardianContactInformation, String facilityType, HealthInsurance healthInsurance, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime createdAt, LocalDateTime updatedAt, String otherRelationship) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
         this.specialNotes = specialNotes;
         this.guardianName = guardianName;
@@ -65,13 +64,12 @@ public class Resume {
         this.otherRelationship = otherRelationship;
     }
 
-    public static Resume create(Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
+    public static Resume create(Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
         return Resume.builder()
                 .userId(userId)
                 .name(name)
                 .dateOfBirth(dateOfBirth)
                 .gender(gender)
-                .physicalCondition(physicalCondition)
                 .longTermCareGrade(longTermCareGrade)
                 .healthInsurance(healthInsurance)
                 .specialNotes(specialNotes)
@@ -86,11 +84,10 @@ public class Resume {
                 .build();
     }
 
-    public void update(String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationShip, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
+    public void update(String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationShip, String facilityType, AdmissionTimeFrame admissionTimeFrame, String otherRelationship) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
         this.healthInsurance = healthInsurance;
         this.specialNotes = specialNotes;

@@ -6,9 +6,8 @@ import kr.co.goldenhome.enums.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public record ResumeSubmissionResponse(
+public record ResumeSubmissionsResponse(
         Long id,
         Long resumeId,
         Long facilityId,
@@ -18,7 +17,6 @@ public record ResumeSubmissionResponse(
         LocalDate dateOfBirth,
         Gender gender,
         LongTermCareGrade longTermCareGrade,
-        List<PhysicalCondition> physicalCondition,
         HealthInsurance healthInsurance,
         String specialNotes,
         String guardianName,
@@ -27,10 +25,10 @@ public record ResumeSubmissionResponse(
         LocalDateTime submitTime,
         AdmissionStatus admissionStatus,
         String otherRelationship
-
 ) {
-    public static ResumeSubmissionResponse of(ResumeSubmission resumeSubmission, FacilityApiResponse facilityApiResponse, List<PhysicalCondition> physicalConditions) {
-        return new ResumeSubmissionResponse(
+
+    public static ResumeSubmissionsResponse of(ResumeSubmission resumeSubmission, FacilityApiResponse facilityApiResponse) {
+        return new ResumeSubmissionsResponse(
                 resumeSubmission.getId(),
                 resumeSubmission.getResumeId(),
                 resumeSubmission.getFacilityId(),
@@ -40,7 +38,6 @@ public record ResumeSubmissionResponse(
                 resumeSubmission.getDateOfBirth(),
                 resumeSubmission.getGender(),
                 resumeSubmission.getLongTermCareGrade(),
-                physicalConditions,
                 resumeSubmission.getHealthInsurance(),
                 resumeSubmission.getSpecialNotes(),
                 resumeSubmission.getGuardianName(),

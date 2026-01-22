@@ -24,8 +24,7 @@ public class ResumeService {
     }
 
     public ResumeResponse read(Long userId) {
-        Resume resume = resumeReader.read(userId);
-        return ResumeResponse.from(resume);
+        return resumeReader.read(userId);
     }
 
     public void modify(ResumeModifyRequest request, Long userId) {

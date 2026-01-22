@@ -1,7 +1,9 @@
 package kr.co.goldenhome.resume.implement;
 
 import kr.co.goldenhome.entity.Resume;
+import kr.co.goldenhome.entity.ResumePhysicalCondition;
 import kr.co.goldenhome.enums.*;
+import kr.co.goldenhome.repository.ResumePhysicalConditionRepository;
 import kr.co.goldenhome.repository.ResumeRepository;
 import kr.co.goldenhome.resume.dto.ResumeCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +14,15 @@ import org.springframework.stereotype.Component;
 public class ResumeWriter {
 
     private final ResumeRepository resumeRepository;
+    private final ResumePhysicalConditionRepository resumePhysicalConditionRepository;
 
     public void write(ResumeCreateRequest request, Long userId) {
-        resumeRepository.save(
+        Resume resume = resumeRepository.save(
                 Resume.create(
                         userId,
                         request.name(),
                         request.dateOfBirth(),
                         Gender.valueOf(request.gender()),
-                        PhysicalCondition.valueOf(request.physicalCondition()),
                         LongTermCareGrade.valueOf(request.longTermCareGrade()),
                         HealthInsurance.valueOf(request.healthInsurance()),
                         request.specialNotes(),
@@ -32,5 +34,11 @@ public class ResumeWriter {
                         request.otherRelationship()
                 )
         );
+        for (String pc : request.physicalCondition()) {
+            resumePhysicalConditionRepository.save(
+                    ResumePhysicalCondition.create(resume.getId(), PhysicalCondition.valueOf(pc))
+            );
+        }
+
     }
 }

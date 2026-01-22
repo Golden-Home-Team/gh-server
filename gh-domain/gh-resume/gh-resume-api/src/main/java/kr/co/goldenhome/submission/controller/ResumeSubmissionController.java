@@ -3,6 +3,7 @@ package kr.co.goldenhome.submission.controller;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.CommonResponse;
 import kr.co.goldenhome.submission.dto.ResumeSubmissionResponse;
+import kr.co.goldenhome.submission.dto.ResumeSubmissionsResponse;
 import kr.co.goldenhome.submission.service.ResumeSubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +25,7 @@ public class ResumeSubmissionController {
     }
 
     @GetMapping("/readAll")
-    public List<ResumeSubmissionResponse> readAll(
+    public List<ResumeSubmissionsResponse> readAll(
             @RequestParam(value = "lastId", required = false) Long lastId,
             @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize,
             @AuthenticationPrincipal UserPrincipal userPrincipal

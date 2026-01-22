@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/resumes")
@@ -38,9 +40,11 @@ public class ResumeController {
         return CommonResponse.ok();
     }
 
-    private void enumValidate(String gender, String s, String s2, String s3, String relationship, String s4) {
+    private void enumValidate(String gender, List<String> physicalConditions, String s2, String s3, String relationship, String s4) {
         EnumValidator.validate(Gender.class, "gender", gender, "ResumeController.write");
-        EnumValidator.validate(PhysicalCondition.class, "physicalCondition", s, "ResumeController.write");
+        for (String physicalCondition : physicalConditions) {
+            EnumValidator.validate(PhysicalCondition.class, "physicalCondition", physicalCondition, "ResumeController.write");
+        }
         EnumValidator.validate(LongTermCareGrade.class, "longTermCareGrade", s2, "ResumeController.write");
         EnumValidator.validate(HealthInsurance.class, "healthInsurance", s3, "ResumeController.write");
         EnumValidator.validate(Relationship.class, "relationship", relationship, "ResumeController.write");

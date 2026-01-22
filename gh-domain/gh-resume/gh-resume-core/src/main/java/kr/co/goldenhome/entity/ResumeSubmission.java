@@ -26,8 +26,6 @@ public class ResumeSubmission {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Enumerated(EnumType.STRING)
-    private PhysicalCondition physicalCondition;
-    @Enumerated(EnumType.STRING)
     private LongTermCareGrade longTermCareGrade;
     @Enumerated(EnumType.STRING)
     private HealthInsurance healthInsurance;
@@ -44,7 +42,7 @@ public class ResumeSubmission {
     private String otherRelationship;
 
     @Builder
-    private ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, PhysicalCondition physicalCondition, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus, String otherRelationship) {
+    private ResumeSubmission(Long id, Long resumeId, Long facilityId, Long userId, String name, LocalDate dateOfBirth, Gender gender, LongTermCareGrade longTermCareGrade, HealthInsurance healthInsurance, String specialNotes, String guardianName, String guardianContactInformation, Relationship relationship, AdmissionTimeFrame admissionTimeFrame, LocalDateTime submitTime, AdmissionStatus admissionStatus, String otherRelationship) {
         this.id = id;
         this.resumeId = resumeId;
         this.facilityId = facilityId;
@@ -52,7 +50,6 @@ public class ResumeSubmission {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.physicalCondition = physicalCondition;
         this.longTermCareGrade = longTermCareGrade;
         this.healthInsurance = healthInsurance;
         this.specialNotes = specialNotes;
@@ -73,7 +70,6 @@ public class ResumeSubmission {
                 .name(resume.getName())
                 .dateOfBirth(resume.getDateOfBirth())
                 .gender(resume.getGender())
-                .physicalCondition(resume.getPhysicalCondition())
                 .longTermCareGrade(resume.getLongTermCareGrade())
                 .healthInsurance(resume.getHealthInsurance())
                 .specialNotes(resume.getSpecialNotes())

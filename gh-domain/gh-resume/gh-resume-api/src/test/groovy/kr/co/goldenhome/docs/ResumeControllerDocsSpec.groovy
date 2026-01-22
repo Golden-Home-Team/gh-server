@@ -57,7 +57,7 @@ class ResumeControllerDocsSpec extends Specification{
                 "구준형",
                 givenDateOfBirth,
                 Gender.MALE.name(),
-                PhysicalCondition.DEMENTIA.name(),
+                List.of(PhysicalCondition.DEMENTIA.name()),
                 LongTermCareGrade.GRADE_1.name(),
                 HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
@@ -86,7 +86,7 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
                                         .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
-                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                fieldWithPath("physicalCondition").type(JsonFieldType.ARRAY)
                                         .description("HYPERTENSION(고혈압), DIABETES(당뇨), DEMENTIA(치매), TRAUMA(외상 상태), ETC(기타), NONE"),
                                 fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
                                         .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
@@ -130,7 +130,7 @@ class ResumeControllerDocsSpec extends Specification{
                 "구준형",
                 LocalDate.of(2000,7,2),
                 Gender.MALE,
-                PhysicalCondition.DEMENTIA,
+                List.of(PhysicalCondition.DEMENTIA),
                 LongTermCareGrade.GRADE_2,
                 HealthInsurance.MEDICAL_AID_TYPE_1,
                 "없음",
@@ -164,7 +164,7 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
                                         .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
-                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                fieldWithPath("physicalCondition").type(JsonFieldType.ARRAY)
                                         .description("HYPERTENSION, DIABETES, DEMENTIA, TRAUMA, ETC, NONE"),
                                 fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
                                         .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),
@@ -203,7 +203,7 @@ class ResumeControllerDocsSpec extends Specification{
                 "구준형",
                 givenDateOfBirth,
                 Gender.MALE.name(),
-                PhysicalCondition.DEMENTIA.name(),
+                List.of(PhysicalCondition.DEMENTIA.name()),
                 LongTermCareGrade.GRADE_1.name(),
                 HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
@@ -232,7 +232,7 @@ class ResumeControllerDocsSpec extends Specification{
                                         .description("MALE, FEMALE"),
                                 fieldWithPath("longTermCareGrade").type(JsonFieldType.STRING)
                                         .description("GRADE_1, GRADE_2, GRADE_3, GRADE_4, GRADE_5, GRADE_6, IN_PROGRESS, NO_GRADE"),
-                                fieldWithPath("physicalCondition").type(JsonFieldType.STRING)
+                                fieldWithPath("physicalCondition").type(JsonFieldType.ARRAY)
                                         .description("HYPERTENSION, DIABETES, DEMENTIA, TRAUMA, ETC, NONE"),
                                 fieldWithPath("healthInsurance").type(JsonFieldType.STRING)
                                         .description("NATIONAL(국민건강보험), MEDICAL_AID_TYPE_1(의료급여1종), MEDICAL_AID_TYPE_2(의료급여2종)"),

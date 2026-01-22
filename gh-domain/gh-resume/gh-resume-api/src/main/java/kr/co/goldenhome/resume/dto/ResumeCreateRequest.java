@@ -1,11 +1,12 @@
 package kr.co.goldenhome.resume.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record ResumeCreateRequest(String name,
                                   LocalDate dateOfBirth,
                                   String gender,
-                                  String physicalCondition,
+                                  List<String> physicalCondition,
                                   String longTermCareGrade,
                                   String healthInsurance,
                                   String specialNotes,

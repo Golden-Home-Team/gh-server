@@ -1,5 +1,6 @@
 package kr.co.goldenhome.service
 
+import kr.co.goldenhome.entity.ResumePhysicalCondition
 import kr.co.goldenhome.enums.AdmissionTimeFrame
 import kr.co.goldenhome.enums.Gender
 import kr.co.goldenhome.enums.HealthInsurance
@@ -9,6 +10,7 @@ import kr.co.goldenhome.enums.Relationship
 import kr.co.goldenhome.resume.dto.ResumeCreateRequest
 import kr.co.goldenhome.resume.dto.ResumeModifyRequest
 import kr.co.goldenhome.entity.Resume
+import kr.co.goldenhome.resume.dto.ResumeResponse
 import kr.co.goldenhome.resume.implement.ResumeModifier
 import kr.co.goldenhome.resume.implement.ResumeReader
 import kr.co.goldenhome.resume.implement.ResumeWriter
@@ -35,7 +37,7 @@ class ResumeServiceSpec extends Specification {
                 "구준형",
                 givenDateOfBirth,
                 Gender.MALE.name(),
-                PhysicalCondition.DEMENTIA.name(),
+                List.of(PhysicalCondition.DEMENTIA.name()),
                 LongTermCareGrade.GRADE_1.name(),
                 HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",
@@ -62,17 +64,24 @@ class ResumeServiceSpec extends Specification {
     def "read - resumeReader 를 호출한다"() {
         given:
         def givenUserId = 1L
+        def expectedResponse = ResumeResponse.of(
+                Resume.builder()
+                .id(1)
+                .userId(1)
+                .name("")
+                .dateOfBirth(LocalDate.now())
+                .build(),
+                List.of(ResumePhysicalCondition
+                        .builder()
+                        .build()
+                )
+        )
 
         when:
         resumeService.read(givenUserId)
 
         then:
-        1 * resumeReader.read(*_) >> {
-            Long userId ->
-                userId == givenUserId
-                Optional.of(Resume.builder().build())
-                Resume.builder().build()
-        }
+        1 * resumeReader.read(*_) >> expectedResponse
     }
 
     def "modify - resumeModifier 를 호출한다"() {
@@ -82,7 +91,7 @@ class ResumeServiceSpec extends Specification {
                 "구준형",
                 givenDateOfBirth,
                 Gender.MALE.name(),
-                PhysicalCondition.DEMENTIA.name(),
+                List.of(PhysicalCondition.DEMENTIA.name()),
                 LongTermCareGrade.GRADE_1.name(),
                 HealthInsurance.MEDICAL_AID_TYPE_1.name(),
                 "없음",

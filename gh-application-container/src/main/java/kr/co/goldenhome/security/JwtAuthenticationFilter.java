@@ -84,13 +84,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         List<String> excludePath = List.of(
+                "/api/auth",
                 "/api/auth/verification-request",
                 "/api/auth/find-login-id",
                 "/api/auth/social/login/initiate",
-                "/api/auth",
                 "/api/auth/social/login/callback",
                 "/api/auth/refresh",
                 "/api/users/signup",
+                "/api/users/signup/loginId/duplicated",
+                "/api/users/signup/email/duplicated",
                 "/connection", "/test"
         );
 

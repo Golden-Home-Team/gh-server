@@ -2,6 +2,7 @@ package kr.co.goldenhome.account.service
 
 import kr.co.goldenhome.FcmManager
 import kr.co.goldenhome.account.dto.NotificationSettingRequest
+import kr.co.goldenhome.account.dto.WithdrawRequest
 import kr.co.goldenhome.account.implement.NotificationSettingManager
 import kr.co.goldenhome.authentication.dto.FcmRequest
 import kr.co.goldenhome.entity.User
@@ -28,7 +29,7 @@ class AccountServiceSpec extends Specification {
     def "withdraw - userRepository 를 호출한다"() {
 
         when:
-        accountService.withdraw(1L)
+        accountService.withdraw(new WithdrawRequest("사유"), 1L)
 
         then:
         1 * userRepository.findById(*_) >> {

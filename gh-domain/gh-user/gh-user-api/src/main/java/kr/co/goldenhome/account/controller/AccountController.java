@@ -2,6 +2,7 @@ package kr.co.goldenhome.account.controller;
 
 import jakarta.validation.Valid;
 import kr.co.goldenhome.account.dto.NotificationSettingRequest;
+import kr.co.goldenhome.account.dto.WithdrawRequest;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
 import kr.co.goldenhome.dto.CommonResponse;
@@ -23,8 +24,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/withdraw")
-    public CommonResponse withdraw(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-        accountService.withdraw(userPrincipal.userId());
+    public CommonResponse withdraw(@RequestBody WithdrawRequest request, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        accountService.withdraw(request, userPrincipal.userId());
         return CommonResponse.ok();
     }
 

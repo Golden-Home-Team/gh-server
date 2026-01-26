@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.firebase.messaging.FirebaseMessaging
 import kr.co.goldenhome.FcmConfig
 import kr.co.goldenhome.account.dto.NotificationSettingRequest
+import kr.co.goldenhome.account.dto.WithdrawRequest
 import kr.co.goldenhome.account.service.AccountService
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.authentication.dto.FcmRequest
@@ -53,9 +54,15 @@ class AccountControllerDocsSpec extends Specification {
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/api/users/account/withdraw")
                 .principal(new UserPrincipal(1L))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new WithdrawRequest("reason")))
+        )
                 .andDo(document("user-withdraw",
                         preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("reason").type(JsonFieldType.STRING)
+                                        .description("탈퇴 사유")
+                        ),
                         responseFields(
                                 fieldWithPath("success").type(JsonFieldType.BOOLEAN)
                                         .description("성공 여부")

@@ -40,9 +40,10 @@ public class User {
     private String providerId;
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
+    private String reasonDetail;
 
     @Builder
-    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, LocalDateTime createdAt, LocalDateTime deletedAt) {
+    private User(Long id, String loginId, String phoneNumber, String username, String email, String password, UserRole role, UserStatus status, ProviderType providerType, String providerId, LocalDateTime createdAt, LocalDateTime deletedAt, String reasonDetail) {
         this.id = id;
         this.loginId = loginId;
         this.email = email;
@@ -55,6 +56,7 @@ public class User {
         this.providerId = providerId;
         this.createdAt = createdAt;
         this.deletedAt = deletedAt;
+        this.reasonDetail = reasonDetail;
     }
 
     public static User create(String loginId, String email, String password, String phoneNumber, UserRole role) {
@@ -103,9 +105,10 @@ public class User {
         this.loginId = loginId;
     }
 
-    public void withdraw() {
+    public void withdraw(String reasonDetail) {
         this.status = UserStatus.DELETED;
         this.deletedAt = LocalDateTime.now();
+        this.reasonDetail = reasonDetail;
     }
 
 

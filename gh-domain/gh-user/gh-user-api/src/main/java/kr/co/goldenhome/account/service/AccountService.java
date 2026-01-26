@@ -2,6 +2,7 @@ package kr.co.goldenhome.account.service;
 
 import kr.co.goldenhome.FcmManager;
 import kr.co.goldenhome.account.dto.NotificationSettingRequest;
+import kr.co.goldenhome.account.dto.WithdrawRequest;
 import kr.co.goldenhome.account.implement.NotificationSettingManager;
 import kr.co.goldenhome.authentication.dto.FcmRequest;
 import kr.co.goldenhome.entity.UserFcmToken;
@@ -29,9 +30,9 @@ public class AccountService {
     private final FcmManager fcmManager;
 
     @Transactional
-    public void withdraw(Long userId) {
+    public void withdraw(WithdrawRequest request, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "AccountService.withdraw"));
-        user.withdraw();
+        user.withdraw(request.reason());
     }
 
     public void logout(Long userId) {

@@ -76,10 +76,9 @@ public class FacilityReader {
     public List<Facility> search(String name, String address, int page, int size) {
         String rawKeyword = StringUtils.hasText(name) ? name : address;
         if (!StringUtils.hasText(rawKeyword)) return Collections.emptyList();
-        String formattedKeyword = Arrays.stream(rawKeyword.split("\\s+"))
-                .filter(word -> word.length() >= 2)
-                .map(word -> "+" + word)
-                .collect(Collectors.joining(" "));
-        return facilityRepository.searchByFullTextFallback(formattedKeyword, page, size);
+        String cleanKeyword = rawKeyword.replace(" ", "");
+        List<Facility> results = facilityRepository.searchByFullTextFallback(cleanKeyword, page, size);
+        if (results.isEmpty()) return facilityRepository.searchByLikeFallback(cleanKeyword, page, size);
+        return results;
     }
 }

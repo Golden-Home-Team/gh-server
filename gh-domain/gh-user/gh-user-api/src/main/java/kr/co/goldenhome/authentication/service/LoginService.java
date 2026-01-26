@@ -25,8 +25,8 @@ public class LoginService {
         return authenticationTokenManager.create(user.getId());
     }
 
-    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform) {
-        return userAuthenticationManager.getAuthorizationCode(socialPlatform);
+    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform, String frontendRedirectUrl) {
+        return userAuthenticationManager.getAuthorizationCode(socialPlatform, frontendRedirectUrl);
     }
 
     public LoginResponse getUserInfo(SocialPlatform socialPlatform, String authorizationCode) {

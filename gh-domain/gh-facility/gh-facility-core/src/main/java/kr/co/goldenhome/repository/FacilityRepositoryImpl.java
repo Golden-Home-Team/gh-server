@@ -6,7 +6,6 @@ import kr.co.goldenhome.dto.FacilityCombinedDto;
 import kr.co.goldenhome.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -92,6 +91,11 @@ public class FacilityRepositoryImpl implements FacilityRepository {
 
     @Override
     public List<Facility> searchByFullTextFallback(String keyword, int page, int size) {
-        return facilityJpaRepository.searchByFullTextFallback(keyword, PageRequest.of(page, size));
+        return facilityJpaRepository.searchByFullTextFallback(keyword, PageRequest.of(page-1, size));
+    }
+
+    @Override
+    public List<Facility> searchByLikeFallback(String keyword, int page, int size) {
+        return facilityJpaRepository.searchByLikeFallback(keyword, PageRequest.of(page-1, size));
     }
 }

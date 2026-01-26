@@ -81,14 +81,16 @@ class UserAuthenticationManagerSpec extends Specification {
     def "getAuthorizationCode - SocialLoginManager 을 호출한다."() {
         given:
         def givenSocialPlatform = SocialPlatform.KAKAO
+        def givenFrontendRedirectUrl = "http://.."
 
         when:
-        userAuthenticationManager.getAuthorizationCode(givenSocialPlatform)
+        userAuthenticationManager.getAuthorizationCode(givenSocialPlatform, givenFrontendRedirectUrl)
 
         then:
         1 * socialLoginManager.getAuthorizationCode(*_) >> {
-            SocialPlatform socialPlatform ->
+            SocialPlatform socialPlatform, String frontendRedirectUrl ->
                 socialPlatform == givenSocialPlatform
+                givenFrontendRedirectUrl = frontendRedirectUrl
                 ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "url").build()
         }
     }
@@ -111,7 +113,7 @@ class UserAuthenticationManagerSpec extends Specification {
         resultUser == existingUser
     }
 
-    def "getUserInfo - SocialLoginManager, UserRepository를 호출하며, 기존 유저가 없을 때 새로운 유저를 저장하고 반환한다"() {
+    def "getUserInfo - SocialLoginManager, UserRepository 를 호출하며, 기존 유저가 없을 때 새로운 유저를 저장하고 반환한다"() {
         given:
         def givenSocialPlatform = SocialPlatform.KAKAO
         def givenAuthorizationCode = "1234-a"

@@ -34,8 +34,8 @@ public class UserAuthenticationManager {
         return user;
     }
 
-    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform) {
-        return socialLoginManager.getAuthorizationCode(socialPlatform);
+    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform, String frontendRedirectUrl) {
+        return socialLoginManager.getAuthorizationCode(socialPlatform, frontendRedirectUrl);
     }
 
     public User getUserInfo(SocialPlatform socialPlatform, String authorizationCode) {

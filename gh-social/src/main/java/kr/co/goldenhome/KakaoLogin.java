@@ -38,12 +38,13 @@ public class KakaoLogin implements OidcClient {
     }
 
     @Override
-    public ResponseEntity<Void> getAuthorizationCode() {
+    public ResponseEntity<Void> getAuthorizationCode(String frontendRedirectUrl) {
         String url = UriComponentsBuilder.fromUriString("https://kauth.kakao.com/oauth/authorize")
                 .queryParam("response_type", "code")
                 .queryParam("client_id", KAKAO_CLIENT_ID)
                 .queryParam("redirect_uri", KAKAO_REDIRECT_URI)
                 .queryParam("scope", "openid")
+                .queryParam("state", frontendRedirectUrl)
                 .build()
                 .toUriString();
         return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, url).build();

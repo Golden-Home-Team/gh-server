@@ -8,9 +8,12 @@ import kr.co.goldenhome.authentication.dto.LoginResponse;
 import kr.co.goldenhome.authentication.dto.RefreshRequest;
 import kr.co.goldenhome.authentication.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import kr.co.goldenhome.validator.EnumValidator;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,18 +28,27 @@ public class LoginController {
     }
 
     @GetMapping("/social/login/initiate")
-    public ResponseEntity<Void> initiateSocialLogin(@RequestParam("provider_type") String providerType) {
+    public ResponseEntity<Void> initiateSocialLogin(@RequestParam("provider_type") String providerType,
+                                                    @RequestParam("callback") String frontendRedirectUrl) {
         EnumValidator.validate(SocialPlatform.class, "providerType", providerType, "AuthenticationController.initiateSocialLogin");
-        return loginService.getAuthorizationCode(SocialPlatform.valueOf(providerType));
+        return loginService.getAuthorizationCode(SocialPlatform.valueOf(providerType), frontendRedirectUrl);
     }
 
     @GetMapping("/social/login/callback")
-    public LoginResponse socialLoginCallback(@RequestParam("provider_type") String providerType,
+    public ResponseEntity<Void> socialLoginCallback(
+                                             @RequestParam("provider_type") String providerType,
                                              @RequestParam(value = "code",required = false) String authorizationCode,
                                              @RequestParam(value = "error", required = false) String errorCode,
-                                             @RequestParam(value = "error_description", required = false) String errorDescription) {
+                                             @RequestParam(value = "error_description", required = false) String errorDescription,
+                                             @RequestParam(value = "state") String frontendRedirectUrl) {
         if (errorCode != null) throw new ExternalApiException(errorCode, errorDescription);
-        return loginService.getUserInfo(SocialPlatform.valueOf(providerType), authorizationCode);
+        LoginResponse response = loginService.getUserInfo(SocialPlatform.valueOf(providerType), authorizationCode);
+        String finalUrl = UriComponentsBuilder.fromUriString(frontendRedirectUrl)
+                .queryParam("accessToken", response.accessToken())
+                .queryParam("refreshToken", response.refreshToken())
+                .build()
+                .toUriString();
+        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, finalUrl).build();
     }
 
     @PostMapping("/refresh")

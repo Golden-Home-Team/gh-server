@@ -96,20 +96,24 @@ class LoginControllerDocsSpec extends Specification {
     def "소셜 로그인 인가코드 요청 성공 - 지정된 provider_type 으로 리다이렉트"() {
         given:
         def providerType = "KAKAO"
+        def frontendRedirectUrl = "http://..."
         def redirectUri = "https://kauth.kakao.com/oauth/authorize?client_id=your_client_id&redirect_uri=your_redirect_uri&response_type=code"
 
-        1 * authenticationService.getAuthorizationCode(SocialPlatform.KAKAO) >> ResponseEntity.status(HttpStatus.FOUND)
+        1 * authenticationService.getAuthorizationCode(SocialPlatform.KAKAO, frontendRedirectUrl) >> ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.LOCATION, redirectUri)
                 .build()
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/social/login/initiate")
-                .param("provider_type", providerType))
+                .param("provider_type", providerType)
+                .param("callback", frontendRedirectUrl)
+        )
                 .andDo(document("social-login",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("provider_type").description("소셜 로그인 종류 e.g. KAKAO, NAVER"),
+                                parameterWithName("callback").description("프론트엔드 주소"),
                         )))
 
         then:
@@ -123,33 +127,32 @@ class LoginControllerDocsSpec extends Specification {
         given:
         def providerType = "NAVER"
         def authorizationCode = "some_naver_auth_code"
+        def state = "localhost:8000/auth/social/callbac"
         def expectedLoginResponse = new LoginResponse("naverAccessToken", "naverRefreshToken")
+        def redirectUri = state + "?accessToken=" + expectedLoginResponse.accessToken() + "&refreshToken=" + expectedLoginResponse.refreshToken()
+
 
         1 * authenticationService.getUserInfo(SocialPlatform.NAVER, authorizationCode) >> expectedLoginResponse
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/social/login/callback")
                 .param("provider_type", providerType)
-                .param("code", authorizationCode))
+                .param("code", authorizationCode)
+                .param("state", state)
+        )
                 .andDo(document("social-login-callback",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         queryParameters(
                                 parameterWithName("provider_type").description("소셜 로그인 종류 e.g. KAKAO, NAVER"),
                                 parameterWithName("code").description("인가코드"),
-                        ),
-                        responseFields(
-                                fieldWithPath("accessToken").type(JsonFieldType.STRING)
-                                        .description("엑세스 토큰"),
-                                fieldWithPath("refreshToken").type(JsonFieldType.STRING)
-                                        .description("리프레시 토큰")
+                                parameterWithName("state").description("프론트엔드 주소"),
                         )))
 
         then:
         response.andExpect {
-            MockMvcResultMatchers.status().isOk()
-            MockMvcResultMatchers.jsonPath('$.accessToken').value(expectedLoginResponse.accessToken())
-            MockMvcResultMatchers.jsonPath('$.refreshToken').value(expectedLoginResponse.refreshToken())
+            MockMvcResultMatchers.status().isFound()
+            MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, redirectUri)
         }
     }
 

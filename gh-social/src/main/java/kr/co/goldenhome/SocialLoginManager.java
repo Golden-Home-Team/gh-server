@@ -12,9 +12,9 @@ public class SocialLoginManager {
 
     private final List<OidcClient> oidcClients;
 
-    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform) {
+    public ResponseEntity<Void> getAuthorizationCode(SocialPlatform socialPlatform, String frontendRedirectUrl) {
         for (OidcClient oidcClient : oidcClients) {
-            if (oidcClient.getSocialPlatform() == socialPlatform) return oidcClient.getAuthorizationCode();
+            if (oidcClient.getSocialPlatform() == socialPlatform) return oidcClient.getAuthorizationCode(frontendRedirectUrl);
         }
         return null;
     }

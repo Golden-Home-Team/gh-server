@@ -52,14 +52,16 @@ class LoginServiceSpec extends Specification {
     def "getAuthorizationCode - UserAuthenticationManager 를 호출한다"() {
         given:
         def givenSocialPlatform = SocialPlatform.KAKAO
+        def frontendRedirectUrl = "http://sss..."
 
         when:
-        authenticationService.getAuthorizationCode(givenSocialPlatform)
+        authenticationService.getAuthorizationCode(givenSocialPlatform, frontendRedirectUrl)
 
         then:
         1 * userAuthenticationManager.getAuthorizationCode(*_) >> {
-            SocialPlatform socialPlatform ->
+            SocialPlatform socialPlatform, String redirectUrl ->
                 socialPlatform == givenSocialPlatform
+                redirectUrl == frontendRedirectUrl
                 ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "url").build()
         }
     }

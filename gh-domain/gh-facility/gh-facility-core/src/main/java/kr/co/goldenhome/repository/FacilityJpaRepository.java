@@ -13,11 +13,14 @@ public interface FacilityJpaRepository extends JpaRepository<Facility, Long> {
     @Query(
             value = "SELECT * " +
                     "FROM facilities " +
-                    "WHERE MATCH(name, address) AGAINST(:keyword IN BOOLEAN MODE)",
-            countQuery = "SELECT count(*) " +
-                         "FROM facilities " +
-                         "WHERE MATCH(name, address) AGAINST(:keyword IN BOOLEAN MODE)",
+                    "WHERE MATCH(name, address) AGAINST(:keyword IN NATURAL LANGUAGE MODE)",
             nativeQuery = true
     )
     List<Facility> searchByFullTextFallback(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(value = "SELECT * FROM facilities f " +
+            "WHERE REPLACE(f.name, ' ', '') LIKE CONCAT('%', :keyword, '%') " +
+            "OR REPLACE(f.address, ' ', '') LIKE CONCAT('%', :keyword, '%')",
+            nativeQuery = true)
+    List<Facility> searchByLikeFallback(@Param("keyword") String keyword, Pageable pageable);
 }

@@ -9,4 +9,5 @@ public interface FacilityRepository {
     FacilityCombinedDto read(Long facilityId);
     List<Facility> findByIdIn(List<Long> facilityIds);
     List<Facility> searchByFullTextFallback(String keyword, int page, int size);
+    List<Facility> searchByLikeFallback(String keyword, int page, int size);
 }

@@ -1,0 +1,10 @@
+dependencies {
+    compileOnly("org.springframework:spring-context")
+    compileOnly("org.springframework:spring-web")
+    compileOnly("jakarta.servlet:jakarta.servlet-api")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+
+}
+
+jar.enabled = true

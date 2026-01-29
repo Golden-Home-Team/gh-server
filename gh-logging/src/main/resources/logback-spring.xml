@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="API_HISTORY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/api-history.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/api-history-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+        <options>
+            <dsn>https://9d3a1137e50e1e555263895e0f8cc056@o4510783572672512.ingest.us.sentry.io/4510783575883776</dsn>
+        </options>
+        <minimumEventLevel>WARN</minimumEventLevel>
+        <minimumBreadcrumbLevel>INFO</minimumBreadcrumbLevel>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="prod">
+        <logger name="api-history" level="INFO" additivity="false">
+            <appender-ref ref="API_HISTORY"/>
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="SENTRY"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="local">
+        <logger name="api-history" level="OFF" additivity="false"/>
+    </springProfile>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

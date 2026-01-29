@@ -3,16 +3,15 @@ import org.asciidoctor.gradle.jvm.AsciidoctorTask
 plugins {
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "io.sentry.jvm.gradle" version "6.0.0"
 }
 
-//bootJar {
-//    enabled =true
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // 중복 항목을 무시, 없으면 jar파일 실행이 안됨
-//    dependsOn tasks.named('asciidoctor') // asciidoctor 작업 포함
-//    from(tasks.named('asciidoctor').get().outputDir) {
-//        into 'static/docs'
-//    }
-//}
+sentry {
+    includeSourceContext = true
+    org = "goldenhome"
+    projectName = "goldenhome"
+    authToken = System.getenv("SENTRY_AUTH_TOKEN")
+}
 
 
 bootJar {
@@ -38,7 +37,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
-
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:4.0.0-RC1")
 
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -81,5 +79,7 @@ dependencies {
     implementation(project(":gh-common"))
     implementation(project(":gh-social"))
     implementation(project(":gh-notification"))
-
+    implementation(project(":gh-logging"))
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 }
+

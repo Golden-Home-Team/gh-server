@@ -31,6 +31,7 @@ docker-compose.yml
 test.html
 firebase-messaging-sw.js
 *.png
+logs
 
 ### NetBeans ###
 /nbproject/private/

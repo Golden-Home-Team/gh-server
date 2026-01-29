@@ -32,7 +32,7 @@ public class ChatMessageConsumer {
             redisTemplate.opsForStream().createGroup(CHAT_MESSAGE_STREAM_KEY, CHAT_CONSUMER_GROUP);
         } catch (RedisSystemException e) {
             if (e.getCause() != null && e.getCause().getMessage().contains("BUSYGROUP")) {
-                log.error("컨슈머 그룹 '" + CHAT_CONSUMER_NAME + "'는 이미 존재합니다.");
+                log.info("컨슈머 그룹 '" + CHAT_CONSUMER_NAME + "'는 이미 존재합니다.");
             } else {
                 throw e;
             }

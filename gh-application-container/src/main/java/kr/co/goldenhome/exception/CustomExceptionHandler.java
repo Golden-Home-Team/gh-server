@@ -33,13 +33,6 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(400, e.getMessage()));
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("Unknown Exception occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse(500, "서버에 문제가 발생했습니다."));
-    }
-
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
         log.error("Bind Exception occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
@@ -51,7 +44,7 @@ public class CustomExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException e) {
         log.error("NoResourceFoundException occurred. message={}, className={}", e.getMessage(), e.getClass().getName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(400, "존재하지 않는 리소스입니다."));
+                .body(new ErrorResponse(404, "존재하지 않는 리소스입니다."));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

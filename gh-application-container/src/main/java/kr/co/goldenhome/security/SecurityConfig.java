@@ -3,6 +3,7 @@ package kr.co.goldenhome.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,7 +33,20 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(config -> config.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/auth",
+                                "/api/auth/refresh",
+                                "/api/auth/verification-request",
+                                "/api/auth/find-login-id",
+                                "/api/auth/social/login/initiate",
+                                "/api/auth/social/login/callback"
+                        ).permitAll()
+                        .requestMatchers("/api/users/signup/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/terms", "/api/facilities/**").permitAll()
+                        .requestMatchers("/connection","/*.html").permitAll() // , "/test"
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
 

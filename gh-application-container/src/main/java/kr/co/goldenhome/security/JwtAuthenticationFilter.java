@@ -29,7 +29,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,61 +43,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException, ServletException {
         String accessToken = parseToken(request.getHeader("Authorization"));
-        List<String> publicPaths = List.of("/api/facilities");
-        boolean isPublicPath = publicPaths.stream().anyMatch(request.getRequestURI()::startsWith);
-        if (StringUtils.hasText(accessToken)) {
-            try {
-                Long userId = authenticationTokenManager.getUserId(accessToken);
-                User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
-                UserPrincipal userPrincipal = new UserPrincipal(userId);
-                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userPrincipal,
-                        user.getLoginId(),
-                        getAuthorities(user)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
-            } catch (ExpiredJwtException e) {
-                sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
-            } catch (MalformedJwtException e) {
-                sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
-            } catch (JwtException e) {
-                sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "비정상적인 토큰입니다.");
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, "인증 중 알 수 없는 오류가 발생했습니다.");
-            }
-        } else {
-            if (!isPublicPath) {
-                sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 제공되지 않았습니다.");
-                return;
-            }
+
+        if (!StringUtils.hasText(accessToken)) {
             filterChain.doFilter(request, response);
+            return;
         }
 
+        try {
+            Long userId = authenticationTokenManager.getUserId(accessToken);
+            User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "JwtAuthenticationFilter.doFilterInternal"));
+            UserPrincipal userPrincipal = new UserPrincipal(userId);
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userPrincipal,
+                    user.getLoginId(),
+                    getAuthorities(user)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다.");
+        } catch (MalformedJwtException e) {
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.");
+        } catch (JwtException e) {
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, "비정상적인 토큰입니다.");
+        }
 
     }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-
-        List<String> excludePath = List.of(
-                "/api/auth",
-                "/api/auth/verification-request",
-                "/api/auth/find-login-id",
-                "/api/auth/social/login/initiate",
-                "/api/auth/social/login/callback",
-                "/api/auth/refresh",
-                "/api/users/signup",
-                "/api/users/signup/loginId/duplicated",
-                "/api/users/signup/email/duplicated",
-                "/connection", "/test"
-        );
-
-        return excludePath.contains(path) || path.endsWith(".html");
-    }
-
 
     private String parseToken(String authorization) {
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {

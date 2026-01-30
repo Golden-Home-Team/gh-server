@@ -32,6 +32,7 @@ test.html
 firebase-messaging-sw.js
 *.png
 logs
+sentry.properties
 
 ### NetBeans ###
 /nbproject/private/

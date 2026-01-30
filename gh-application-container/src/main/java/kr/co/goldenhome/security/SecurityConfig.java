@@ -44,7 +44,11 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/users/signup/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/terms", "/api/facilities/**").permitAll()
-                        .requestMatchers("/connection","/*.html").permitAll() // , "/test"
+                        .requestMatchers(
+                                "/connection",
+//                                "/test",
+                                "/docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

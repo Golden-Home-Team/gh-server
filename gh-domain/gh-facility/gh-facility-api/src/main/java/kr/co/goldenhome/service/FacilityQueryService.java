@@ -17,12 +17,12 @@ import kr.co.goldenhome.model.FacilityEvent;
 import kr.co.goldenhome.model.FacilityEventType;
 import kr.co.goldenhome.repository.RecentViewRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FacilityQueryService {
@@ -32,6 +32,7 @@ public class FacilityQueryService {
     private final FacilityEventManger facilityEventManger;
     private final RecentViewRepository recentViewRepository;
     private final LikeApi likeApi;
+    private static final Logger logger = LoggerFactory.getLogger("api-history");
 
     @CircuitBreaker(name = "openSearch", fallbackMethod = "searchFallback")
     public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
@@ -85,12 +86,12 @@ public class FacilityQueryService {
     }
 
     private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
-        log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
+        logger.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
         return getFacilityResponses(name, address, page, size, userPrincipal);
     }
 
     private List<FacilityResponse> handleException(String name, String address, int page, int size, UserPrincipal userPrincipal, Throwable throwable) {
-        log.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
+        logger.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
         return getFacilityResponses(name, address, page, size, userPrincipal);
     }
 

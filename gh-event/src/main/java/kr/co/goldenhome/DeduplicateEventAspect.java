@@ -1,10 +1,7 @@
 package kr.co.goldenhome;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.goldenhome.event.EventDeduplicationLog;
 import kr.co.goldenhome.event.EventDeduplicationLogRepository;
-import kr.co.goldenhome.event.SqsMessage;
 import kr.co.goldenhome.model.FacilityEvent;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,15 +10,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-
 @Aspect
 @Component
 @RequiredArgsConstructor
 public class DeduplicateEventAspect {
 
     private final EventDeduplicationLogRepository eventDeduplicationLogRepository;
-    private final ObjectMapper objectMapper;
 
     @Transactional
     @Around("@annotation(kr.co.goldenhome.DeduplicateEvent)")

@@ -6,6 +6,7 @@ include 'gh-batch'
 include 'gh-social'
 include 'gh-event'
 include 'gh-notification'
+include 'gh-logging'
 
 include 'gh-domain'
 include 'gh-domain:gh-user'

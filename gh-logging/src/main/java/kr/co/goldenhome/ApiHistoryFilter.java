@@ -53,12 +53,13 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
 
     private ApiRequest toApiRequest(ContentCachingRequestWrapper request) {
         String parsedRequest = parseRequest(request);
+        Map<String, String> parsedHeaders = parseHeaders(request);
         return new ApiRequest(
                 request.getRequestURI(),
                 request.getMethod(),
                 SensitiveMasker.mask(parsedRequest, objectMapper),
                 request.getRemoteAddr(),
-                parseHeaders(request),
+                SensitiveMasker.maskMap(parsedHeaders),
                 request.getParameterMap()
         );
     }

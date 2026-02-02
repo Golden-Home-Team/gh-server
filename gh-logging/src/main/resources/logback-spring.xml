@@ -34,6 +34,14 @@
         </encoder>
     </appender>
 
+<!--    <springProfile name="local">-->
+<!--        <logger name="api-history" level="INFO" additivity="false">-->
+<!--            <appender-ref ref="API_HISTORY"/>-->
+<!--            <appender-ref ref="CONSOLE"/>-->
+<!--            <appender-ref ref="SENTRY"/>-->
+<!--        </logger>-->
+<!--    </springProfile>-->
+
     <springProfile name="prod">
         <logger name="api-history" level="INFO" additivity="false">
             <appender-ref ref="API_HISTORY"/>

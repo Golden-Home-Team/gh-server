@@ -1,13 +1,11 @@
 package kr.co.goldenhome;
 
-//import com.amazonaws.services.s3.AmazonS3;
-//import com.amazonaws.services.s3.model.AmazonS3Exception;
-//import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import io.awspring.cloud.s3.S3Exception;
 import kr.co.goldenhome.entity.ProfileImage;
 import kr.co.goldenhome.repository.ProfileImageRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,6 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProfileImageApiImpl implements ProfileImageApi {
@@ -26,6 +23,7 @@ public class ProfileImageApiImpl implements ProfileImageApi {
     @Value("${aws.s3.bucket}")
     private String bucket;
     private final S3Client s3Client;
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @Override
     public ProfileImageApiResponse getByUserId(Long userId) {

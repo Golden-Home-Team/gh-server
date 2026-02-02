@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class SensitiveMasker {
 
-    private static final Set<String> SENSITIVE_KEYS = Set.of("password", "newpassword", "confirmpassword", "accesstoken", "refreshtoken");
+    private static final Set<String> SENSITIVE_KEYS = Set.of("password", "newpassword", "confirmpassword", "accesstoken", "refreshtoken", "authorization");
     private static final String MASK_VALUE = "***************";
 
     public static String mask(String body, ObjectMapper objectMapper) {
@@ -31,6 +28,22 @@ public final class SensitiveMasker {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static Map<String, String> maskMap(Map<String, String> data) {
+        if (data == null || data.isEmpty()) {
+            return data;
+        }
+
+        Map<String, String> maskedMap = new HashMap<>();
+        data.forEach((key, value) -> {
+            if (SENSITIVE_KEYS.contains(key.toLowerCase())) {
+                maskedMap.put(key, MASK_VALUE);
+            } else {
+                maskedMap.put(key, value);
+            }
+        });
+        return maskedMap;
     }
 
     private static void maskJsonNodeRecursively(JsonNode node) {

@@ -1,6 +1,8 @@
 package kr.co.goldenhome.config;
 
-import lombok.extern.slf4j.Slf4j;
+import kr.co.goldenhome.ContextCopyTaskDecorator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -10,9 +12,10 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
-@Slf4j
 @Configuration
 public class AsyncConfig implements AsyncConfigurer {
+
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
@@ -27,6 +30,7 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.setQueueCapacity(50);
         executor.setThreadNamePrefix("async-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        executor.setTaskDecorator(new ContextCopyTaskDecorator());
         executor.initialize();
         return executor;
     }

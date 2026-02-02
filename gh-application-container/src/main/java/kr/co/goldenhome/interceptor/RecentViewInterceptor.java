@@ -1,8 +1,9 @@
-package kr.co.goldenhome;
+package kr.co.goldenhome.interceptor;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.goldenhome.TrackRecentView;
 import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.service.RecentViewService;
 import lombok.RequiredArgsConstructor;

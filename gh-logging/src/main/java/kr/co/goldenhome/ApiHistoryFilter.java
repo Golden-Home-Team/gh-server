@@ -15,6 +15,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class ApiHistoryFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
-    private final Logger logger = LoggerFactory.getLogger("api-history");
+    private final Logger log = LoggerFactory.getLogger("api-history");
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException {
@@ -39,7 +40,7 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
         } finally {
             ApiHistoryContextHolder.logging(toApiRequest(cachingRequest));
             ApiHistoryContextHolder.logging(toApiResponse(cachingResponse));
-            logger.info(objectMapper.writeValueAsString(ApiHistoryContextHolder.get()));
+            log.info(objectMapper.writeValueAsString(ApiHistoryContextHolder.get()));
             ApiHistoryContextHolder.destroy();
             cachingResponse.copyBodyToResponse();
         }
@@ -52,12 +53,13 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
 
     private ApiRequest toApiRequest(ContentCachingRequestWrapper request) {
         String parsedRequest = parseRequest(request);
+        Map<String, String> parsedHeaders = parseHeaders(request);
         return new ApiRequest(
                 request.getRequestURI(),
                 request.getMethod(),
                 SensitiveMasker.mask(parsedRequest, objectMapper),
                 request.getRemoteAddr(),
-                parseHeaders(request),
+                SensitiveMasker.maskMap(parsedHeaders),
                 request.getParameterMap()
         );
     }
@@ -91,8 +93,8 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
                 String key = headerNames.nextElement();
-                String value = request.getHeader(key);
-                headers.put(key, value);
+                String values = Collections.list(request.getHeaders(key)).toString();
+                headers.put(key, values);
             }
         }
 

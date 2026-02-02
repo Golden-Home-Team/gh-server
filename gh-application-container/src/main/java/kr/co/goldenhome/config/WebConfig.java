@@ -1,6 +1,6 @@
 package kr.co.goldenhome.config;
 
-import kr.co.goldenhome.RecentViewInterceptor;
+import kr.co.goldenhome.interceptor.RecentViewInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -3,6 +3,8 @@ package kr.co.goldenhome.config;
 import kr.co.goldenhome.messaging.ChatMessageSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +22,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.time.Duration;
 
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class RedisConfig {
@@ -31,6 +32,7 @@ public class RedisConfig {
     private int port;
     private final ChatMessageSubscriber chatMessageSubscriber;
     private final ThreadPoolTaskExecutor redisStreamExecutor;
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {

@@ -29,4 +29,8 @@ public final class ApiHistoryContextHolder {
     public static boolean isActive() {
         return get() != null;
     }
+
+    public static void set(ApiHistoryContext context) {
+        apiHistoryContextThreadLocal.set(context);
+    }
 }

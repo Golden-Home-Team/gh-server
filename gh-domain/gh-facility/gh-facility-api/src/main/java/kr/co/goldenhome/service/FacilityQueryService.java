@@ -32,7 +32,7 @@ public class FacilityQueryService {
     private final FacilityEventManger facilityEventManger;
     private final RecentViewRepository recentViewRepository;
     private final LikeApi likeApi;
-    private static final Logger logger = LoggerFactory.getLogger("api-history");
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @CircuitBreaker(name = "openSearch", fallbackMethod = "searchFallback")
     public List<FacilityResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
@@ -86,12 +86,12 @@ public class FacilityQueryService {
     }
 
     private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
-        logger.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
+        log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
         return getFacilityResponses(name, address, page, size, userPrincipal);
     }
 
     private List<FacilityResponse> handleException(String name, String address, int page, int size, UserPrincipal userPrincipal, Throwable throwable) {
-        logger.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
+        log.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
         return getFacilityResponses(name, address, page, size, userPrincipal);
     }
 

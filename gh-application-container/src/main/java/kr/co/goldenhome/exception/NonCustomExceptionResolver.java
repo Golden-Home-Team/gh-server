@@ -1,10 +1,14 @@
 package kr.co.goldenhome.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.sentry.Sentry;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.goldenhome.ApiHistoryContextHolder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -19,6 +23,7 @@ public class NonCustomExceptionResolver implements HandlerExceptionResolver {
 
     private final ObjectMapper objectMapper;
     private static final ErrorResponse errorResponse = new ErrorResponse(500, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @Override
     public ModelAndView resolveException(@NonNull HttpServletRequest request,
@@ -28,6 +33,9 @@ public class NonCustomExceptionResolver implements HandlerExceptionResolver {
 
         try {
             sendErrorResponse(response);
+            log.error("[Error] TID: {}, Message: {}",
+                    ApiHistoryContextHolder.get().getTransactionId(),
+                    ex.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

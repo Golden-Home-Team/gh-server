@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -34,6 +35,7 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
 
         try {
             ApiHistoryContextHolder.init();
+            MDC.put("transactionId", ApiHistoryContextHolder.get().getTransactionId());
             filterChain.doFilter(cachingRequest, cachingResponse);
         } catch (Exception e) {
             toErrorResponse(cachingResponse);
@@ -41,6 +43,7 @@ public class ApiHistoryFilter extends OncePerRequestFilter {
             ApiHistoryContextHolder.logging(toApiRequest(cachingRequest));
             ApiHistoryContextHolder.logging(toApiResponse(cachingResponse));
             log.info(objectMapper.writeValueAsString(ApiHistoryContextHolder.get()));
+            MDC.clear();
             ApiHistoryContextHolder.destroy();
             cachingResponse.copyBodyToResponse();
         }

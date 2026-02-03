@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
+    <springProperty scope="context" name="ACTIVE_PROFILE" source="spring.profiles.active" defaultValue="prod"/>
     <conversionRule conversionWord="clr" class="org.springframework.boot.logging.logback.ColorConverter"/>
 
     <property name="CONSOLE_LOG_PATTERN"
-              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -30,16 +31,18 @@
         <minimumEventLevel>WARN</minimumEventLevel>
         <minimumBreadcrumbLevel>INFO</minimumBreadcrumbLevel>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+            <pattern>[${ACTIVE_PROFILE:-no-profile}] %d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
         </encoder>
     </appender>
 
-<!--    <springProfile name="local">-->
+<!--    <springProfile name="local ">-->
 <!--        <logger name="api-history" level="INFO" additivity="false">-->
 <!--            <appender-ref ref="API_HISTORY"/>-->
 <!--            <appender-ref ref="CONSOLE"/>-->
 <!--            <appender-ref ref="SENTRY"/>-->
 <!--        </logger>-->
+<!--        <logger name="org.springframework.data.redis.connection.lettuce.LettuceExceptionConverter" level="OFF" />-->
+<!--        <logger name="org.springframework.data.redis.stream.StreamPollTask" level="OFF" />-->
 <!--    </springProfile>-->
 
     <springProfile name="prod">
@@ -48,11 +51,13 @@
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="SENTRY"/>
         </logger>
+        <logger name="org.springframework.data.redis.connection.lettuce.LettuceExceptionConverter" level="OFF" />
+        <logger name="org.springframework.data.redis.stream.StreamPollTask" level="OFF" />
     </springProfile>
 
-    <springProfile name="local">
-        <logger name="api-history" level="OFF" additivity="false"/>
-    </springProfile>
+<!--    <springProfile name="local">-->
+<!--        <logger name="api-history" level="OFF" additivity="false"/>-->
+<!--    </springProfile>-->
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

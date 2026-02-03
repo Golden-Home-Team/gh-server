@@ -3,7 +3,8 @@ package kr.co.goldenhome.implement;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.co.goldenhome.model.SNSEvent;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import software.amazon.awssdk.services.sns.SnsAsyncClient;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Slf4j
 @RequiredArgsConstructor
 public abstract class EventManager<T extends SNSEvent> {
 
@@ -20,6 +20,7 @@ public abstract class EventManager<T extends SNSEvent> {
     protected final EventUtils eventUtils;
     @Value("${aws.event.sns.endpoint}")
     protected String snsTopicArn;
+    private static final Logger log = LoggerFactory.getLogger("api-history");
 
     public abstract void saveLog(T event);
     public abstract void publish(T event);

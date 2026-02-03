@@ -20,7 +20,6 @@ public class FacilityViewManager {
         UpdateQuery updateQuery = UpdateQuery.builder(event.getFacilityId().toString())
                 .withScript("ctx._source.viewCount += 1")
                 .withScriptType(ScriptType.INLINE)
-                .withRetryOnConflict(3)
                 .build();
         elasticsearchOperations.update(updateQuery, IndexCoordinates.of("facilities"));
     }

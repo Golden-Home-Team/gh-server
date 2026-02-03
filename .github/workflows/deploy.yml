@@ -13,15 +13,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: JDK 21 버전 설치
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
-            # Gradle 설치 및 캐싱을 담당하는 공식 액션
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: 8.14.2
+          cache: gradle
 
       - name: Build with Gradle
         run: ./gradlew build

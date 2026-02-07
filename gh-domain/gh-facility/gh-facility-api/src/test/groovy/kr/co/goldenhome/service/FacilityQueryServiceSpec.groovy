@@ -1,7 +1,9 @@
 package kr.co.goldenhome.service
 
 import kr.co.goldenhome.LikeApi
+import kr.co.goldenhome.ReviewApi
 import kr.co.goldenhome.ReviewMetaData
+import kr.co.goldenhome.ViewApi
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.Facility
@@ -22,10 +24,12 @@ class FacilityQueryServiceSpec extends Specification {
     FacilityEventManger facilityEventManager = Mock()
     LikeApi likeApi = Mock()
     RecentViewRepository recentViewRepository = Mock()
+    ViewApi viewApi = Mock()
+    ReviewApi reviewApi = Mock()
 
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, recentViewRepository, likeApi)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, recentViewRepository, likeApi, viewApi, reviewApi)
     }
 
     def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {

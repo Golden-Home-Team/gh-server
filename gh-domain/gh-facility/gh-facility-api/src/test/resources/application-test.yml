@@ -69,3 +69,7 @@ aws:
       endpoint: a
     sqs:
       endpoint: a
+  iam:
+    credentials:
+      access-key: a
+      secret-key: a

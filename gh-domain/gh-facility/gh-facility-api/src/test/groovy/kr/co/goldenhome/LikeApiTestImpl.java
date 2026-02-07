@@ -15,4 +15,9 @@ public class LikeApiTestImpl implements LikeApi {
     public List<Long> getLikedFacilityIds(Long userId) {
         return List.of();
     }
+
+    @Override
+    public List<Long> getTopLikedFacilityIds(int page, int size) {
+        return List.of();
+    }
 }

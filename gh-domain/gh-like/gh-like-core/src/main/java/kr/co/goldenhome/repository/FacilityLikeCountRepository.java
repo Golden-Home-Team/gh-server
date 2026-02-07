@@ -1,10 +1,13 @@
 package kr.co.goldenhome.repository;
 
 import kr.co.goldenhome.entity.FacilityLikeCount;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface FacilityLikeCountRepository extends JpaRepository<FacilityLikeCount, Long> {
 
@@ -21,4 +24,7 @@ public interface FacilityLikeCountRepository extends JpaRepository<FacilityLikeC
             nativeQuery = true
     )
     int decrease(@Param("facilityId") Long facilityId);
+
+    @Query("SELECT l.facilityId FROM FacilityLike l GROUP BY l.facilityId ORDER BY COUNT(l.id) DESC")
+    List<Long> findTopLikedFacilityIds(Pageable pageable);
 }

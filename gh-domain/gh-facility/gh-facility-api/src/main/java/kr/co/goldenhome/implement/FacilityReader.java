@@ -1,6 +1,7 @@
 package kr.co.goldenhome.implement;
 
 import kr.co.goldenhome.*;
+import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.*;
 import kr.co.goldenhome.entity.FacilityGrade;
 import kr.co.goldenhome.exception.CustomException;
@@ -80,5 +81,11 @@ public class FacilityReader {
         List<Facility> results = facilityRepository.searchByFullTextFallback(cleanKeyword, page, size);
         if (results.isEmpty()) return facilityRepository.searchByLikeFallback(cleanKeyword, page, size);
         return results;
+    }
+
+    public List<Facility> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                 Double latitude, Double longitude, Double radiusKm,
+                                 List<Long> priorityIds) {
+        return facilityRepository.search(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, priorityIds);
     }
 }

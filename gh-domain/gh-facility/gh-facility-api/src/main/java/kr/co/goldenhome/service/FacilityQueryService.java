@@ -32,6 +32,8 @@ public class FacilityQueryService {
     private final FacilityEventManger facilityEventManger;
     private final RecentViewRepository recentViewRepository;
     private final LikeApi likeApi;
+    private final ViewApi viewApi;
+    private final ReviewApi reviewApi;
     private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @CircuitBreaker(name = "openSearch", fallbackMethod = "searchFallback")
@@ -85,6 +87,15 @@ public class FacilityQueryService {
 
     }
 
+    private List<FacilityResponse> getFacilityResponses(List<Long> facilityIds) {
+        List<Facility> facilities = facilityReader.getByIds(facilityIds);
+        return facilities.stream().map(facility -> {
+            String profileUrl = facilityReader.getProfileUrl(facility.getId());
+            String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
+            return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
+        }).toList();
+    }
+
     private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
         log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
         return getFacilityResponses(name, address, page, size, userPrincipal);
@@ -111,13 +122,21 @@ public class FacilityQueryService {
         }).toList();
     }
 
-    private List<FacilityResponse> getFacilityResponses(List<Long> facilityIds) {
-        List<Facility> facilities = facilityReader.getByIds(facilityIds);
-        return facilities.stream().map(facility -> {
-            String profileUrl = facilityReader.getProfileUrl(facility.getId());
-            String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
-            return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
-        }).toList();
+    private List<FacilityResponse> getFacilityResponsesV2(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                                          Double latitude, Double longitude, Double radiusKm,
+                                                          UserPrincipal userPrincipal) {
+        List<Long> priorityIds = getPriorityIds(page, size, sort);
+        return null;
+    }
+
+    private List<Long> getPriorityIds(int page, int size, String sort) {
+        return switch (sort) {
+            case "like" -> likeApi.getTopLikedFacilityIds(page, size);
+//            case "view" -> viewApi.getTopViewedFacilityIds(PageRequest.of(0, 500));
+//            case "review" -> reviewApi.getTopReviewedFacilityIds(PageRequest.of(0, 500));
+//            case "highestRated" -> reviewApi.getHighestRatedFacilityIds(PageRequest.of(0, 500));
+            default -> null;
+        };
     }
 
 

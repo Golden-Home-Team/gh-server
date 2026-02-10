@@ -3,8 +3,10 @@ package kr.co.goldenhome.service
 import io.github.resilience4j.circuitbreaker.CircuitBreaker
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
-import kr.co.goldenhome.entity.Facility
+import kr.co.goldenhome.ReviewMetaData
+import kr.co.goldenhome.dto.FacilitySearchResponse
 import kr.co.goldenhome.entity.FacilityDocument
+import kr.co.goldenhome.implement.FacilityMetaDataManager
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
 import org.spockframework.spring.SpringBean
@@ -31,6 +33,9 @@ class FacilityQueryServiceItSpec extends Specification {
 
     @SpringBean
     FacilityReader facilityReader = Mock()
+
+    @SpringBean
+    FacilityMetaDataManager facilityMetaDataManager = Mock()
 
     def "정상 상황에서는 Circuit 의 상태가 CLOSED 이고 OpenSearch 쪽으로 호출이 들어간다"() {
         given:
@@ -72,26 +77,19 @@ class FacilityQueryServiceItSpec extends Specification {
                 .failureRateThreshold(50)
                 .build()
         circuitBreakerRegistry.circuitBreaker("openSearch",config)
-        def expectedResponse = List.of(Facility.builder()
-                .id(1)
-                .institutionSymbol("123")
-                .facilityType("요양원")
-                .name("행복요양원")
-                .address("종로구")
-                .capacity(20)
-                .currentTotal(14)
-                .latitude(12.3)
-                .longitude(12.3)
-                .build()
-        )
+        def expectedResponse = List.of(new FacilitySearchResponse(
+                1,"123","요양원","행복요양원","종로구",2023,"A",12,12,"",12.3,12.3,false,4.5
+        ))
 
         and:
         1 * facilitySearcher.search(*_) >> {
             throw new RuntimeException()
         }
+        1 * facilityMetaDataManager.getProfileUrl(*_) >> ""
+        1 * facilityMetaDataManager.getReviewMetaData(*_) >> new ReviewMetaData(BigDecimal.ONE, 10, 1,2,3,4,5)
 
         when:
-        facilityQueryService.search(givenName, givenAddress, null, null, null, 0,1,20,null,null,null,null)
+        facilityQueryService.search(givenName, givenAddress, null, null, "like", 0,1,20,null,null,null,null)
 
         then:
         1 * facilityReader.search(*_) >> expectedResponse

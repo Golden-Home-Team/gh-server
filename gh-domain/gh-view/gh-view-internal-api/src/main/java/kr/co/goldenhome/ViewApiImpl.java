@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,5 +29,10 @@ public class ViewApiImpl implements ViewApi {
             facilityViewCountBackUpManager.backUp(facilityId, userId);
         }
         return count;
+    }
+
+    @Override
+    public List<Long> getTopViewedFacilityIds(int page, int size) {
+        return facilityViewCountRepository.getTopViewedFacilityIds(page, size);
     }
 }

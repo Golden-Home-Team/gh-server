@@ -7,9 +7,11 @@ import kr.co.goldenhome.auth.UserPrincipal;
 import kr.co.goldenhome.dto.FacilityDetailResponse;
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse;
 import kr.co.goldenhome.dto.FacilityResponse;
+import kr.co.goldenhome.dto.FacilitySearchResponse;
 import kr.co.goldenhome.entity.Facility;
 import kr.co.goldenhome.entity.FacilityDocument;
 import kr.co.goldenhome.entity.RecentView;
+import kr.co.goldenhome.implement.FacilityMetaDataManager;
 import kr.co.goldenhome.implement.FacilityReader;
 import kr.co.goldenhome.implement.FacilitySearcher;
 import kr.co.goldenhome.FacilityEventManger;
@@ -29,11 +31,10 @@ public class FacilityQueryService {
 
     private final FacilitySearcher facilitySearcher;
     private final FacilityReader facilityReader;
+    private final FacilityMetaDataManager facilityMetaDataManager;
     private final FacilityEventManger facilityEventManger;
     private final RecentViewRepository recentViewRepository;
-    private final LikeApi likeApi;
-    private final ViewApi viewApi;
-    private final ReviewApi reviewApi;
+
     private static final Logger log = LoggerFactory.getLogger("api-history");
 
     @CircuitBreaker(name = "openSearch", fallbackMethod = "searchFallback")
@@ -43,14 +44,14 @@ public class FacilityQueryService {
         List<FacilityDocument> facilityDocuments = facilitySearcher.search(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm);
         if (userPrincipal == null) {
             return facilityDocuments.stream().map(document -> {
-                String profileUrl = facilityReader.getProfileUrl(Long.valueOf(document.getId()));
+                String profileUrl = facilityMetaDataManager.getProfileUrl(Long.valueOf(document.getId()));
                 return FacilityResponse.of(document, profileUrl);
             }).toList();
         }
         Long userId = userPrincipal.userId();
         return facilityDocuments.stream().map(document -> {
-            String profileUrl = facilityReader.getProfileUrl(Long.valueOf(document.getId()));
-            boolean isLiked = likeApi.isLiked(Long.valueOf(document.getId()), userId);
+            String profileUrl = facilityMetaDataManager.getProfileUrl(Long.valueOf(document.getId()));
+            boolean isLiked = facilityMetaDataManager.isLiked(Long.valueOf(document.getId()), userId);
             return FacilityResponse.of(document, profileUrl, isLiked);
         }).toList();
 
@@ -60,22 +61,22 @@ public class FacilityQueryService {
                                                  Double latitude, Double longitude, Double radiusKm,
                                                  UserPrincipal userPrincipal, Throwable throwable) {
         if (throwable instanceof CallNotPermittedException) {
-            return handleOpenCircuit(name,address,page,size,userPrincipal);
+            return handleOpenCircuit(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, userPrincipal);
         }
-        return handleException(name,address,page,size,userPrincipal,throwable);
+        return handleException(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, userPrincipal);
     }
 
     public FacilityDetailResponse read(Long facilityId, Long userId) {
         FacilityDetailServiceResponse facilityDetailServiceResponse = facilityReader.read(facilityId);
-        ReviewMetaData reviewMetaData = facilityReader.getReviewMetaData(facilityId);
-        boolean isLiked = facilityReader.isLiked(facilityId, userId);
-        Long viewCount = facilityReader.view(facilityId, userId);
+        ReviewMetaData reviewMetaData = facilityMetaDataManager.getReviewMetaData(facilityId);
+        boolean isLiked = facilityMetaDataManager.isLiked(facilityId, userId);
+        Long viewCount = facilityMetaDataManager.view(facilityId, userId);
         facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.VIEW));
         return FacilityDetailResponse.of(facilityDetailServiceResponse, reviewMetaData, isLiked, viewCount);
     }
 
     public List<FacilityResponse> getLikedFacilities(Long userId) {
-        List<Long> facilityIds = facilityReader.getLikedFacilityIds(userId);
+        List<Long> facilityIds = facilityMetaDataManager.getLikedFacilityIds(userId);
         return getFacilityResponses(facilityIds);
     }
 
@@ -90,58 +91,51 @@ public class FacilityQueryService {
     private List<FacilityResponse> getFacilityResponses(List<Long> facilityIds) {
         List<Facility> facilities = facilityReader.getByIds(facilityIds);
         return facilities.stream().map(facility -> {
-            String profileUrl = facilityReader.getProfileUrl(facility.getId());
+            String profileUrl = facilityMetaDataManager.getProfileUrl(facility.getId());
             String grade = facilityReader.getGradeByInstitutionSymbol(facility.getInstitutionSymbol());
             return FacilityResponse.getLikedFacilities(facility, profileUrl, grade);
         }).toList();
     }
 
-    private List<FacilityResponse> handleOpenCircuit(String name, String address, int page, int size, UserPrincipal userPrincipal) {
+    private List<FacilityResponse> handleOpenCircuit(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                                     Double latitude, Double longitude, Double radiusKm,
+                                                     UserPrincipal userPrincipal) {
         log.warn("[FacilityQueryService] Circuit breaker is open. fall back to RDB");
-        return getFacilityResponses(name, address, page, size, userPrincipal);
+        return getFacilityResponses(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, userPrincipal);
     }
 
-    private List<FacilityResponse> handleException(String name, String address, int page, int size, UserPrincipal userPrincipal, Throwable throwable) {
-        log.error("[FacilityQueryService] An error occurred while searching facilities. errorMessage={}", throwable.getMessage());
-        return getFacilityResponses(name, address, page, size, userPrincipal);
+    private List<FacilityResponse> handleException(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                                   Double latitude, Double longitude, Double radiusKm,
+                                                   UserPrincipal userPrincipal) {
+        return getFacilityResponses(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, userPrincipal);
     }
 
-    private List<FacilityResponse> getFacilityResponses(String name, String address, int page, int size, UserPrincipal userPrincipal) {
-        List<Facility> facilities = facilityReader.search(name, address, page, size);
+
+    private List<FacilityResponse> getFacilityResponses(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
+                                                        Double latitude, Double longitude, Double radiusKm,
+                                                        UserPrincipal userPrincipal) {
+        List<Long> priorityIds = facilityMetaDataManager.getPriorityIds(page, size, sort);
+        List<FacilitySearchResponse> facilitySearchResponses = facilityReader.search(name, address, facilityType, grade, sort, withinYears, page, size, latitude, longitude, radiusKm, priorityIds);
         if (userPrincipal == null) {
-            return facilities.stream().map(facility -> {
-                String profileUrl = facilityReader.getProfileUrl(facility.getId());
-                return FacilityResponse.of(facility, profileUrl);
+            return facilitySearchResponses.stream().map(facility -> {
+                String profileUrl = facilityMetaDataManager.getProfileUrl(facility.id());
+                ReviewMetaData reviewMetaData = facilityMetaDataManager.getReviewMetaData(facility.id());
+                Float avgScore = (reviewMetaData.averageScore() != null)
+                        ? reviewMetaData.averageScore().floatValue()
+                        : 0.0f;
+                return FacilityResponse.of(facility, profileUrl, avgScore);
             }).toList();
         }
         Long userId = userPrincipal.userId();
-        return facilities.stream().map(facility -> {
-            String profileUrl = facilityReader.getProfileUrl(facility.getId());
-            boolean liked = likeApi.isLiked(facility.getId(), userId);
-            return FacilityResponse.of(facility, profileUrl, liked);
+        return facilitySearchResponses.stream().map(facility -> {
+            String profileUrl = facilityMetaDataManager.getProfileUrl(facility.id());
+            ReviewMetaData reviewMetaData = facilityMetaDataManager.getReviewMetaData(facility.id());
+            Float avgScore = (reviewMetaData.averageScore() != null)
+                    ? reviewMetaData.averageScore().floatValue()
+                    : 0.0f;
+            boolean liked = facilityMetaDataManager.isLiked(facility.id(), userId);
+            return FacilityResponse.of(facility, profileUrl, avgScore, liked);
         }).toList();
     }
 
-    private List<FacilityResponse> getFacilityResponsesV2(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size,
-                                                          Double latitude, Double longitude, Double radiusKm,
-                                                          UserPrincipal userPrincipal) {
-        List<Long> priorityIds = getPriorityIds(page, size, sort);
-        return null;
-    }
-
-    private List<Long> getPriorityIds(int page, int size, String sort) {
-        return switch (sort) {
-            case "like" -> likeApi.getTopLikedFacilityIds(page, size);
-//            case "view" -> viewApi.getTopViewedFacilityIds(PageRequest.of(0, 500));
-//            case "review" -> reviewApi.getTopReviewedFacilityIds(PageRequest.of(0, 500));
-//            case "highestRated" -> reviewApi.getHighestRatedFacilityIds(PageRequest.of(0, 500));
-            default -> null;
-        };
-    }
-
-
-//    public List<FacilityRecommendResponse> recommendFacilities(String userQuery) throws IOException {
-//        List<Float> queryVector = embeddingClient.getBatchEmbeddings(List.of(userQuery)).getFirst();
-//        return embeddingClient.getFacilitiesWithKNN(queryVector);
-//    }
 }

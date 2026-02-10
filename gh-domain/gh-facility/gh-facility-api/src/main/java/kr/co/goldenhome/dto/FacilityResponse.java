@@ -102,4 +102,42 @@ public record FacilityResponse(Long id, String institutionSymbol, String facilit
                 null
         );
     }
+
+    public static FacilityResponse of(FacilitySearchResponse facilitySearchResponse, String profileUrl, Float avgScore) {
+        return new FacilityResponse(
+                facilitySearchResponse.id(),
+                facilitySearchResponse.institutionSymbol(),
+                facilitySearchResponse.facilityType(),
+                facilitySearchResponse.name(),
+                facilitySearchResponse.address(),
+                facilitySearchResponse.establishmentYear(),
+                facilitySearchResponse.grade(),
+                facilitySearchResponse.capacity(),
+                facilitySearchResponse.currentTotal(),
+                profileUrl,
+                facilitySearchResponse.latitude(),
+                facilitySearchResponse.longitude(),
+                false,
+                avgScore
+        );
+    }
+
+    public static FacilityResponse of(FacilitySearchResponse facilitySearchResponse, String profileUrl, Float avgScore, boolean isLiked) {
+        return new FacilityResponse(
+                facilitySearchResponse.id(),
+                facilitySearchResponse.institutionSymbol(),
+                facilitySearchResponse.facilityType(),
+                facilitySearchResponse.name(),
+                facilitySearchResponse.address(),
+                facilitySearchResponse.establishmentYear(),
+                facilitySearchResponse.grade(),
+                facilitySearchResponse.capacity(),
+                facilitySearchResponse.currentTotal(),
+                profileUrl,
+                facilitySearchResponse.latitude(),
+                facilitySearchResponse.longitude(),
+                isLiked,
+                avgScore
+        );
+    }
 }

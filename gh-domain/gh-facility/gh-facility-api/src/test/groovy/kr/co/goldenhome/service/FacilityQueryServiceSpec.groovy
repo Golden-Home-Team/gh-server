@@ -1,14 +1,12 @@
 package kr.co.goldenhome.service
 
-import kr.co.goldenhome.LikeApi
-import kr.co.goldenhome.ReviewApi
 import kr.co.goldenhome.ReviewMetaData
-import kr.co.goldenhome.ViewApi
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
 import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.entity.RecentView
+import kr.co.goldenhome.implement.FacilityMetaDataManager
 import kr.co.goldenhome.implement.FacilityReader
 import kr.co.goldenhome.implement.FacilitySearcher
 import kr.co.goldenhome.FacilityEventManger
@@ -22,14 +20,11 @@ class FacilityQueryServiceSpec extends Specification {
     FacilitySearcher facilitySearcher = Mock()
     FacilityReader facilityReader = Mock()
     FacilityEventManger facilityEventManager = Mock()
-    LikeApi likeApi = Mock()
     RecentViewRepository recentViewRepository = Mock()
-    ViewApi viewApi = Mock()
-    ReviewApi reviewApi = Mock()
-
+    FacilityMetaDataManager facilityMetaDataManager = Mock()
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityEventManager, recentViewRepository, likeApi, viewApi, reviewApi)
+        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityMetaDataManager, facilityEventManager, recentViewRepository)
     }
 
     def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
@@ -85,12 +80,12 @@ class FacilityQueryServiceSpec extends Specification {
                 facilityId == givenFacilityId
                 Mock(FacilityDetailServiceResponse)
         }
-        1 * facilityReader.getReviewMetaData(*_) >> {
+        1 * facilityMetaDataManager.getReviewMetaData(*_) >> {
             Long facilityId ->
                 facilityId == givenFacilityId
                 Mock(ReviewMetaData)
         }
-        1 * facilityReader.isLiked(*_) >> {
+        1 * facilityMetaDataManager.isLiked(*_) >> {
             Long facilityId, Long userId ->
                 facilityId == givenFacilityId
                 userId == givenUserId
@@ -110,9 +105,9 @@ class FacilityQueryServiceSpec extends Specification {
         facilityService.getLikedFacilities(givenUserId)
 
         then:
-        1 * facilityReader.getLikedFacilityIds(givenUserId) >> givenLikeApiResponse
+        1 * facilityMetaDataManager.getLikedFacilityIds(givenUserId) >> givenLikeApiResponse
         1 * facilityReader.getByIds(givenLikeApiResponse) >> givenReaderResponse
-        2 * facilityReader.getProfileUrl(_) >> ""
+        2 * facilityMetaDataManager.getProfileUrl(_) >> ""
         2 * facilityReader.getGradeByInstitutionSymbol(_) >> ""
     }
 
@@ -125,7 +120,7 @@ class FacilityQueryServiceSpec extends Specification {
         then:
         1 * recentViewRepository.findByUserId(*_) >> List.of(RecentView.builder().id(1).build())
         1 * facilityReader.getByIds(*_) >> List.of(Facility.builder().id(1).institutionSymbol("13").build())
-        1 * facilityReader.getProfileUrl(*_) >> "prf"
+        1 * facilityMetaDataManager.getProfileUrl(*_) >> "prf"
         1 * facilityReader.getGradeByInstitutionSymbol(*_) >> "grd"
     }
 }

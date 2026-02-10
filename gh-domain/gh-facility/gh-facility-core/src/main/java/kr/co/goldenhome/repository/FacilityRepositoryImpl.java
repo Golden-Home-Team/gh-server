@@ -1,11 +1,14 @@
 package kr.co.goldenhome.repository;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.goldenhome.dto.FacilityCombinedDto;
+import kr.co.goldenhome.dto.FacilitySearchResponse;
 import kr.co.goldenhome.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +16,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.time.Year;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 @Repository
 @RequiredArgsConstructor
@@ -100,79 +103,106 @@ public class FacilityRepositoryImpl implements FacilityRepository {
     }
 
     @Override
-    public List<Facility> searchByFullTextFallback(String keyword, int page, int size) {
-        return facilityJpaRepository.searchByFullTextFallback(keyword, PageRequest.of(page-1, size));
-    }
+    public List<FacilitySearchResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double latitude, Double longitude, Double radiusKm, List<Long> priorityIds) {
 
-    @Override
-    public List<Facility> searchByLikeFallback(String keyword, int page, int size) {
-        return facilityJpaRepository.searchByLikeFallback(keyword, PageRequest.of(page-1, size));
-    }
+        String rawKeyword = StringUtils.hasText(name) ? name : address;
 
-    @Override
-    public List<Facility> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double latitude, Double longitude, Double radiusKm,
-                                 List<Long> priorityIds) {
-        JPAQuery<Facility> query = jpaQueryFactory.selectFrom(facility);
-        if (priorityIds != null && !priorityIds.isEmpty()) {
-            query.where(facility.id.in(priorityIds));
-            String idsString = priorityIds.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(","));
-            query.orderBy(Expressions.stringTemplate("FIELD({0}, {1})", facility.id, idsString).asc());
-        } else {
-            query.orderBy(facility.id.desc());
-        }
-
-        query.where(
-                fullTextSearch(name, address),
-                facilityTypeEq(facilityType),
-                gradeEq(grade),
-                establishmentYearAfter(withinYears),
-                withinRadius(latitude, longitude, radiusKm)
-        );
-
-        return query.offset((long) (page - 1) * size)
+        return jpaQueryFactory
+                .select(Projections.constructor(FacilitySearchResponse.class,
+                        facility.id,
+                        facility.institutionSymbol,
+                        facility.facilityType,
+                        facility.name,
+                        facility.address,
+                        facility.establishmentDate,
+                        facilityGrade.grade.coalesce(""),
+                        facility.capacity,
+                        facility.currentTotal,
+                        Expressions.asString(""),
+                        facility.latitude,
+                        facility.longitude,
+                        Expressions.asBoolean(false),
+                        Expressions.asNumber(0.0f)
+                ))
+                .from(facility)
+                .leftJoin(facilityGrade).on(facility.institutionSymbol.eq(facilityGrade.institutionSymbol))
+                .where(
+                        fullTextSearch(name, address),
+                        facilityTypeEq(facilityType),
+                        gradeEq(grade),
+                        establishmentYearAfter(withinYears),
+                        withinRadius(latitude, longitude, radiusKm)
+                )
+                .orderBy(calculateSortOrder(priorityIds, rawKeyword))
+                .offset((long) (page - 1) * size)
                 .limit(size)
                 .fetch();
+    }
+
+    private OrderSpecifier<?>[] calculateSortOrder(List<Long> priorityIds, String rawKeyword) {
+        List<OrderSpecifier<?>> orders = new ArrayList<>();
+
+        if (StringUtils.hasText(rawKeyword)) {
+            NumberTemplate<Double> searchScore = Expressions.numberTemplate(Double.class,
+                    "function('match_double', {0}, {1}, {2})",
+                    facility.name, facility.address, rawKeyword);
+            orders.add(searchScore.desc());
+        }
+
+        if (priorityIds != null && !priorityIds.isEmpty()) {
+            orders.add(new CaseBuilder().when(facility.id.in(priorityIds)).then(0).otherwise(1).asc());
+            Object[] args = new Object[priorityIds.size() + 1];
+            args[0] = facility.id;
+            for (int i = 0; i < priorityIds.size(); i++) {
+                args[i + 1] = priorityIds.get(i);
+            }
+            String placeholders = IntStream.range(0, priorityIds.size())
+                    .mapToObj(i -> "{" + (i + 1) + "}")
+                    .collect(Collectors.joining(", "));
+            orders.add(Expressions.numberTemplate(Integer.class,
+                    "FIELD({0}, " + placeholders + ")", args).asc());
+        }
+
+        orders.add(facility.id.desc());
+
+        return orders.toArray(new OrderSpecifier[0]);
     }
 
     private BooleanExpression fullTextSearch(String name, String address) {
 
         String rawKeyword = StringUtils.hasText(name) ? name : address;
         if (!StringUtils.hasText(rawKeyword)) return null;
-        String cleanKeyword = rawKeyword.replace(" ", "");
 
         return Expressions.numberTemplate(Double.class,
-                "function('match', {0}, {1}, {2})",
-                facility.name, facility.address, cleanKeyword).gt(0);
+                "function('match_double', {0}, {1}, {2})",
+                facility.name, facility.address, rawKeyword).gt(0);
     }
 
     private BooleanExpression facilityTypeEq(String facilityType) {
         if (!StringUtils.hasText(facilityType)) return null;
 
         return switch (facilityType) {
-            case "실버타운", "양로원" -> facility.name.contains(facilityType);
+            case "실버타운", "양로원" ->
+                    Expressions.numberTemplate(Double.class,
+                            "function('match_single', {0}, {1})",
+                            facility.name, facilityType).gt(0);
             case "요양원" -> facility.facilityType.in("노인요양시설", "노인요양공동생활가정");
             default -> facility.facilityType.eq(facilityType);
         };
     }
 
     private BooleanExpression gradeEq(String grade) {
-        // 1. 값이 없거나 빈 문자열인 경우 조건을 무시 (null 반환 시 where 절에서 무시됨)
         if (!StringUtils.hasText(grade)) {
             return null;
         }
-
         return facilityGrade.grade.eq(grade);
     }
 
     private BooleanExpression withinRadius(Double lat, Double lon, Double radiusKm) {
         if (lat == null || lon == null || radiusKm == null) return null;
-
-        // MySQL 8.0 ST_Distance_Sphere(POINT(lon, lat), POINT(target_lon, target_lat)) <= distance
         return Expressions.booleanTemplate(
                 "function('ST_Distance_Sphere', function('POINT', {0}, {1}), function('POINT', {2}, {3})) <= {4}",
-                lon, lat, facility.longitude, facility.latitude, radiusKm * 1000); // km to meters
+                lon, lat, facility.longitude, facility.latitude, radiusKm * 1000);
     }
 
     private BooleanExpression establishmentYearAfter(int withinYears) {

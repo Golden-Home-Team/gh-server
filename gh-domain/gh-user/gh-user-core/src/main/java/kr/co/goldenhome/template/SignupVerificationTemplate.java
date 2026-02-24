@@ -3,7 +3,7 @@ package kr.co.goldenhome.template;
 public class SignupVerificationTemplate extends EmailVerificationTemplate {
 
     public SignupVerificationTemplate(String verificationCode) {
-        super("골든홈 회원가입 인증 메일입니다.");
+        super("바로요양 회원가입 인증 메일입니다.");
         generateContent(verificationCode);
     }
 
@@ -87,7 +87,7 @@ public class SignupVerificationTemplate extends EmailVerificationTemplate {
             <body>
                 <div class="container">
                     <div class="header">
-                        <h1>골든홈</h1>
+                        <h1>바로요양</h1>
                     </div>
                     <div class="content">
                         <h2>메일인증 안내입니다.</h2>

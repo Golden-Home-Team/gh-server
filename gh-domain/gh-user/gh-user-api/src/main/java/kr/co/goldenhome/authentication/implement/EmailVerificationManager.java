@@ -32,7 +32,7 @@ public class EmailVerificationManager implements VerificationManager {
 
     @Override
     public void send(String contact, String verificationCode) {
-        mailSender.send(contact, "골든홈 인증 메일입니다.", verificationCode);
+        mailSender.send(contact, "바로요양 인증 메일입니다.", verificationCode);
     }
 
     @Override

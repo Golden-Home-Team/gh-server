@@ -33,7 +33,8 @@ public class FacilityQueryController {
             @RequestParam(value = "radiusKm", required = false) Double radiusKm,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        return facilityQueryService.search(name, address, facilityType, grade, sort, withinYears, page, size, lat, lon, radiusKm, userPrincipal);
+        return facilityQueryService.readAll(name, address, facilityType, grade, sort, withinYears, page, size, lat, lon, radiusKm, userPrincipal);
+//        return facilityQueryService.search(name, address, facilityType, grade, sort, withinYears, page, size, lat, lon, radiusKm, userPrincipal);
     }
 
     @TrackRecentView

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Getter
-@Document(indexName = "facilities")
+//@Document(indexName = "facilities")
 @Setting(settingPath = "/elasticsearch/facility-settings.json")
 public class FacilityDocument {
 

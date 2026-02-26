@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.sns.SnsAsyncClient;
 
 import java.util.List;
 
-@Component
+//@Component
 public class FacilityEventManger extends EventManager<FacilityEvent> {
 
     private final FacilityEventLogRepository facilityEventLogRepository;

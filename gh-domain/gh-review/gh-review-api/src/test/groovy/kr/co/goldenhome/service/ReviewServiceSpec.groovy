@@ -17,10 +17,10 @@ class ReviewServiceSpec extends Specification {
     ReviewAppender reviewAppender = Mock()
     ReviewReader reviewReader = Mock()
 
-    FacilityEventManger facilityEventManager = Mock()
+//    FacilityEventManger facilityEventManager = Mock()
 
     def setup() {
-        reviewService = new ReviewService(reviewAppender, reviewReader, facilityEventManager)
+        reviewService = new ReviewService(reviewAppender, reviewReader)
     }
 
     def 'write - reviewAppender, facilityEventManager 를 호출한다'() {
@@ -50,7 +50,7 @@ class ReviewServiceSpec extends Specification {
                 userId == givenUserId
                 new ReviewAppenderWriteResponse(BigDecimal.ONE)
         }
-        1 * facilityEventManager.saveLog(_)
+//        1 * facilityEventManager.saveLog(_)
     }
 
     def "readAll - reviewReader 를 호출한다"() {

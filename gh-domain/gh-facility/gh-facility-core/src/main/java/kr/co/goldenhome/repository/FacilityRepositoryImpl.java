@@ -102,6 +102,12 @@ public class FacilityRepositoryImpl implements FacilityRepository {
         return facilityJpaRepository.findByIdIn(facilityIds);
     }
 
+    /**
+     * profileUrl
+     * isLiked
+     * avgScore
+     * 위 필드는 다른 모듈(다른 데이터베이스 가정)로 분리해둔 상태이므로 기본값으로 초기화 후 서비스 단에서 주입
+     */
     @Override
     public List<FacilitySearchResponse> search(String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double latitude, Double longitude, Double radiusKm, List<Long> priorityIds) {
 

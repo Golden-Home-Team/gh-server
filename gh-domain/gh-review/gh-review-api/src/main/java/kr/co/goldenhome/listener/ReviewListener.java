@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class ReviewListener {
 

@@ -11,10 +11,10 @@ class FacilityLikeServiceSpec extends Specification {
     FacilityLikeService facilityLikeService
     FacilityLikeRepository facilityLikeRepository = Mock()
     FacilityLikeCountRepository facilityLikeCountRepository = Mock()
-    FacilityEventManger facilityEventManger = Mock()
+//    FacilityEventManger facilityEventManger = Mock()
 
     def setup() {
-        facilityLikeService = new FacilityLikeService(facilityLikeRepository, facilityLikeCountRepository,facilityEventManger)
+        facilityLikeService = new FacilityLikeService(facilityLikeRepository, facilityLikeCountRepository)
     }
 
     def "like - 좋아요 개수가 기존에 존재한 상태로 요청을 보내면 increase 메서드만 호출한다"() {
@@ -28,7 +28,7 @@ class FacilityLikeServiceSpec extends Specification {
         and:
         1 * facilityLikeCountRepository.increase(*_) >> 1
         0 * facilityLikeCountRepository.save(*_)
-        1 * facilityEventManger.saveLog(_)
+//        1 * facilityEventManger.saveLog(_)
     }
 
     def "like - 좋아요 개수가 기존에 존재하지 않는다면 save 메서드를 호출한다"() {
@@ -42,7 +42,7 @@ class FacilityLikeServiceSpec extends Specification {
         and:
         1 * facilityLikeCountRepository.increase(*_) >> 0
         1 * facilityLikeCountRepository.save(*_)
-        1 * facilityEventManger.saveLog(_)
+//        1 * facilityEventManger.saveLog(_)
 
     }
 
@@ -57,7 +57,7 @@ class FacilityLikeServiceSpec extends Specification {
         and:
         1 * facilityLikeRepository.deleteByFacilityIdAndUserId(1L, 1L) >> 1
         1 * facilityLikeCountRepository.decrease(1L)
-        1 * facilityEventManger.saveLog(_)
+//        1 * facilityEventManger.saveLog(_)
 
     }
 
@@ -72,7 +72,7 @@ class FacilityLikeServiceSpec extends Specification {
         and:
         1 * facilityLikeRepository.deleteByFacilityIdAndUserId(1L, 1L) >> 0
         0 * facilityLikeCountRepository.decrease(1L)
-        1 * facilityEventManger.saveLog(_)
+//        1 * facilityEventManger.saveLog(_)
 
     }
 }

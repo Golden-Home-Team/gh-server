@@ -19,7 +19,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.http.auth.aws.signer.AwsV4HttpSigner;
 import software.amazon.awssdk.regions.Region;
 
-@Configuration
+//@Configuration
 public class ElasticConfig {
 
     @Value("${spring.elasticsearch.uris}")

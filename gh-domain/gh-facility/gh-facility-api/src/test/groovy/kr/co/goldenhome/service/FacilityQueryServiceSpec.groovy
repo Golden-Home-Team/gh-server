@@ -3,6 +3,7 @@ package kr.co.goldenhome.service
 import kr.co.goldenhome.ReviewMetaData
 import kr.co.goldenhome.auth.UserPrincipal
 import kr.co.goldenhome.dto.FacilityDetailServiceResponse
+import kr.co.goldenhome.dto.FacilitySearchResponse
 import kr.co.goldenhome.entity.Facility
 import kr.co.goldenhome.entity.FacilityDocument
 import kr.co.goldenhome.entity.RecentView
@@ -17,17 +18,17 @@ import spock.lang.Specification
 class FacilityQueryServiceSpec extends Specification {
 
     FacilityQueryService facilityService
-    FacilitySearcher facilitySearcher = Mock()
+//    FacilitySearcher facilitySearcher = Mock()
     FacilityReader facilityReader = Mock()
-    FacilityEventManger facilityEventManager = Mock()
+//    FacilityEventManger facilityEventManager = Mock()
     RecentViewRepository recentViewRepository = Mock()
     FacilityMetaDataManager facilityMetaDataManager = Mock()
 
     def setup() {
-        facilityService = new FacilityQueryService(facilitySearcher, facilityReader, facilityMetaDataManager, facilityEventManager, recentViewRepository)
+        facilityService = new FacilityQueryService(facilityReader, facilityMetaDataManager, recentViewRepository)
     }
 
-    def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
+    def "readAll - facilityMetaDataManager,facilityReader 를 호출하고 facilitySearchResponses 수 만큼 facilityMetaDataManager 를 호출한다"() {
         given:
         def givenName = "대전요양원"
         def givenAddress = "대전광역시"
@@ -37,34 +38,35 @@ class FacilityQueryServiceSpec extends Specification {
         def givenWithinYears = 20
         def givenPage = 1
         def givenSize = 20
-        def givenLat = (Double) 35.1
-        def givenLon = (double) 124.5
-        def givenResponse1 = FacilityDocument.builder().id("1").location(new GeoPoint(givenLat, givenLon)).build()
-        def givenResponse2 = FacilityDocument.builder().id("2").location(new GeoPoint(givenLat, givenLon)).build()
         def givenLatitude = 34.1
         def givenLongitude = 127.1
         def givenRadiusKm = 1
         def givenUserPrincipal = new UserPrincipal(1L)
 
         when:
-        facilityService.search(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
+        facilityService.readAll(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
 
         then:
-        1 * facilitySearcher.search(*_) >> {
-            String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double lat, Double lon, Double radiusKm ->
-                name == givenName
-                address == givenAddress
-                facilityType == givenFacilityType
-                grade == givenGrade
-                sort == givenSort
-                withinYears == givenWithinYears
-                page == givenPage
-                size == givenSize
-                lat == givenLatitude
-                lon == givenLongitude
-                radiusKm == givenRadiusKm
-                List.of(givenResponse1, givenResponse2)
-        }
+        1 * facilityMetaDataManager.getPriorityIds(*_) >> List.of(1L)
+        1 * facilityReader.search(*_) >> List.of(new FacilitySearchResponse(
+                1L,
+                "1234",
+                "양로원",
+                "행복양로원",
+                "인천",
+                2024,
+                "A",
+                30,
+                25,
+                "",
+                35.1,
+                124.5,
+                false,
+                0
+        ))
+        1 * facilityMetaDataManager.getProfileUrl(*_) >> "http://"
+        1 * facilityMetaDataManager.getReviewMetaData(*_) >> ReviewMetaData.noData()
+        1 * facilityMetaDataManager.isLiked(*_) >> true
 
     }
 
@@ -91,9 +93,9 @@ class FacilityQueryServiceSpec extends Specification {
                 userId == givenUserId
                 true
         }
-        1 * facilityEventManager.saveLog(_)
 
     }
+
 
     def "getLikedFacilities - likeApi, facilityReader 를 호출하고 Facility 수 만큼 facilityProfileApi 를 호출한다"() {
         given:
@@ -123,4 +125,46 @@ class FacilityQueryServiceSpec extends Specification {
         1 * facilityMetaDataManager.getProfileUrl(*_) >> "prf"
         1 * facilityReader.getGradeByInstitutionSymbol(*_) >> "grd"
     }
+
+//    def "search - facilitySearcher 를 호출하고 FacilityDocument 수 만큼 facilityProfileApi 를 호출한다"() {
+//        given:
+//        def givenName = "대전요양원"
+//        def givenAddress = "대전광역시"
+//        def givenFacilityType = "주야간보호"
+//        def givenGrade = "A"
+//        def givenSort = "recommend"
+//        def givenWithinYears = 20
+//        def givenPage = 1
+//        def givenSize = 20
+//        def givenLat = (Double) 35.1
+//        def givenLon = (double) 124.5
+//        def givenResponse1 = FacilityDocument.builder().id("1").location(new GeoPoint(givenLat, givenLon)).build()
+//        def givenResponse2 = FacilityDocument.builder().id("2").location(new GeoPoint(givenLat, givenLon)).build()
+//        def givenLatitude = 34.1
+//        def givenLongitude = 127.1
+//        def givenRadiusKm = 1
+//        def givenUserPrincipal = new UserPrincipal(1L)
+//
+//        when:
+//        facilityService.readAll(givenName, givenAddress, givenFacilityType, givenGrade, givenSort, givenWithinYears, givenPage, givenSize, givenLatitude, givenLongitude, givenRadiusKm, givenUserPrincipal)
+//
+//        then:
+//        1 * facilitySearcher.search(*_) >> {
+//            String name, String address, String facilityType, String grade, String sort, int withinYears, int page, int size, Double lat, Double lon, Double radiusKm ->
+//                name == givenName
+//                address == givenAddress
+//                facilityType == givenFacilityType
+//                grade == givenGrade
+//                sort == givenSort
+//                withinYears == givenWithinYears
+//                page == givenPage
+//                size == givenSize
+//                lat == givenLatitude
+//                lon == givenLongitude
+//                radiusKm == givenRadiusKm
+//                List.of(givenResponse1, givenResponse2)
+//        }
+//
+//    }
+
 }

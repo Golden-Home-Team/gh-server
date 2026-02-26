@@ -20,11 +20,11 @@ public class ReviewService {
 
     private final ReviewAppender reviewAppender;
     private final ReviewReader reviewReader;
-    private final FacilityEventManger facilityEventManger;
+//    private final FacilityEventManger facilityEventManger;
 
     public void write(String positive, String negative, VisitPurpose visitPurpose, LocalDate visitedAt, int score, List<String> formattedFileNames, Long facilityId, Long userId) {
-        ReviewAppenderWriteResponse appenderWriteResponse = reviewAppender.write(positive, negative, visitPurpose, visitedAt, score, formattedFileNames, facilityId, userId);
-        facilityEventManger.saveLog(FacilityEvent.createReviewEvent(facilityId, FacilityEventType.REVIEW, appenderWriteResponse.averageScore().floatValue()));
+        reviewAppender.write(positive, negative, visitPurpose, visitedAt, score, formattedFileNames, facilityId, userId);
+//        facilityEventManger.saveLog(FacilityEvent.createReviewEvent(facilityId, FacilityEventType.REVIEW, appenderWriteResponse.averageScore().floatValue()));
     }
 
     public List<ReviewResponse> readAll(Long facilityId, Long lastId, Integer lastScore, Long pageSize, String sort, boolean hasPhoto) {

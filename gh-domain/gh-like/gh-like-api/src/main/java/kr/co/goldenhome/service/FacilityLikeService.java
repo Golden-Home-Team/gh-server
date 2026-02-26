@@ -17,7 +17,6 @@ public class FacilityLikeService {
 
     private final FacilityLikeRepository facilityLikeRepository;
     private final FacilityLikeCountRepository facilityLikeCountRepository;
-    private final FacilityEventManger facilityEventManger;
 
     @Transactional
     public void like(Long facilityId, Long userId) {
@@ -26,7 +25,7 @@ public class FacilityLikeService {
         if (result == 0) {
             facilityLikeCountRepository.save(FacilityLikeCount.create(facilityId));
         }
-        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.LIKE));
+//        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.LIKE));
     }
 
     @Transactional
@@ -36,6 +35,6 @@ public class FacilityLikeService {
                     int result = facilityLikeRepository.deleteByFacilityIdAndUserId(facilityId, userId);
                     if (result != 0) facilityLikeCountRepository.decrease(facilityId);
                 });
-        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.DISLIKE));
+//        facilityEventManger.saveLog(FacilityEvent.createViewEvent(facilityId, FacilityEventType.DISLIKE));
     }
 }
